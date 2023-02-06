@@ -1,0 +1,65 @@
+---
+placeholders: {
+    email: 'ivanivanov@yandex.ru',
+    login: 'ivanivanov',
+    name: 'Иван',
+    lastName: 'Иванов',
+    displayName: 'Иван',
+    phone: '+79995555555',
+}
+---
+
+<html>
+    <head>
+        <link rel="stylesheet" href="../../../index.pcss">
+    </head>
+    <body>
+        <div class="profile">
+            <div class="profile__sidebar">
+                <a href="../chats/chats.hbs">
+                    <button class="profile__sidebar_back-button">
+                        <img class="profile__sidebar_back-icon" src="../../../static/icons/send-arrow.svg" alt="back to chats" />
+                    </button>
+                </a>
+            </div>
+            <div class="profile__info">
+                <div class="profile__image-wrap">
+                    <img class="profile__image" src="../../../static/icons/samoyed.png" alt="profile photo" />
+                    <p class="profile__image-text">Загрузить фото</p>
+                </div>
+                <h2 class="profile__name">{{placeholders.name}}</h2>
+                <div class="profile__inputs">
+                    <div class="profile__input">
+                        <label>Email</label>
+                        <input class="profile__input_field" type="email" value='{{placeholders.email}}' disabled />
+                    </div>
+                    <div class="profile__input">
+                        <label>Логин</label>
+                        <input class="profile__input_field" type="text" value='{{placeholders.login}}' disabled />
+                    </div>
+                    <div class="profile__input">
+                        <label>Имя</label>
+                        <input class="profile__input_field" type="text" value='{{placeholders.name}}' disabled />
+                    </div>
+                    <div class="profile__input">
+                        <label>Фамилия</label>
+                        <input class="profile__input_field" type="text" value='{{placeholders.lastName}}' disabled />
+                    </div>
+                    <div class="profile__input">
+                        <label>Имя в чате</label>
+                        <input class="profile__input_field" type="text" value='{{placeholders.displayName}}' disabled />
+                    </div>
+                    <div class="profile__input">
+                        <label>Телефон</label>
+                        <input class="profile__input_field" type="tel" value='{{placeholders.phone}}' disabled />
+                    </div>
+                </div>
+                <div class="profile__links">
+                    <a class="profile__change-link" href="#">Изменить данные</a>
+                    <a class="profile__change-link" href="#">Изменить пароль</a>
+                    <a class="profile__logout-link" href="../signUp/signUp.hbs">Выйти</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

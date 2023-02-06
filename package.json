@@ -1,0 +1,23 @@
+{
+  "name": "messager",
+  "version": "1.0.0",
+  "description": "Messager project for Yandex Praktikum",
+  "scripts": {
+    "dev": "parcel index.hbs --no-cache",
+    "build": "parcel build index.hbs --no-cache"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@anikin/parcel-transformer-handlebars": "1.0.9",
+    "@anikin/parcel-transformer-handlebars-precompile": "1.0.1",
+    "@parcel/transformer-sass": "^2.8.3",
+    "parcel": "^2.8.3",
+    "postcss": "^8.4.21",
+    "postcss-nested": "^6.0.0"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.7",
+    "normalize.css": "^8.0.1"
+  }
+}
