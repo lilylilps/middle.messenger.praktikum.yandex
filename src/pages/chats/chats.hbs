@@ -95,23 +95,11 @@ message: "Привет! Смотри, тут всплыл интересный �
     <body>
         <div class="chats">
             <div class="chats__sidebar">
-                <a class="chats__sidebar_profile-link" href="../profile/profile.hbs">Профиль ></a>
+                {{> buttonLink/buttonLink href="../profile/profile.hbs" label="Профиль >" color="grey" }}
                 <input class="chats__sidebar_search-input" type="text" placeholder="Поиск" />
                 <div class="chats__sidebar_list">
                     {{#each chats}}
-                    <div class="chats__sidebar_chat">
-                        <div class="chats__sidebar_chat-content">
-                            <img class="chats__sidebar_chat-image" src="../../../static/icons/samoyed.png" alt="chat photo" />
-                            <div class="chats__sidebar_chat-info">
-                                <span class="chat__name">{{ this.name }}</span>
-                                <span class="chats__sidebar_chat-text">{{ this.text }}</span>
-                            </div>
-                        </div>
-                        <div class="chats__sidebar_chat-data">
-                            <span class="chats__sidebar_chat-time">{{ this.lastMessageTime }}</span>
-                            <div class="chats__sidebar_chat-count">{{ this.newMessagesCount }}</div>
-                        </div>
-                    </div>
+                        {{> chatListItem/chatListItem name=this.name text=this.text lastMessageTime=this.lastMessageTime newMessagesCount=this.newMessagesCount }}
                     {{/each}}
                 </div>
                 <button class="chats__sidebar_create-button"><img class="chats__sidebar_create-icon" src="../../../static/icons/pencil.svg" alt="new chat" /></button>
@@ -154,7 +142,6 @@ message: "Привет! Смотри, тут всплыл интересный �
                         <img class="chat__window_message-image" src="../../../static/icons/hasselblad-swc.jpg" alt="image"/>
                         <span class="chat__window_message-left-date">13:00</span>
                     </span>
-                    {{!-- <div class="chat__delete-modal">{{> modal/modal title="Удалить чат" text="Данные невозможно будет восстановить" label="Удалить" color="red" }}</div> --}}
                 </div>
                 <div class="chat__footer">
                     <img class="chat__footer_upload-icon" src="../../../static/icons/clip.svg" alt="upload" />

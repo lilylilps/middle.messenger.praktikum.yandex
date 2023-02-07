@@ -17,17 +17,17 @@ placeholders: {
         <div class="sign-in">
             <h1>Регистрация</h1>
             <div class="sign-in__inputs">
-                {{> input/input label="Email" type="email" placeholder=placeholders.email }}
-                {{> input/input label="Логин" type="text" placeholder=placeholders.login }}
-                {{> input/input label="Имя" type="text" placeholder=placeholders.name }}
-                {{> input/input label="Фамилия" type="text" placeholder=placeholders.lastName }}
-                {{> input/input label="Телефон" type="tel" placeholder=placeholders.phone }}
-                {{> input/input label="Пароль" type="password" placeholder=placeholders.password }}
-                {{> input/input label="Пароль (еще раз)" type="password" placeholder=placeholders.password }}
+                {{> input/input direction="vertical" label="Email" type="email" placeholder=placeholders.email }}
+                {{> input/input direction="vertical" label="Логин" type="text" placeholder=placeholders.login }}
+                {{> input/input direction="vertical" label="Имя" type="text" placeholder=placeholders.name }}
+                {{> input/input direction="vertical" label="Фамилия" type="text" placeholder=placeholders.lastName }}
+                {{> input/input direction="vertical" label="Телефон" type="tel" placeholder=placeholders.phone }}
+                {{> input/input direction="vertical" label="Пароль" type="password" placeholder=placeholders.password }}
+                {{> input/input direction="vertical" label="Пароль (еще раз)" type="password" placeholder=placeholders.password }}
             </div>
             <div class="sign-in__buttons">
                 <a href="../chats/chats.hbs">{{> button/button label="Зарегистрироваться" color="blue" }}</a>
-                <a class="sign-in__buttons_link" href="../signUp/signUp.hbs">Войти</a>
+                {{> buttonLink/buttonLink href="../signUp/signUp.hbs" label="Войти" color="blue" }}
             </div>
         </div>
     </body>

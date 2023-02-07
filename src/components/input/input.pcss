@@ -1,18 +1,35 @@
 .input {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    &-vertical {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
 
-    &__label {
-        font-weight: 500;
-        font-size: 9px;
-        line-height: 9px;
-        color: #999999;
+        &__label {
+            font-weight: 500;
+            font-size: 9px;
+            line-height: 9px;
+            color: #999999;
+        }
+
+        &__field {
+            border: none;
+            border-bottom: 1px solid #3369F3;
+            outline: none;
+            background: transparent;
+        }
     }
 
-    &__field {
-        border: none;
-        border-bottom: 1px solid #3369F3;
-        outline: none;
+    &-horizontal {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #EAEAEA;
+        
+        &__field {
+            border: none;
+            background: transparent;
+            text-align: end;
+            color: #999999;
+            outline: none;
+        }
     }
 }
