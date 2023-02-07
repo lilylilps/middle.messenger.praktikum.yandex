@@ -1,349 +1,349 @@
 .chats {
-    display: flex;
-    width: 100%;
-    height: 100%;
+	display: flex;
+	width: 100%;
+	height: 100%;
 
-    &__sidebar {
-        display: flex;
-        flex-direction: column;
-        width: 30%;
-        background: #FBFBFB;
-        border-right: 1px solid #EAEAEA;
-        padding: 20px 0 0;
-        position: relative;
+	&__sidebar {
+		display: flex;
+		flex-direction: column;
+		width: 30%;
+		background: #fbfbfb;
+		border-right: 1px solid #eaeaea;
+		padding: 20px 0 0;
+		position: relative;
 
-        &_list {
-            overflow-y: auto;
-        }
+		&_list {
+			overflow-y: auto;
+		}
 
-        &_profile-link {
-            align-self: flex-end;
-            font-size: 12px;
-            color: #999999;
-            text-decoration: none;
-            margin-right: 10px;
-        }
+		&_profile-link {
+			align-self: flex-end;
+			font-size: 12px;
+			color: #999999;
+			text-decoration: none;
+			margin-right: 10px;
+		}
 
-        &_search-input {
-            padding: 10px;
-            background: #EFEFEF;
-            border-radius: 5px;
-            margin: 20px 10px 15px;
-            outline: none;
-            border: none;
+		&_search-input {
+			padding: 10px;
+			background: #efefef;
+			border-radius: 5px;
+			margin: 20px 10px 15px;
+			outline: none;
+			border: none;
 
-            &::placeholder {
-                text-align: center; 
-            }
-        }
+			&::placeholder {
+				text-align: center;
+			}
+		}
 
-        &_chat {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 10px;
-            border-top: 1px solid #EAEAEA;
-            gap: 20px;
+		&_chat {
+			display: flex;
+			justify-content: space-between;
+			padding: 12px 10px;
+			border-top: 1px solid #eaeaea;
+			gap: 20px;
 
-            &:first-child {
-                background: #E4EDFD;
-            }
+			&:first-child {
+				background: #e4edfd;
+			}
 
-            &-content {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
+			&-content {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
 
-            &-image {
-                width: 50px;
-                height: 50px;
-            }
+			&-image {
+				width: 50px;
+				height: 50px;
+			}
 
-            &-info {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-                gap: 4px;
-            }
+			&-info {
+				display: flex;
+				flex-direction: column;
+				height: 100%;
+				gap: 4px;
+			}
 
-            &-text {
-                line-height: 15px;
-                color: #999999;
-                max-width: 90%;
-            }
+			&-text {
+				line-height: 15px;
+				color: #999999;
+				max-width: 90%;
+			}
 
-            &-data {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                align-items: center;
-            }
+			&-data {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				align-items: center;
+			}
 
-            &-time {
-                font-size: 9px;
-                color: #999999;
-            }
+			&-time {
+				font-size: 9px;
+				color: #999999;
+			}
 
-            &-count {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                background: #3369F3;
-                color: white;
-                font-size: 11px;
-            }
-        }
+			&-count {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				background: #3369f3;
+				color: white;
+				font-size: 11px;
+			}
+		}
 
-        &_create {
-            &-button {
-                position: absolute;
-                bottom: 20px;
-                right: 30px;
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                background: #3369F3;
-                border: none;
-                cursor: pointer;
+		&_create {
+			&-button {
+				position: absolute;
+				bottom: 20px;
+				right: 30px;
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				background: #3369f3;
+				border: none;
+				cursor: pointer;
 
-                &:hover {
-                    background: #2753C4;
-                }
-            }
+				&:hover {
+					background: #2753c4;
+				}
+			}
 
-            &-icon {
-                width: 25px;
-                height: 25px;
-            }
-        }
-    }
+			&-icon {
+				width: 25px;
+				height: 25px;
+			}
+		}
+	}
 }
 
 .chat {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    padding: 10px 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 100%;
+	padding: 10px 20px;
 
-    &__name {
-        font-weight: bold;
-    }
+	&__name {
+		font-weight: bold;
+	}
 
-    &__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        padding-bottom: 10px;
-        height: 45px;
-        border-bottom: 1px solid #EAEAEA;
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		padding-bottom: 10px;
+		height: 45px;
+		border-bottom: 1px solid #eaeaea;
 
-        &_info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+		&_info {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
 
-        &_image {
-            width: 35px;
-            height: 35px;
-        }
+		&_image {
+			width: 35px;
+			height: 35px;
+		}
 
-        &_menu {
-            &-icon {
-                width: 20px;
-                height: 20px;
-                cursor: pointer;
-                border-radius: 50%;
+		&_menu {
+			&-icon {
+				width: 20px;
+				height: 20px;
+				cursor: pointer;
+				border-radius: 50%;
 
-                &:hover {
-                    background: #EFEFEF;
-                }
-            }
+				&:hover {
+					background: #efefef;
+				}
+			}
 
-            &-list {
-                position: absolute;
-                display: flex;
-                flex-direction: column;
-                padding: 15px 0;
-                top: 50px;
-                right: 30px;
-                box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.14);
-                border-radius: 12px;
-                background: #FFFFFF;
-            }
+			&-list {
+				position: absolute;
+				display: flex;
+				flex-direction: column;
+				padding: 15px 0;
+				top: 50px;
+				right: 30px;
+				box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.14);
+				border-radius: 12px;
+				background: #ffffff;
+			}
 
-            &-item {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                background: transparent;
-                border: none;
-                font-size: 12px;
-                padding: 10px 15px;
-                cursor: pointer;
+			&-item {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				background: transparent;
+				border: none;
+				font-size: 12px;
+				padding: 10px 15px;
+				cursor: pointer;
 
-                &:hover {
-                    background: #EFEFEF;
-                }
-            }
-        }
-    }
+				&:hover {
+					background: #efefef;
+				}
+			}
+		}
+	}
 
-    &__window {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 48px 20px 30px;
+	&__window {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		padding: 48px 20px 30px;
 
-        &_date {
-            font-size: 12px;
-            text-align: center;
-            color: #999999;
-            margin-bottom: 60px;
-        }
+		&_date {
+			font-size: 12px;
+			text-align: center;
+			color: #999999;
+			margin-bottom: 60px;
+		}
 
-        &_message {
-            position: relative;
-            max-width: 40%;
-            min-width: 10%;
-            border-radius: 12px;
-            font-size: 12px;
-            line-height: 15px;
-            margin-bottom: 10px;
+		&_message {
+			position: relative;
+			max-width: 40%;
+			min-width: 10%;
+			border-radius: 12px;
+			font-size: 12px;
+			line-height: 15px;
+			margin-bottom: 10px;
 
-            &-image {
-                width: 100%;
-                border-radius: 12px;
-            }
+			&-image {
+				width: 100%;
+				border-radius: 12px;
+			}
 
-            &-left {
-                background: #F8F8F8;
-                padding: 11px;
+			&-left {
+				background: #f8f8f8;
+				padding: 11px;
 
-                &-date {
-                    position: absolute;
-                    bottom: 10px;
-                    right: 10px;
-                    font-weight: 500;
-                    font-size: 9px;
-                    line-height: 9px;
-                    color: #999999;
-                }
-            }
+				&-date {
+					position: absolute;
+					bottom: 10px;
+					right: 10px;
+					font-weight: 500;
+					font-size: 9px;
+					line-height: 9px;
+					color: #999999;
+				}
+			}
 
-            &-right {
-                background: #E4EDFD;
-                align-self: flex-end;
-                padding: 11px;
+			&-right {
+				background: #e4edfd;
+				align-self: flex-end;
+				padding: 11px;
 
-                &-date {
-                    position: absolute;
-                    bottom: 10px;
-                    right: 10px;
-                    font-weight: 500;
-                    font-size: 9px;
-                    line-height: 9px;
-                    color: #3369F3;
-                }
-            }
-        }
-    }
+				&-date {
+					position: absolute;
+					bottom: 10px;
+					right: 10px;
+					font-weight: 500;
+					font-size: 9px;
+					line-height: 9px;
+					color: #3369f3;
+				}
+			}
+		}
+	}
 
-    &__footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-        gap: 10px;
-        width: 100%;
-        padding-top: 10px;
-        height: 45px;
-        border-top: 1px solid #EAEAEA;
+	&__footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		position: relative;
+		gap: 10px;
+		width: 100%;
+		padding-top: 10px;
+		height: 45px;
+		border-top: 1px solid #eaeaea;
 
-        &_upload-icon {
-            transform: rotate(45deg);
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            border-radius: 50%;
+		&_upload-icon {
+			transform: rotate(45deg);
+			width: 32px;
+			height: 32px;
+			cursor: pointer;
+			border-radius: 50%;
 
-            &:hover {
-                background: #EFEFEF;
-            }
-        }
+			&:hover {
+				background: #efefef;
+			}
+		}
 
-        &_message-input {
-            width: 100%;
-            padding: 10px;
-            background: #EFEFEF;
-            border-radius: 30px;
-            outline: none;
-            border: none;
-        }
+		&_message-input {
+			width: 100%;
+			padding: 10px;
+			background: #efefef;
+			border-radius: 30px;
+			outline: none;
+			border: none;
+		}
 
-        &_send {
-            &-button {
-                width: 28px;
-                height: 28px;
-                border-radius: 50%;
-                background: #3369F3;
-                border: none;
-                cursor: pointer;
+		&_send {
+			&-button {
+				width: 28px;
+				height: 28px;
+				border-radius: 50%;
+				background: #3369f3;
+				border: none;
+				cursor: pointer;
 
-                &:hover {
-                    background: #2753C4;
-                }
-            }
+				&:hover {
+					background: #2753c4;
+				}
+			}
 
-            &-icon {
-                width: 15px;
-                height: 15px;
-            }
-        }
+			&-icon {
+				width: 15px;
+				height: 15px;
+			}
+		}
 
-        &_menu {
-            &-icon {
-                width: 20px;
-                height: 20px;
-                cursor: pointer;
-                border-radius: 50%;
+		&_menu {
+			&-icon {
+				width: 20px;
+				height: 20px;
+				cursor: pointer;
+				border-radius: 50%;
 
-                &:hover {
-                    background: #EFEFEF;
-                }
-            }
+				&:hover {
+					background: #efefef;
+				}
+			}
 
-            &-list {
-                position: absolute;
-                display: flex;
-                flex-direction: column;
-                padding: 15px 0;
-                bottom: 40px;
-                left: 15px;
-                box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.14);
-                border-radius: 12px;
-                background: #FFFFFF;
-            }
+			&-list {
+				position: absolute;
+				display: flex;
+				flex-direction: column;
+				padding: 15px 0;
+				bottom: 40px;
+				left: 15px;
+				box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.14);
+				border-radius: 12px;
+				background: #ffffff;
+			}
 
-            &-item {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                background: transparent;
-                border: none;
-                font-size: 12px;
-                padding: 10px 15px;
-                cursor: pointer;
+			&-item {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				background: transparent;
+				border: none;
+				font-size: 12px;
+				padding: 10px 15px;
+				cursor: pointer;
 
-                &:hover {
-                    background: #EFEFEF;
-                }
-            }
-        }
-    }
+				&:hover {
+					background: #efefef;
+				}
+			}
+		}
+	}
 }

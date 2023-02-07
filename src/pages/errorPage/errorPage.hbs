@@ -1,0 +1,19 @@
+---
+error: {
+    code: '500',
+    message: 'Мы уже фиксим'
+}
+---
+
+<html>
+    <head>
+        <link rel="stylesheet" href="../../../index.pcss">
+    </head>
+    <body>
+        <div class="error">
+            <span class="error__code">{{ error.code }}</span>
+            <h1 class="error__message">{{ error.message }}</h1>
+            <a class="error__link" href="../chats/chats.hbs">Назад к чатам</a>
+        </div>
+    </body>
+</html>
