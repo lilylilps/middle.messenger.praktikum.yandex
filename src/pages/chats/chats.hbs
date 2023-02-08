@@ -135,15 +135,10 @@ message: "Привет! Смотри, тут всплыл интересный �
                     </span>
                 </div>
                 <div class="chat__footer">
-                    <img class="chat__footer_upload-icon" src="../../../static/icons/clip.svg" alt="upload" />
-                    <input class="chat__footer_message-input" placeholder="Сообщение" />
-                    <button class="chat__footer_send-button"><img class="chat__footer_send-icon" src="../../../static/icons/send-arrow.svg" alt="send message" /></button>
-
+                    {{> chatMessageInput/chatMessageInput }}
                     <div class="chat__footer_menu">
-                        <div class="chat__footer_menu-list">
-                            {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/img-attach.svg" alt="photo/video" label="Фото или видео" }}
-                            {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/file-attach.svg" alt="file" label="Файл" }}
-                        </div>
+                        {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/img-attach.svg" alt="photo/video" label="Фото или видео" }}
+                        {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/file-attach.svg" alt="file" label="Файл" }}
                     </div>
                 </div>
             </div>
