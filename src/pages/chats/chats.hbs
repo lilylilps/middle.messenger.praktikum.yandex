@@ -95,7 +95,7 @@ message: "Привет! Смотри, тут всплыл интересный �
     <body>
         <div class="chats">
             <div class="chats__sidebar">
-                {{> buttonLink/buttonLink href="../profile/profile.hbs" label="Профиль >" color="grey" }}
+                <div class="chats__sidebar_profile-link">{{> buttonLink/buttonLink href="../profile/profile.hbs" label="Профиль >" color="grey" }}</div>
                 <input class="chats__sidebar_search-input" type="text" placeholder="Поиск" />
                 <div class="chats__sidebar_list">
                     {{#each chats}}
@@ -113,18 +113,9 @@ message: "Привет! Смотри, тут всплыл интересный �
                     <div class="chat__header_menu">
                         <img class="chat__header_menu-icon" src="../../../static/icons/menu.svg" alt="action menu" />
                         <div class="chat__header_menu-list">
-                            <button class="chat__header_menu-item">
-                                <img class="chat__header_menu-icon" src="../../../static/icons/add.svg" alt="add user" />
-                                Добавить пользователя
-                            </button>
-                            <button class="chat__header_menu-item">
-                                <img class="chat__header_menu-icon" src="../../../static/icons/cancel.svg" alt="delete user" />
-                                Удалить пользователя
-                            </button>
-                            <button class="chat__header_menu-item">
-                                <img class="chat__header_menu-icon" src="../../../static/icons/delete.svg" alt="delete chat" />
-                                Удалить чат
-                            </button>
+                            {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/add.svg" alt="add user" label="Добавить пользователя" }}
+                            {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/cancel.svg" alt="delete user" label="Удалить пользователя" }}
+                            {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/delete.svg" alt="delete chat" label="Удалить чат" }}
                         </div>
                     </div>
                 </div>
@@ -132,7 +123,7 @@ message: "Привет! Смотри, тут всплыл интересный �
                     <span class="chat__window_date">19 июня</span>
                     <span class="chat__window_message chat__window_message-right">
                         Привет!
-                        <span class="chat__window_message-left-date">10:29</span>
+                        <span class="chat__window_message-right-date">10:29</span>
                     </span>
                     <span class="chat__window_message chat__window_message-left">
                         {{ message }}
@@ -150,14 +141,8 @@ message: "Привет! Смотри, тут всплыл интересный �
 
                     <div class="chat__footer_menu">
                         <div class="chat__footer_menu-list">
-                            <button class="chat__footer_menu-item">
-                                <img class="chat__footer_menu-icon" src="../../../static/icons/img-attach.svg" alt="add user" />
-                                Фото или видео
-                            </button>
-                            <button class="chat__footer_menu-item">
-                                <img class="chat__footer_menu-icon" src="../../../static/icons/file-attach.svg" alt="delete user" />
-                                Файл
-                            </button>
+                            {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/img-attach.svg" alt="photo/video" label="Фото или видео" }}
+                            {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/file-attach.svg" alt="file" label="Файл" }}
                         </div>
                     </div>
                 </div>

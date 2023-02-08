@@ -1,19 +1,12 @@
-<html>
-    <head>
-        <link rel="stylesheet" href="../../../index.pcss">
-    </head>
-    <body>
-        <div class="modal-wrapper">
-            <div class="modal">
-                <img class="modal__close" src="../../../static/icons/close.svg" alt="close" />
-                <h1 class="modal__title">{{ title }}</h1>
-                <span class="modal__content">
-                    {{ text }}
-                </span>
-                <div class="modal__button">
-                    {{> button/button label=label color=color }}
-                </div>
-            </div>
+<div class="modal-wrapper">
+    <div class="modal">
+        <img class="modal__close" src="../../../static/icons/close.svg" alt="close" />
+        <h1 class="modal__title">{{ title }}</h1>
+        <span class="modal__content">
+            {{ text }}
+        </span>
+        <div class="modal__button">
+            {{> button/button label=label color=color }}
         </div>
-    </body>
-</html>
+    </div>
+</div>
