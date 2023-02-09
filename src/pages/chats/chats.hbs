@@ -90,58 +90,61 @@ message: "Привет! Смотри, тут всплыл интересный �
 
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <link rel="stylesheet" href="../../../index.pcss">
     </head>
     <body>
-        <div class="chats">
-            <div class="chats__sidebar">
-                <div class="chats__sidebar_profile-link">{{> buttonLink/buttonLink href="../profile/profile.hbs" label="Профиль >" color="grey" }}</div>
-                <input class="chats__sidebar_search-input" type="text" placeholder="Поиск" />
-                <div class="chats__sidebar_list">
-                    {{#each chats}}
-                        {{> chatListItem/chatListItem name=this.name text=this.text lastMessageTime=this.lastMessageTime newMessagesCount=this.newMessagesCount }}
-                    {{/each}}
-                </div>
-                <button class="chats__sidebar_create-button"><img class="chats__sidebar_create-icon" src="../../../static/icons/pencil.svg" alt="new chat" /></button>
-            </div>
-            <div class="chat">
-                <div class="chat__header">
-                    <div class="chat__header_info">
-                        <img class="chat__header_image" src="../../../static/icons/samoyed.png" alt="chat photo" />
-                        <span class="chat__name">Иван</span>
+        <main>
+            <div class="chats">
+                <div class="chats__sidebar">
+                    <div class="chats__sidebar_profile-link">{{> buttonLink/buttonLink href="../profile/profile.hbs" label="Профиль >" color="grey" }}</div>
+                    <input class="chats__sidebar_search-input" type="text" placeholder="Поиск" />
+                    <div class="chats__sidebar_list">
+                        {{#each chats}}
+                            {{> chatListItem/chatListItem name=this.name text=this.text lastMessageTime=this.lastMessageTime newMessagesCount=this.newMessagesCount }}
+                        {{/each}}
                     </div>
-                    <div class="chat__header_menu">
-                        <img class="chat__header_menu-icon" src="../../../static/icons/menu.svg" alt="action menu" />
-                        <div class="chat__header_menu-list">
-                            {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/add.svg" alt="add user" label="Добавить пользователя" }}
-                            {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/cancel.svg" alt="delete user" label="Удалить пользователя" }}
-                            {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/delete.svg" alt="delete chat" label="Удалить чат" }}
+                    <button class="chats__sidebar_create-button"><img class="chats__sidebar_create-icon" src="../../../static/icons/pencil.svg" alt="new chat" /></button>
+                </div>
+                <div class="chat">
+                    <div class="chat__header">
+                        <div class="chat__header_info">
+                            <img class="chat__header_image" src="../../../static/icons/samoyed.png" alt="chat photo" />
+                            <span class="chat__name">Иван</span>
+                        </div>
+                        <div class="chat__header_menu">
+                            <img class="chat__header_menu-icon" src="../../../static/icons/menu.svg" alt="action menu" />
+                            <div class="chat__header_menu-list">
+                                {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/add.svg" alt="add user" label="Добавить пользователя" }}
+                                {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/cancel.svg" alt="delete user" label="Удалить пользователя" }}
+                                {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/delete.svg" alt="delete chat" label="Удалить чат" }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat__window">
+                        <span class="chat__window_date">19 июня</span>
+                        <span class="chat__window_message chat__window_message-right">
+                            Привет!
+                            <span class="chat__window_message-right-date">10:29</span>
+                        </span>
+                        <span class="chat__window_message chat__window_message-left">
+                            {{ message }}
+                            <span class="chat__window_message-left-date">12:59</span>
+                        </span>
+                        <span class="chat__window_message">
+                            <img class="chat__window_message-image" src="../../../static/icons/hasselblad-swc.jpg" alt="image"/>
+                            <span class="chat__window_message-left-date">13:00</span>
+                        </span>
+                    </div>
+                    <div class="chat__footer">
+                        {{> chatMessageInput/chatMessageInput }}
+                        <div class="chat__footer_menu">
+                            {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/img-attach.svg" alt="photo/video" label="Фото или видео" }}
+                            {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/file-attach.svg" alt="file" label="Файл" }}
                         </div>
                     </div>
                 </div>
-                <div class="chat__window">
-                    <span class="chat__window_date">19 июня</span>
-                    <span class="chat__window_message chat__window_message-right">
-                        Привет!
-                        <span class="chat__window_message-right-date">10:29</span>
-                    </span>
-                    <span class="chat__window_message chat__window_message-left">
-                        {{ message }}
-                        <span class="chat__window_message-left-date">12:59</span>
-                    </span>
-                    <span class="chat__window_message">
-                        <img class="chat__window_message-image" src="../../../static/icons/hasselblad-swc.jpg" alt="image"/>
-                        <span class="chat__window_message-left-date">13:00</span>
-                    </span>
-                </div>
-                <div class="chat__footer">
-                    {{> chatMessageInput/chatMessageInput }}
-                    <div class="chat__footer_menu">
-                        {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/img-attach.svg" alt="photo/video" label="Фото или видео" }}
-                        {{> dropdownMenuItem/dropdownMenuItem src="../../../static/icons/file-attach.svg" alt="file" label="Файл" }}
-                    </div>
-                </div>
             </div>
-        </div>
+        </main>
     </body>
 </html>

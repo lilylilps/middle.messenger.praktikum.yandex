@@ -1,12 +1,15 @@
 <!DOCTYPE html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <link rel="stylesheet" href="./index.pcss">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
     </head>
     <body>
-        <div id="root" class="home">
-            Чтобы войти в мессенджер, нажмите
-            <a href="./src/pages/signUp/signUp.hbs">{{> button/button label="Войти" color="blue" }}</a>
-        </div>
+        <main>
+            <div id="root" class="home">
+                Чтобы войти в мессенджер, нажмите
+                <a href="./src/pages/signUp/signUp.hbs">{{> button/button label="Войти" color="blue" type="button" }}</a>
+            </div>
+        </main>
     </body>
-</html> 
+</html>
