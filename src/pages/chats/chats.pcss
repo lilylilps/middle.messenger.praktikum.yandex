@@ -1,3 +1,5 @@
+@import "../../styles/variables.pcss";
+
 .chats {
 	display: flex;
 	width: 100%;
@@ -7,8 +9,8 @@
 		display: flex;
 		flex-direction: column;
 		width: 30%;
-		background: #fbfbfb;
-		border-right: 1px solid #eaeaea;
+		background: $backgroundGreyLight;
+		border-right: 1px solid $borderGrey;
 		padding: 20px 0 0;
 		position: relative;
 
@@ -24,7 +26,7 @@
 
 		&_search-input {
 			padding: 10px;
-			background: #efefef;
+			background: $backgroundGreyDark;
 			border-radius: 5px;
 			margin: 20px 10px 15px;
 			outline: none;
@@ -43,12 +45,12 @@
 				width: 50px;
 				height: 50px;
 				border-radius: 50%;
-				background: #3369f3;
+				background: $blue;
 				border: none;
 				cursor: pointer;
 
 				&:hover {
-					background: #2753c4;
+					background: $blueHover;
 				}
 			}
 
@@ -78,7 +80,7 @@
 		width: 100%;
 		padding-bottom: 10px;
 		height: 45px;
-		border-bottom: 1px solid #eaeaea;
+		border-bottom: 1px solid $borderGrey;
 
 		&_info {
 			display: flex;
@@ -99,7 +101,7 @@
 				border-radius: 50%;
 
 				&:hover {
-					background: #efefef;
+					background: $backgroundGreyDark;
 				}
 			}
 
@@ -110,9 +112,9 @@
 				padding: 15px 0;
 				top: 50px;
 				right: 30px;
-				box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.14);
+				box-shadow: 0px 0px 6px $boxShadowLight;
 				border-radius: 12px;
-				background: #ffffff;
+				background: $white;
 			}
 		}
 	}
@@ -126,7 +128,7 @@
 		&_date {
 			font-size: 12px;
 			text-align: center;
-			color: #999999;
+			color: $grey;
 			margin-bottom: 60px;
 		}
 
@@ -145,7 +147,7 @@
 			}
 
 			&-left {
-				background: #f8f8f8;
+				background: $backgroundGrey;
 				padding: 11px;
 
 				&-date {
@@ -155,12 +157,12 @@
 					font-weight: 500;
 					font-size: 9px;
 					line-height: 9px;
-					color: #999999;
+					color: $grey;
 				}
 			}
 
 			&-right {
-				background: #e4edfd;
+				background: $backgroundBlue;
 				align-self: flex-end;
 				padding: 11px;
 
@@ -171,7 +173,7 @@
 					font-weight: 500;
 					font-size: 9px;
 					line-height: 9px;
-					color: #3369f3;
+					color: $blue;
 				}
 			}
 		}
@@ -186,7 +188,7 @@
 		width: 100%;
 		padding-top: 10px;
 		height: 45px;
-		border-top: 1px solid #eaeaea;
+		border-top: 1px solid $borderGrey;
 
 		&_menu {
 			position: absolute;
@@ -195,9 +197,9 @@
 			padding: 15px 0;
 			bottom: 40px;
 			left: 15px;
-			box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.14);
+			box-shadow: 0px 0px 6px $boxShadowLight;
 			border-radius: 12px;
-			background: #ffffff;
+			background: $white;
 		}
 	}
 }

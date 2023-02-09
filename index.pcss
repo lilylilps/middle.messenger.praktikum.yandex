@@ -10,23 +10,29 @@
 @import "./src/pages/signIn/signIn.pcss";
 @import "./src/pages/chats/chats.pcss";
 @import "./src/pages/profile/profile.pcss";
+@import "./src/pages/changeInfo/changeInfo.pcss";
 @import "./src/pages/changePassword/changePassword.pcss";
 @import "./src/pages/errorPage/errorPage.pcss";
 
-html {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-}
-
-body {
+html,
+body,
+main {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	font-family: "Inter", sans-serif;
 	font-size: 13px;
 	line-height: 13px;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 	width: 100%;
 	margin: 0;
 }
