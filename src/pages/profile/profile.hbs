@@ -1,0 +1,50 @@
+---
+placeholders: {
+    email: 'ivanivanov@yandex.ru',
+    login: 'ivanivanov',
+    firstName: 'Иван',
+    secondName: 'Иванов',
+    displayName: 'Иван',
+    phone: '+79995555555',
+}
+---
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+        <link rel="stylesheet" href="../../../index.pcss">
+    </head>
+    <body>
+        <main>
+            <div class="profile">
+                <div class="profile__sidebar">
+                    <a href="../chats/chats.hbs">
+                        <button class="profile__sidebar_back-button">
+                            <img class="profile__sidebar_back-icon" src="../../../static/icons/send-arrow.svg" alt="back to chats" />
+                        </button>
+                    </a>
+                </div>
+                <div class="profile__info">
+                    <div class="profile__image-wrap">
+                        <img class="profile__image" id="avatar" src="../../../static/icons/samoyed.png" alt="profile photo" />
+                        <p class="profile__image-text">Загрузить фото</p>
+                    </div>
+                    <h2 class="profile__name">{{placeholders.firstName}}</h2>
+                    <div class="profile__inputs">
+                        {{> input/input direction="horizontal" name="email" label="Email" type="email" value=placeholders.email disabled="true" }}
+                        {{> input/input direction="horizontal" name="login" label="Логин" type="text" value=placeholders.login disabled="true" }}
+                        {{> input/input direction="horizontal" name="first_name" label="Имя" type="text" value=placeholders.firstName disabled="true" }}
+                        {{> input/input direction="horizontal" name="second_name" label="Фамилия" type="text" value=placeholders.secondName disabled="true" }}
+                        {{> input/input direction="horizontal" name="display_name" label="Имя в чате" type="text" value=placeholders.displayName disabled="true" }}
+                        {{> input/input direction="horizontal" name="phone" label="Телефон" type="tel" value=placeholders.phone disabled="true" }}
+                    </div>
+                    <div class="profile__links">
+                        {{> buttonLink/buttonLink href="../changeInfo/changeInfo.hbs" label="Изменить данные" color="blue" }}
+                        {{> buttonLink/buttonLink href="../changePassword/changePassword.hbs" label="Изменить пароль" color="blue" }}
+                        {{> buttonLink/buttonLink href="../signUp/signUp.hbs" label="Выйти" color="red" }}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
