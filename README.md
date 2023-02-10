@@ -11,3 +11,6 @@
 Чтобы сбилдить проект, необходимо использовать команду ```npm run build```.
 
 Запустить проект можно командой ```npm run start``` (в этом случае произойдет билд проекта и его запуск на http://localhost:3000/).
+
+
+Pull request Sprint 1: https://github.com/lilylilps/middle.messenger.praktikum.yandex/pull/2
