@@ -1,28 +1,11 @@
----
-placeholders: {
-    login: 'ivanivanov',
-    password: '6-12 символов'
-}
----
-
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-        <link rel="stylesheet" href="../../../index.pcss">
-    </head>
-    <body>
-        <main>
-            <form class="sign-up">
-                <h1>Вход</h1>
-                <div class="sign-up__inputs">
-                    {{> input/input direction="vertical" name="login" label="Логин" type="text" placeholder=placeholders.login }}
-                    {{> input/input direction="vertical" name="password" label="Пароль" type="password" placeholder=placeholders.password }}
-                </div>
-                <div class="sign-up__buttons">
-                    <a href="../chats/chats.hbs">{{> button/button label="Войти" color="blue" type="button" }}</a>
-                    {{> buttonLink/buttonLink href="../signIn/signIn.hbs" label="Нет аккаунта?" color="blue" }}
-                </div>
-            </form>
-        </main>
-    </body>
-</html>
+<form class="sign-up">
+    <h1>Вход</h1>
+    <div class="sign-up__inputs">
+        {{{loginInput}}}
+        {{{passwordInput}}}
+    </div>
+    <div class="sign-up__buttons">
+        {{{enterButton}}}
+        {{{registerButton}}}
+    </div>
+</form>
