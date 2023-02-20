@@ -1,9 +1,11 @@
+import {ProfilePage} from '../pages/profile';
 import {SignInPage} from '../pages/SignIn';
 import {SignUpPage} from '../pages/SignUp';
 
 const ROUTES = {
+    profile: ProfilePage,
     signUp: SignUpPage,
-    signIn: SignInPage
+    signIn: SignInPage,
 }
 
 export function renderDOM(route: keyof typeof ROUTES) {

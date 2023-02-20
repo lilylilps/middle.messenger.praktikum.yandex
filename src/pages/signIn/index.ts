@@ -22,7 +22,10 @@ export class SignInPage extends Block {
             color: 'blue',
             type: 'submit',
             events: {
-                click: (event: Event) => this.onSubmit(event),
+                click: (event: Event) => {
+                    this.onSubmit(event);
+                    renderDOM('profile')
+                },
             },
         });
 
@@ -63,7 +66,7 @@ export class SignInPage extends Block {
             direction: "vertical",
             name: "second_name",
             label: "Фамилия",
-            type: "password",
+            type: "text",
             placeholder: INPUT_PLACEHOLDERS.secondName
         });
 
