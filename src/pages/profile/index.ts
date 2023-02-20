@@ -22,7 +22,7 @@ export class ProfilePage extends Block {
             color: 'transparent-blue',
             type: 'button',
             events: {
-            click: () => {},
+            click: () => renderDOM('changeInfo'),
             },
         });
 
@@ -31,7 +31,7 @@ export class ProfilePage extends Block {
             color: 'transparent-blue',
             type: 'button',
             events: {
-            click: () => {},
+            click: () => renderDOM('changePassword'),
             },
         });
 
@@ -91,8 +91,8 @@ export class ProfilePage extends Block {
 
         this.children.displayNameInput = new Input({
             direction: "horizontal",
-            name: "new_password",
-            label: "Пароль",
+            name: "display_name",
+            label: "Имя в чате",
             type: "text",
             value: INPUT_VALUES.displayName,
             disabled: true

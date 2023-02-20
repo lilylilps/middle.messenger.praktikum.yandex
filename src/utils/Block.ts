@@ -170,7 +170,7 @@ class Block {
         return typeof value === "function" ? value.bind(target) : value;
       },
       set(target, prop, value) {
-        const oldTarget = { ...target }
+        const oldTarget = { ...target };
 
         target[prop] = value;
 

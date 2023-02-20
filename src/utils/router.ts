@@ -1,8 +1,12 @@
+import {ChangeInfoPage} from '../pages/changeInfo';
+import {ChangePasswordPage} from '../pages/changePassword';
 import {ProfilePage} from '../pages/profile';
-import {SignInPage} from '../pages/SignIn';
-import {SignUpPage} from '../pages/SignUp';
+import {SignInPage} from '../pages/signIn';
+import {SignUpPage} from '../pages/signUp';
 
 const ROUTES = {
+    changeInfo: ChangeInfoPage,
+    changePassword: ChangePasswordPage,
     profile: ProfilePage,
     signUp: SignUpPage,
     signIn: SignInPage,

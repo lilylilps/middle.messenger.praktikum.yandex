@@ -1,4 +1,4 @@
-import template from './signIn.hbs';
+import template from './changeInfo.hbs';
 
 import {Button} from '../../components/Button';
 import {Input} from '../../components/Input';
@@ -12,15 +12,15 @@ const INPUT_PLACEHOLDERS = {
     firstName: 'Иван',
     secondName: 'Иванов',
     phone: '+79995555555',
-    password: '6-12 символов'
+    displayName: 'Иван'
 }
 
-export class SignInPage extends Block {
+export class ChangeInfoPage extends Block {
     init() {
-        this.children.registerButton = new Button({
-            label: 'Зарегистрироваться',
+        this.children.saveButton = new Button({
+            label: 'Сохранить',
             color: 'blue',
-            type: 'submit',
+            type: 'button',
             events: {
                 click: (event: Event) => {
                     this.onSubmit(event);
@@ -29,17 +29,8 @@ export class SignInPage extends Block {
             },
         });
 
-        this.children.enterButton = new Button({
-            label: 'Войти',
-            color: 'transparent-blue',
-            type: 'button',
-            events: {
-            click: () => renderDOM('signUp'),
-            },
-        });
-
         this.children.emailInput = new Input({
-            direction: "vertical",
+            direction: "horizontal",
             name: "email",
             label: "Email",
             type: "email",
@@ -47,7 +38,7 @@ export class SignInPage extends Block {
         });
 
         this.children.loginInput = new Input({
-            direction: "vertical",
+            direction: "horizontal",
             name: "login",
             label: "Логин",
             type: "text",
@@ -55,7 +46,7 @@ export class SignInPage extends Block {
         });
 
         this.children.firstNameInput = new Input({
-            direction: "vertical",
+            direction: "horizontal",
             name: "first_name",
             label: "Имя",
             type: "text",
@@ -63,7 +54,7 @@ export class SignInPage extends Block {
         });
 
         this.children.secondNameInput = new Input({
-            direction: "vertical",
+            direction: "horizontal",
             name: "second_name",
             label: "Фамилия",
             type: "text",
@@ -71,27 +62,19 @@ export class SignInPage extends Block {
         });
 
         this.children.phoneInput = new Input({
-            direction: "vertical",
+            direction: "horizontal",
             name: "phone",
             label: "Телефон",
             type: "tel",
             placeholder: INPUT_PLACEHOLDERS.phone
         });
 
-        this.children.newPasswordInput = new Input({
-            direction: "vertical",
-            name: "new_password",
-            label: "Пароль",
-            type: "password",
-            placeholder: INPUT_PLACEHOLDERS.password
-        });
-
-        this.children.repeatPasswordInput = new Input({
-            direction: "vertical",
-            name: "repeat_password",
-            label: "Пароль (еще раз)",
-            type: "password",
-            placeholder: INPUT_PLACEHOLDERS.password
+        this.children.displayNameInput = new Input({
+            direction: "horizontal",
+            name: "display_name",
+            label: "Имя в чате",
+            type: "text",
+            placeholder: INPUT_PLACEHOLDERS.displayName
         });
     }
 

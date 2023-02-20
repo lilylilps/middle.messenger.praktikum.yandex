@@ -57,6 +57,11 @@ export class SignUpPage extends Block {
 
         const data = Object.fromEntries(values);
         console.log(data);
+
+        Object
+        .values(this.children)
+        .filter(child => child instanceof Input)
+        .forEach(x => (x as Input).setError('asdasd'))
     }
 
     render() {

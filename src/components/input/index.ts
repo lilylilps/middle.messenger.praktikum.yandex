@@ -6,10 +6,11 @@ interface InputProps {
     label: string;
     direction: string;
     name: string;
-    type: string;
+    type: 'email' | 'tel' | 'text' | 'password';
     placeholder?: string;
     value?: string;
     disabled?: boolean;
+    error?: string;
 }
 
 export class Input extends Block {
@@ -23,6 +24,10 @@ export class Input extends Block {
 
     getValue() {
         return (this.element?.children[1] as HTMLInputElement).value;
+    }
+
+    setError(error: string) {
+        this.setProps({...this.props, error });
     }
 
     render() {
