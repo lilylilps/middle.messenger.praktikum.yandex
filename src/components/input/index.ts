@@ -10,6 +10,7 @@ interface InputProps {
     placeholder?: string;
     value?: string;
     disabled?: boolean;
+    required?: boolean;
     error?: string;
 }
 
@@ -26,18 +27,13 @@ export class Input extends Block {
         return (this.element?.children[0].children[1] as HTMLInputElement).value;
     }
 
-    getType() {
-        return (this.element?.children[0].children[1] as HTMLInputElement).type;
-    }
-
     setError(error: string | undefined) {
-        if (error) {
-            this.setProps({error});
-        }
+        const inputValue = (this.element?.children[0].children[1] as HTMLInputElement).value;
+        this.setProps({error, value: inputValue});
     }
 
-    getError() {
-        return this.props.error;
+    getProps(prop: string) {
+        return this.props[prop];
     }
 
     render() {

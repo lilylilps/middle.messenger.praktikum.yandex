@@ -19,7 +19,7 @@ export class SignUpPage extends Block {
             color: 'blue',
             type: 'submit',
             events: {
-                click: (event: Event) => submitHandler(event, this.children),
+                click: (event: Event) => submitHandler(event, this.children, 'profile'),
             },
         });
 
@@ -37,7 +37,8 @@ export class SignUpPage extends Block {
             name: "login",
             label: "Логин",
             type: "text",
-            placeholder: INPUT_PLACEHOLDERS.login
+            placeholder: INPUT_PLACEHOLDERS.login,
+            required: true
         });
 
         this.children.passwordInput = new Input({
@@ -45,7 +46,8 @@ export class SignUpPage extends Block {
             name: "password",
             label: "Пароль",
             type: "password",
-            placeholder: INPUT_PLACEHOLDERS.password
+            placeholder: INPUT_PLACEHOLDERS.password,
+            required: true
         });
     }
 

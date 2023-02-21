@@ -4,7 +4,7 @@ import {ProfilePage} from '../pages/profile';
 import {SignInPage} from '../pages/signIn';
 import {SignUpPage} from '../pages/signUp';
 
-const ROUTES = {
+export const ROUTES = {
     changeInfo: ChangeInfoPage,
     changePassword: ChangePasswordPage,
     profile: ProfilePage,
