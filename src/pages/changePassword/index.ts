@@ -7,7 +7,7 @@ import Block from '../../utils/Block';
 import {renderDOM} from '../../utils/router';
 
 const INPUT_PLACEHOLDERS = {
-    password: '6-12 символов'
+    password: 'не менее 6 символов'
 }
 
 export class ChangePasswordPage extends Block {

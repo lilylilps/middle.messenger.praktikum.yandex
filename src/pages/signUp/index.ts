@@ -5,10 +5,11 @@ import {Input} from '../../components/Input';
 
 import Block from '../../utils/Block';
 import {renderDOM} from '../../utils/router';
+import {submitHandler} from '../../utils/submitHandler';
 
 const INPUT_PLACEHOLDERS = {
     login: 'ivanivanov',
-    password: '6-12 символов'
+    password: 'не менее 6 символов'
 }
 
 export class SignUpPage extends Block {
@@ -18,7 +19,7 @@ export class SignUpPage extends Block {
             color: 'blue',
             type: 'submit',
             events: {
-                click: (event: Event) => this.onSubmit(event),
+                click: (event: Event) => submitHandler(event, this.children),
             },
         });
 
@@ -46,22 +47,6 @@ export class SignUpPage extends Block {
             type: "password",
             placeholder: INPUT_PLACEHOLDERS.password
         });
-    }
-
-    onSubmit(event: Event) {
-        event.preventDefault();
-        const values = Object
-            .values(this.children)
-            .filter(child => child instanceof Input)
-            .map((child) => ([(child as Input).getName(), (child as Input).getValue()]));
-
-        const data = Object.fromEntries(values);
-        console.log(data);
-
-        Object
-        .values(this.children)
-        .filter(child => child instanceof Input)
-        .forEach(x => (x as Input).setError('asdasd'))
     }
 
     render() {

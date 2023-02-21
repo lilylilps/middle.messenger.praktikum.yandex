@@ -12,7 +12,7 @@ const INPUT_PLACEHOLDERS = {
     firstName: 'Иван',
     secondName: 'Иванов',
     phone: '+79995555555',
-    password: '6-12 символов'
+    password: 'не менее 6 символов'
 }
 
 export class SignInPage extends Block {
