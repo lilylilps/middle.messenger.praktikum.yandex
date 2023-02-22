@@ -2,9 +2,11 @@ import template from './profile.hbs';
 
 import {Button} from '../../components/Button';
 import {Input} from '../../components/Input';
+import {Avatar} from '../../components/avatar';
 
 import Block from '../../utils/Block';
 import {renderDOM} from '../../utils/router';
+import avatar from '../../../static/icons/samoyed.png';
 
 const INPUT_VALUES = {
     email: 'ivanivanov@yandex.ru',
@@ -15,8 +17,23 @@ const INPUT_VALUES = {
     displayName: 'Иван'
 }
 
+interface ProfilePageProps {
+    name?: string;
+}
+
 export class ProfilePage extends Block {
+    constructor(props: ProfilePageProps) {
+        super(props);
+        this.props.name = INPUT_VALUES.displayName;
+    }
+
     init() {
+        this.children.avatar = new Avatar({
+            image: avatar,
+            size: 'large',
+            canUpdate: true,
+        });
+
         this.children.changeInfoButton = new Button({
             label: 'Изменить данные',
             color: 'transparent-blue',

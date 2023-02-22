@@ -11,7 +11,11 @@ interface InputProps {
     value?: string;
     disabled?: boolean;
     required?: boolean;
-    error?: string;
+    error?: string | null;
+    events?: {
+        focusin: () => void;
+        focusout: () => void;
+    };
 }
 
 export class Input extends Block {
@@ -27,9 +31,8 @@ export class Input extends Block {
         return (this.element?.children[0].children[1] as HTMLInputElement).value;
     }
 
-    setError(error: string | undefined) {
-        const inputValue = (this.element?.children[0].children[1] as HTMLInputElement).value;
-        this.setProps({error, value: inputValue});
+    setError(error: string | null) {
+        this.element!.children[1].textContent = error;
     }
 
     getProps(prop: string) {

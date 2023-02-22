@@ -1,39 +1,50 @@
 @import "../../styles/variables.pcss";
 
 .input {
-	&-vertical {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
+    &-vertical {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
 
-		&__label {
-			font-weight: 500;
-			font-size: 9px;
-			line-height: 9px;
-			color: $grey;
-		}
+        &__label {
+            font-weight: 500;
+            font-size: 9px;
+            line-height: 9px;
+            color: $grey;
+        }
 
-		&__field {
-			border: none;
-			border-bottom: 1px solid $blue;
-			outline: none;
-			background: transparent;
-		}
-	}
+        &__field {
+            border: none;
+            border-bottom: 1px solid $blue;
+            outline: none;
+            background: transparent;
+        }
 
-	&-horizontal {
-		display: flex;
-		justify-content: space-between;
-		border-bottom: 1px solid $borderGrey;
+        &__error {
+            text-align: start;
+        }
+    }
 
-		&__field {
-			border: none;
-			background: transparent;
-			text-align: end;
-			color: $grey;
-			outline: none;
-		}
-	}
+    &-horizontal {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid $borderGrey;
+
+        &__field {
+            border: none;
+            background: transparent;
+            text-align: end;
+            outline: none;
+
+            &:disabled {
+                color: $grey;
+            }
+        }
+
+        &__error {
+            text-align: end;
+        }
+    }
 
     &__error {
         padding-top: 5px;

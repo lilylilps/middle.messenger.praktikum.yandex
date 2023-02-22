@@ -2,9 +2,12 @@ import template from './changeInfo.hbs';
 
 import {Button} from '../../components/Button';
 import {Input} from '../../components/Input';
+import {Avatar} from '../../components/avatar';
 
 import Block from '../../utils/Block';
-import {renderDOM} from '../../utils/router';
+import {submitHandler} from '../../utils/submitHandler';
+import {validate} from '../../utils/validator';
+import avatar from '../../../static/icons/samoyed.png';
 
 const INPUT_PLACEHOLDERS = {
     email: 'ivanivanov@yandex.ru',
@@ -17,15 +20,18 @@ const INPUT_PLACEHOLDERS = {
 
 export class ChangeInfoPage extends Block {
     init() {
+        this.children.avatar = new Avatar({
+            image: avatar,
+            size: 'large',
+            canUpdate: true,
+        });
+
         this.children.saveButton = new Button({
             label: 'Сохранить',
             color: 'blue',
             type: 'button',
             events: {
-                click: (event: Event) => {
-                    this.onSubmit(event);
-                    renderDOM('profile');
-                },
+                click: (event: Event) => submitHandler(event, this.children, 'profile'),
             },
         });
 
@@ -34,7 +40,13 @@ export class ChangeInfoPage extends Block {
             name: "email",
             label: "Email",
             type: "email",
-            placeholder: INPUT_PLACEHOLDERS.email
+            placeholder: INPUT_PLACEHOLDERS.email,
+            required: true,
+            events: {
+                focusin: () => (this.children.emailInput as Input).setError(null),
+                focusout: () => (this.children.emailInput as Input)
+                    .setError(validate((this.children.emailInput as Input).getProps('type'), (this.children.emailInput as Input).getValue())),
+            },
         });
 
         this.children.loginInput = new Input({
@@ -42,7 +54,13 @@ export class ChangeInfoPage extends Block {
             name: "login",
             label: "Логин",
             type: "text",
-            placeholder: INPUT_PLACEHOLDERS.login
+            placeholder: INPUT_PLACEHOLDERS.login,
+            required: true,
+            events: {
+                focusin: () => (this.children.loginInput as Input).setError(null),
+                focusout: () => (this.children.loginInput as Input)
+                    .setError(validate((this.children.loginInput as Input).getProps('type'), (this.children.loginInput as Input).getValue())),
+            },
         });
 
         this.children.firstNameInput = new Input({
@@ -66,7 +84,13 @@ export class ChangeInfoPage extends Block {
             name: "phone",
             label: "Телефон",
             type: "tel",
-            placeholder: INPUT_PLACEHOLDERS.phone
+            placeholder: INPUT_PLACEHOLDERS.phone,
+            required: true,
+            events: {
+                focusin: () => (this.children.phoneInput as Input).setError(null),
+                focusout: () => (this.children.phoneInput as Input)
+                    .setError(validate((this.children.phoneInput as Input).getProps('type'), (this.children.phoneInput as Input).getValue())),
+            },
         });
 
         this.children.displayNameInput = new Input({
@@ -77,18 +101,6 @@ export class ChangeInfoPage extends Block {
             placeholder: INPUT_PLACEHOLDERS.displayName
         });
     }
-
-    onSubmit(event: Event) {
-        event.preventDefault();
-        const values = Object
-            .values(this.children)
-            .filter(child => child instanceof Input)
-            .map((child) => ([(child as Input).getName(), (child as Input).getValue()]));
-
-        const data = Object.fromEntries(values);
-        console.log(data);
-    }
-
     render() {
         return this.compile(template, this.props);
     }

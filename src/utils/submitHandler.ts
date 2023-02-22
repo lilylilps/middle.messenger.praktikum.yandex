@@ -18,11 +18,10 @@ export const submitHandler =
         inputs
             .filter(input => (input as Input).getProps('required'))
             .forEach(input => {
-                (input as Input)
-                    .setError(
-                        validate((input as Input).getProps('type'), (input as Input).getValue())
-                    );
-                if ((input as Input).getProps('error')) {
+                const validationError = validate((input as Input).getProps('type'), (input as Input).getValue());
+                (input as Input).setError(validationError);
+                
+                if (validationError) {
                     isInvalidInput = true;
                 }
             });

@@ -37,7 +37,7 @@
 
     &__name {
         font-weight: 600;
-        padding: 20px 0 60px;
+        padding-top: 60px;
     }
 
     &__info {
@@ -49,44 +49,12 @@
         padding: 60px;
     }
 
-    &__image-wrap {
-        position: relative;
-
-        &:hover .profile__image-text {
-            visibility: visible;
-            opacity: 1;
-        }
-    }
-
-    &__image {
-        width: 130px;
-        height: 130px;
-        border-radius: 50%;
-
-        &-text {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: $boxShadowDark;
-            color: $white;
-            visibility: hidden;
-            opacity: 0;
-            margin: 0;
-            border-radius: 50%;
-            cursor: pointer;
-            text-align: center;
-            padding-top: 60px;
-        }
-    }
-
     &__inputs {
         display: flex;
         flex-direction: column;
         gap: 15px;
         width: 40%;
-        margin-bottom: 60px;
+        margin: 60px 0;
     }
 
     &__links {

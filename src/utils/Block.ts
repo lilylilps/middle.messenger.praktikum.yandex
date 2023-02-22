@@ -1,7 +1,6 @@
 import { EventBus } from "./EventBus";
 import { nanoid } from 'nanoid';
 
-// Нельзя создавать экземпляр данного класса
 class Block {
   static EVENTS = {
     INIT: "init",
