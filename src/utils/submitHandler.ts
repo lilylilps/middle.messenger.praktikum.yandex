@@ -1,11 +1,11 @@
-import {Input} from "../components/Input";
-import Block from "./Block";
-import {logFormData} from "./formDataLogger";
-import {validate} from "./validator";
-import {renderDOM, ROUTES} from "./router";
+import {Input} from '../components/input';
+import Block from './Block';
+import {logFormData} from './formDataLogger';
+import {validate} from './validator';
+import {renderDOM, ROUTES} from './router';
 
 export const submitHandler = 
-    (event: Event, data: Block["children"], redirectPage: keyof typeof ROUTES): void => {
+    (event: Event, data: Block['children'], redirectPage: keyof typeof ROUTES): void => {
         event.preventDefault();
         const inputs = Object
             .values(data)
@@ -18,7 +18,10 @@ export const submitHandler =
         inputs
             .filter(input => (input as Input).getProps('required'))
             .forEach(input => {
-                const validationError = validate((input as Input).getProps('type'), (input as Input).getValue());
+                const validationError = validate(
+                    (input as Input).getProps('type'), (input as Input).getValue()
+                );
+                
                 (input as Input).setError(validationError);
                 
                 if (validationError) {
@@ -29,4 +32,4 @@ export const submitHandler =
         if (!isInvalidInput) {
             renderDOM(redirectPage);
         }
-}
+};

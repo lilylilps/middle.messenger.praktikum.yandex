@@ -2,10 +2,13 @@ import template from './button.hbs';
 
 import Block from '../../utils/Block';
 
+export type ButtonColors = 'blue' | 'red' | 'transparent-blue' | 'transparent-red' | 'transparent-grey';
+export type ButtonTypes = 'button' | 'submit';
+
 interface ButtonProps {
     label: string;
-    color: string;
-    type: string;
+    color: ButtonColors;
+    type: ButtonTypes;
     events: {
         click: (event: Event) => void;
     };

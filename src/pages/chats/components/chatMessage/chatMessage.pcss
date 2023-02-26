@@ -1,0 +1,63 @@
+@import "../../../../styles/variables.pcss";
+
+.chat-message {
+	position: relative;
+	max-width: 40%;
+	min-width: 10%;
+	border-radius: 12px;
+	font-size: 12px;
+	line-height: 15px;
+	margin-bottom: 10px;
+	padding: 11px;
+	
+	&-left {
+		background: $backgroundGrey;
+	}
+
+	&-right {
+		background: $backgroundBlue;
+		align-self: flex-end;
+	}
+
+	&__media {
+		width: 100%;
+		border-radius: 12px;
+		margin-bottom: 15px;
+	}
+
+	&__file {
+		display: flex;
+		gap: 4px;
+		align-items: center;
+
+		&-icon {
+			width: 36px;
+			height: 36px;
+		}
+
+		&-info {
+			max-width: 100px;
+		}
+	}
+
+	&__time {
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
+		font-weight: 500;
+		font-size: 9px;
+		line-height: 9px;
+
+		&-left {
+			color: $grey;
+		}
+
+		&-right {
+			color: $blue;
+		}
+	}
+}
+
+p {
+	margin: 0 0 15px;
+}

@@ -2,11 +2,14 @@ import template from './input.hbs';
 
 import Block from '../../utils/Block';
 
+export type InputType = 'email' | 'tel' | 'text' | 'password';
+export type InputDirection = 'vertical' | 'horizontal';
+
 interface InputProps {
     label: string;
-    direction: string;
+    direction: InputDirection;
     name: string;
-    type: 'email' | 'tel' | 'text' | 'password';
+    type: InputType;
     placeholder?: string;
     value?: string;
     disabled?: boolean;
@@ -23,19 +26,19 @@ export class Input extends Block {
         super(props);
     }
 
-    getName() {
+    getName(): string {
         return (this.element?.children[0].children[1] as HTMLInputElement).name;
     }
 
-    getValue() {
+    getValue(): string {
         return (this.element?.children[0].children[1] as HTMLInputElement).value;
     }
 
-    setError(error: string | null) {
+    setError(error: string | null): void {
         this.element!.children[1].textContent = error;
     }
 
-    getProps(prop: string) {
+    getProps(prop: string): any {
         return this.props[prop];
     }
 

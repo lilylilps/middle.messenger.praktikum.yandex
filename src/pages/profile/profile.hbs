@@ -1,21 +1,12 @@
 <div class="profile">
-    <div class="profile__sidebar">
-        {{!-- <a href="../chats/chats.hbs">
-            <button class="profile__sidebar_back-button">
-                <img class="profile__sidebar_back-icon" src="../../../static/icons/send-arrow.svg" alt="back to chats" />
-            </button>
-        </a> --}}
-    </div>
+    {{{asideNavigation}}}
     <div class="profile__info">
         {{{avatar}}}
         <h2 class="profile__name">{{name}}</h2> 
         <div class="profile__inputs">
-            {{{emailInput}}}
-            {{{loginInput}}}
-            {{{firstNameInput}}}
-            {{{secondNameInput}}}
-            {{{displayNameInput}}}
-            {{{phoneInput}}}
+            {{#each inputs}}
+                {{{this}}}
+            {{/each}}
         </div>
         <div class="profile__links">
             {{{changeInfoButton}}}

@@ -11,7 +11,7 @@ class Block {
 
   public id = nanoid(6);
   protected props: any;
-  public children: Record<string, Block>;
+  public children: Record<string, Block | Block[]>;
   private eventBus: () => EventBus;
   private _element: HTMLElement | null = null;
 
@@ -37,11 +37,13 @@ class Block {
 
   _getChildrenAndProps(childrenAndProps: any) {
     const props: Record<string, any> = {};
-    const children: Record<string, Block> = {};
+    const children: Record<string, Block | Block[]> = {};
 
     Object.entries(childrenAndProps).forEach(([key, value]) => {
-      if (value instanceof Block) {
-        children[key] = value;
+      if (Array.isArray(value) && value.every(v => v instanceof Block)) {
+        children[key as string] = value;
+      } else if (value instanceof Block) {
+        children[key as string] = value;
       } else {
         props[key] = value;
       }
@@ -82,7 +84,11 @@ class Block {
   public dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 
-    Object.values(this.children).forEach(child => child.dispatchComponentDidMount());
+    Object.values(this.children).forEach(child => {
+      if (Array.isArray(child)) {
+        child.forEach(ch => ch.dispatchComponentDidMount());
+      } else child.dispatchComponentDidMount();
+    });
   }
 
   private _componentDidUpdate(oldProps: any, newProps: any) {
@@ -126,7 +132,11 @@ class Block {
     const contextAndStubs = { ...context };
 
     Object.entries(this.children).forEach(([name, component]) => {
-      contextAndStubs[name] = `<div data-id="${component.id}"></div>`;
+      if (Array.isArray(component)) {
+        contextAndStubs[name] = component.map(child => `<div data-id="${child.id}"></div>`);
+      } else {
+        contextAndStubs[name] = `<div data-id="${component.id}"></div>`;
+      }
     });
 
     const html = template(contextAndStubs);
@@ -136,7 +146,7 @@ class Block {
     temp.innerHTML = html;
 
 
-    Object.entries(this.children).forEach(([, component]) => {
+    const replaceStub = (component: Block) => {
       const stub = temp.content.querySelector(`[data-id="${component.id}"]`);
 
       if (!stub) {
@@ -146,7 +156,15 @@ class Block {
       component.getContent()?.append(...Array.from(stub.childNodes));
 
       stub.replaceWith(component.getContent()!);
+    };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Object.entries(this.children).forEach(([_, component]) => {
+      if (Array.isArray(component)) {
+        component.forEach(replaceStub);
+      } else {
+        replaceStub(component);
+      }
     });
 
     return temp.content;
@@ -182,8 +200,8 @@ class Block {
     });
   }
 
-  show() {
-    this.getContent()!.style.display = "block";
+  show(display: 'flex' | 'block') {
+    this.getContent()!.style.display = display;
   }
 
   hide() {

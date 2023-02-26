@@ -1,0 +1,33 @@
+<div class="chat-message chat-message-{{position}}">
+    {{#switch type}} 
+        {{#case 'image'}}
+            <img class="chat-message__media" src="{{content.src}}" alt="message photo" />
+            {{#if text}}
+                <p>{{text}}</p>
+            {{/if}}
+        {{/case}} 
+        {{#case 'video'}}
+            <video class="chat-message__media"
+                controls
+                src="{{content.src}}"
+                poster="{{content.poster}}"
+            >
+            </video>
+            {{#if text}}
+                <p>{{text}}</p>
+            {{/if}}
+        {{/case}}
+        {{#case 'file'}}
+            <div class="chat-message__file">
+                <img class="chat-message__file-icon" src="{{fileIcon}}" alt="file"/>
+                <p class="chat-message__file-info">{{text}}</p>
+            </div>
+        {{/case}}
+        {{#case 'text'}}
+            <p>{{text}}</p>
+        {{/case}}
+    {{/switch}}
+    <span class="chat-message__time chat-message__time-{{position}}">
+        {{time}}
+    </span>
+</div>

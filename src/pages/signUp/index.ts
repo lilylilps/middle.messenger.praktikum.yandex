@@ -1,17 +1,13 @@
 import template from './signUp.hbs';
 
-import {Button} from '../../components/Button';
-import {Input} from '../../components/Input';
+import {Button} from '../../components/button';
+import {Input, InputType} from '../../components/input';
 
 import Block from '../../utils/Block';
 import {renderDOM} from '../../utils/router';
 import {submitHandler} from '../../utils/submitHandler';
-import { validate } from '../../utils/validator';
-
-const INPUT_PLACEHOLDERS = {
-    login: 'ivanivanov',
-    password: 'не менее 6 символов'
-}
+import {validate} from '../../utils/validator';
+import {INPUTS} from '../../constants/constants';
 
 export class SignUpPage extends Block {
     init() {
@@ -20,7 +16,7 @@ export class SignUpPage extends Block {
             color: 'blue',
             type: 'submit',
             events: {
-                click: (event: Event) => submitHandler(event, this.children, 'profile'),
+                click: (event: Event) => submitHandler(event, this.children, 'chats'),
             },
         });
 
@@ -34,30 +30,34 @@ export class SignUpPage extends Block {
         });
 
         this.children.loginInput = new Input({
-            direction: "vertical",
-            name: "login",
-            label: "Логин",
-            type: "text",
-            placeholder: INPUT_PLACEHOLDERS.login,
+            direction: 'vertical',
+            name: INPUTS['login'].name,
+            label: INPUTS['login'].label,
+            type: INPUTS['login'].type as InputType,
+            placeholder:INPUTS['login'].placeholder,
             required: true,
             events: {
                 focusin: () => (this.children.loginInput as Input).setError(null),
                 focusout: () => (this.children.loginInput as Input)
-                    .setError(validate((this.children.loginInput as Input).getProps('type'), (this.children.loginInput as Input).getValue())),
+                    .setError(validate((this.children.loginInput as Input).getProps('type'),
+                        (this.children.loginInput as Input).getValue()
+                    )),
             },
         });
 
         this.children.passwordInput = new Input({
-            direction: "vertical",
-            name: "password",
-            label: "Пароль",
-            type: "password",
-            placeholder: INPUT_PLACEHOLDERS.password,
+            direction: 'vertical',
+            name: INPUTS['password'].name,
+            label: INPUTS['password'].label,
+            type: INPUTS['password'].type as InputType,
+            placeholder:INPUTS['password'].placeholder,
             required: true,
             events: {
                 focusin: () => (this.children.passwordInput as Input).setError(null),
                 focusout: () => (this.children.passwordInput as Input)
-                    .setError(validate((this.children.passwordInput as Input).getProps('type'), (this.children.passwordInput as Input).getValue())),
+                    .setError(validate((this.children.passwordInput as Input).getProps('type'),
+                        (this.children.passwordInput as Input).getValue()
+                    )),
             },
         });
     }
