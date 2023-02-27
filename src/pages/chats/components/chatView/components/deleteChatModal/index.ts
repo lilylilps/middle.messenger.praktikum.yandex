@@ -18,7 +18,7 @@ export class DeleteChatModal extends Block {
         this.children.confirmButton = new Button({
             label: 'Удалить',
             color: 'red',
-            type: 'button',
+            type: 'submit',
             events: {
                 click: () => {
                     this.props.onChatDelete();

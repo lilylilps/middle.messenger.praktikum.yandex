@@ -44,7 +44,7 @@ export class ChatView extends Block {
     init() {
         this.children.sendMessageButton = new ButtonWithIcon({
             color: 'blue',
-            type: 'button',
+            type: 'submit',
             icon: sendIcon,
             size: 'small',
             alt: 'Send message',

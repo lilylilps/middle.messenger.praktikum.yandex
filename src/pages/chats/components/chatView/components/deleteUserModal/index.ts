@@ -20,7 +20,7 @@ export class DeleteUserModal extends Block {
         this.children.userNameInput = new Input({
             direction: 'vertical',
             label: 'Имя',
-            name: 'userName',
+            name: 'user_name',
             type: 'text',
             placeholder: 'Имя пользователя'
         });
@@ -28,7 +28,7 @@ export class DeleteUserModal extends Block {
         this.children.confirmButton = new Button({
             label: 'Удалить',
             color: 'red',
-            type: 'button',
+            type: 'submit',
             events: {
                 click: () => {
                     const input = (this.children.userNameInput as Input);

@@ -30,7 +30,7 @@ export class ChangePasswordPage extends Block {
         this.children.saveButton = new Button({
             label: 'Сохранить',
             color: 'blue',
-            type: 'button',
+            type: 'submit',
             events: {
                 click: (event: Event) => submitHandler(event, this.children, 'profile'),
             },

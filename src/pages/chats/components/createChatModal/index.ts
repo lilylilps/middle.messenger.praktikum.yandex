@@ -20,7 +20,7 @@ export class CreateChatModal extends Block {
         this.children.chatNameInput = new Input({
             direction: 'vertical',
             label: 'Название',
-            name: 'chatName',
+            name: 'chat_name',
             type: 'text',
             placeholder: 'Новый чат'
         });
@@ -28,7 +28,7 @@ export class CreateChatModal extends Block {
         this.children.createButton = new Button({
             label: 'Добавить',
             color: 'blue',
-            type: 'button',
+            type: 'submit',
             events: {
                 click: () => {
                     const input = (this.children.chatNameInput as Input);

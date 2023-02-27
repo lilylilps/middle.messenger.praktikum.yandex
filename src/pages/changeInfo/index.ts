@@ -32,7 +32,7 @@ export class ChangeInfoPage extends Block {
         this.children.saveButton = new Button({
             label: 'Сохранить',
             color: 'blue',
-            type: 'button',
+            type: 'submit',
             events: {
                 click: (event: Event) => submitHandler(event, this.children, 'profile'),
             },
@@ -76,6 +76,14 @@ export class ChangeInfoPage extends Block {
             label: INPUTS['firstName'].label,
             type: INPUTS['firstName'].type as InputType,
             placeholder: INPUTS['firstName'].placeholder,
+            required: true,
+            events: {
+                focusin: () => (this.children.firstNameInput as Input).setError(null),
+                focusout: () => (this.children.firstNameInput as Input)
+                    .setError(validate((this.children.firstNameInput as Input).getProps('type'),
+                        (this.children.firstNameInput as Input).getValue()
+                    )),
+            },
         });
 
         this.children.secondNameInput = new Input({
@@ -84,6 +92,14 @@ export class ChangeInfoPage extends Block {
             label: INPUTS['secondName'].label,
             type: INPUTS['secondName'].type as InputType,
             placeholder: INPUTS['secondName'].placeholder,
+            required: true,
+            events: {
+                focusin: () => (this.children.secondNameInput as Input).setError(null),
+                focusout: () => (this.children.secondNameInput as Input)
+                    .setError(validate((this.children.secondNameInput as Input).getProps('type'),
+                        (this.children.secondNameInput as Input).getValue()
+                    )),
+            },
         });
 
         this.children.phoneInput = new Input({
@@ -108,6 +124,14 @@ export class ChangeInfoPage extends Block {
             label: INPUTS['displayName'].label,
             type: INPUTS['displayName'].type as InputType,
             placeholder: INPUTS['displayName'].placeholder,
+            required: true,
+            events: {
+                focusin: () => (this.children.displayNameInput as Input).setError(null),
+                focusout: () => (this.children.displayNameInput as Input)
+                    .setError(validate((this.children.displayNameInput as Input).getProps('type'),
+                        (this.children.displayNameInput as Input).getValue()
+                    )),
+            },
         });
     }
 

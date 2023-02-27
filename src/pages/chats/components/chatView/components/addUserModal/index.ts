@@ -28,7 +28,7 @@ export class AddUserModal extends Block {
         this.children.addButton = new Button({
             label: 'Добавить',
             color: 'blue',
-            type: 'button',
+            type: 'submit',
             events: {
                 click: () => {
                     const input = (this.children.userNameInput as Input);
