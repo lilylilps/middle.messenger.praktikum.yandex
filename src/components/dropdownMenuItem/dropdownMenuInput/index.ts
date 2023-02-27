@@ -18,7 +18,7 @@ export class DropdownMenuInput extends DropdownMenuItem {
         return this.compile(template, this.props);
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.element?.addEventListener('click', () => {
             const input = document.createElement('input') as HTMLInputElement;
             input.type = 'file';

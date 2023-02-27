@@ -1,5 +1,6 @@
-import {Input} from '../components/input';
 import Block from './Block';
+
+import {Input} from '../components/input';
 
 export const logFormData = (inputs: (Block | Block[])[]): void => {
     const values = inputs

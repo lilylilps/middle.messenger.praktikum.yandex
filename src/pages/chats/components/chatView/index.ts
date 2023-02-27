@@ -132,7 +132,7 @@ export class ChatView extends Block {
         });
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         document.addEventListener('click',
             (event: Event) => {
                 const target = event.target as HTMLElement;

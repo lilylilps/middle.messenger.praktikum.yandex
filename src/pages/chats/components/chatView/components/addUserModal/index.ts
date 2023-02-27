@@ -49,7 +49,7 @@ export class AddUserModal extends Block {
         return this.compile(template, this.props);
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         const closeButton = this.element?.querySelector('#close');
         closeButton?.addEventListener('click', () => this.hide());
     }

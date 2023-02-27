@@ -1,63 +1,63 @@
 @import "../../../../styles/variables.pcss";
 
 .chat-message {
-	position: relative;
-	max-width: 40%;
-	min-width: 10%;
-	border-radius: 12px;
-	font-size: 12px;
-	line-height: 15px;
-	margin-bottom: 10px;
-	padding: 11px;
-	
-	&-left {
-		background: $backgroundGrey;
-	}
+    position: relative;
+    max-width: 40%;
+    width: fit-content;
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 15px;
+    margin-bottom: 10px;
+    padding: 11px;
 
-	&-right {
-		background: $backgroundBlue;
-		align-self: flex-end;
-	}
+    &-left {
+        background: $backgroundGrey;
+    }
 
-	&__media {
-		width: 100%;
-		border-radius: 12px;
-		margin-bottom: 15px;
-	}
+    &-right {
+        background: $backgroundBlue;
+        align-self: flex-end;
+    }
 
-	&__file {
-		display: flex;
-		gap: 4px;
-		align-items: center;
+    &__media {
+        width: 100%;
+        border-radius: 12px;
+        margin-bottom: 15px;
+    }
 
-		&-icon {
-			width: 36px;
-			height: 36px;
-		}
+    &__file {
+        display: flex;
+        gap: 4px;
+        align-items: center;
 
-		&-info {
-			max-width: 100px;
-		}
-	}
+        &-icon {
+            width: 36px;
+            height: 36px;
+        }
 
-	&__time {
-		position: absolute;
-		bottom: 10px;
-		right: 10px;
-		font-weight: 500;
-		font-size: 9px;
-		line-height: 9px;
+        &-info {
+            max-width: 100px;
+        }
+    }
 
-		&-left {
-			color: $grey;
-		}
+    &__time {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        font-weight: 500;
+        font-size: 9px;
+        line-height: 9px;
 
-		&-right {
-			color: $blue;
-		}
-	}
+        &-left {
+            color: $grey;
+        }
+
+        &-right {
+            color: $blue;
+        }
+    }
 }
 
 p {
-	margin: 0 0 15px;
+    margin: 0 0 15px;
 }

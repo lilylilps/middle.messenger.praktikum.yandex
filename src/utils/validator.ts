@@ -16,7 +16,7 @@ const validateEmail = (value: string | undefined) => {
     if (!value) {
         return 'Обязательное поле';
     } else if (!EMAIL_REGEXP.test(value)) {
-        return 'Неверный формат';
+        return 'Некорректный e-mail';
     } else return null;
 }
 
@@ -24,7 +24,7 @@ const validatePhone = (value: string | undefined) => {
     if (!value) {
         return 'Обязательное поле';
     } else if (!PHONE_REGEXP.test(value)) {
-        return 'Неверный формат';
+        return 'Некорректный номер телефона';
     } else return null;
 }
 

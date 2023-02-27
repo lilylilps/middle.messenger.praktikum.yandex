@@ -1,149 +1,103 @@
 @import "../../../../styles/variables.pcss";
 
 .chat {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	width: 100%;
-	padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 0;
 
-	&__name {
-		font-weight: bold;
-	}
+    &__name {
+        font-weight: bold;
+    }
 
-	&__header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 0 20px 10px;
-		height: 45px;
-		border-bottom: 1px solid $borderGrey;
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px 10px;
+        height: 45px;
+        border-bottom: 1px solid $borderGrey;
 
-		&_info {
-			display: flex;
-			align-items: center;
-			gap: 10px;
-		}
+        &_info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-		&_menu {
-			border: none;
-			background: transparent;
-			padding: 0;
+        &_menu {
+            border: none;
+            background: transparent;
+            padding: 0;
 
-			&-icon {
-				width: 28px;
-				height: 28px;
-				cursor: pointer;
-				border-radius: 50%;
+            &-icon {
+                width: 28px;
+                height: 28px;
+                cursor: pointer;
+                border-radius: 50%;
 
-				&:hover {
-					background: $backgroundGreyDark;
-				}
-			}
-		}
-	}
+                &:hover {
+                    background: $backgroundGreyDark;
+                }
+            }
+        }
+    }
 
-	&__window {
-		display: flex;
-		flex-direction: column-reverse;
-		justify-content: space-between;
-		padding: 48px 20px 30px;
-		overflow-y: auto;
+    &__window {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-between;
+        padding: 48px 20px 30px;
+        overflow-y: auto;
+    }
 
-		&_message {
-			position: relative;
-			max-width: 40%;
-			min-width: 10%;
-			border-radius: 12px;
-			font-size: 12px;
-			line-height: 15px;
-			margin-bottom: 10px;
+    &__footer-content {
+        display: flex;
+        flex-direction: column;
+    }
 
-			&-image {
-				width: 100%;
-				border-radius: 12px;
-			}
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        gap: 10px;
+        padding: 10px 20px 0;
+        height: 45px;
+        border-top: 1px solid $borderGrey;
 
-			&-left {
-				background: $backgroundGrey;
-				padding: 11px;
+        &_menu {
+            border: none;
+            background: transparent;
+            padding: 0;
 
-				&-date {
-					position: absolute;
-					bottom: 10px;
-					right: 10px;
-					font-weight: 500;
-					font-size: 9px;
-					line-height: 9px;
-					color: $grey;
-				}
-			}
+            &-icon {
+                width: 28px;
+                height: 28px;
+                cursor: pointer;
+                border-radius: 50%;
 
-			&-right {
-				background: $backgroundBlue;
-				align-self: flex-end;
-				padding: 11px;
+                &:hover {
+                    background: $backgroundGreyDark;
+                }
+            }
+        }
 
-				&-date {
-					position: absolute;
-					bottom: 10px;
-					right: 10px;
-					font-weight: 500;
-					font-size: 9px;
-					line-height: 9px;
-					color: $blue;
-				}
-			}
-		}
-	}
+        &_input {
+            width: 100%;
+            padding: 10px;
+            background: $backgroundGreyDark;
+            border-radius: 30px;
+            outline: none;
+            border: none;
+        }
+    }
 
-	&__footer-content {
-		display: flex;
-		flex-direction: column;
-	}
-
-	&__footer {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		position: relative;
-		gap: 10px;
-		padding: 10px 20px 0;
-		height: 45px;
-		border-top: 1px solid $borderGrey;
-
-		&_menu {
-			border: none;
-			background: transparent;
-			padding: 0;
-
-			&-icon {
-				width: 28px;
-				height: 28px;
-				cursor: pointer;
-				border-radius: 50%;
-
-				&:hover {
-					background: $backgroundGreyDark;
-				}
-			}
-		}
-
-		&_input {
-			width: 100%;
-			padding: 10px;
-			background: $backgroundGreyDark;
-			border-radius: 30px;
-			outline: none;
-			border: none;
-		}
-	}
-
-	&__empty {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 100%;
-		color: $grey;
-	}
+    &__empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: $grey;
+    }
 }

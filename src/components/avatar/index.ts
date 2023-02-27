@@ -20,7 +20,7 @@ export class Avatar extends Block {
         return this.compile(template, this.props);
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         if (this.props.canUpdate) {
             this.element?.addEventListener('click', () => {
                 const input = document.createElement('input') as HTMLInputElement;
