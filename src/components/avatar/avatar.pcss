@@ -1,14 +1,9 @@
-@import "../../styles/variables.pcss";
+@import url("../../styles/variables.pcss");
 
 .avatar {
     position: relative;
 
-    &:hover .avatar__image-text {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    &__image {
+    &-image {
         border-radius: 50%;
 
         &-small {
@@ -47,5 +42,10 @@
                 color: transparent;
             }
         }
+    }
+
+    &:hover .avatar-image-text {
+        visibility: visible;
+        opacity: 1;
     }
 }

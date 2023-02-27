@@ -1,5 +1,5 @@
-@import "../../styles/variables.pcss";
-@import "../../styles/mixins.pcss";
+@import url("../../styles/variables.pcss");
+@import url("../../styles/mixins.pcss");
 
 .button {
     width: 280px;
@@ -9,7 +9,7 @@
     cursor: pointer;
 
     &:disabled {
-        opacity: 50%;
+        opacity: 0.5;
     }
 
     &-blue {
@@ -33,16 +33,19 @@
     &-transparent {
         &-blue {
             @mixin buttonLink;
+
             color: $blue;
         }
 
         &-red {
             @mixin buttonLink;
+
             color: $red;
         }
 
         &-grey {
             @mixin buttonLink;
+
             color: $grey;
         }
     }
