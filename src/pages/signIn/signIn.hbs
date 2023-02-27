@@ -1,37 +1,16 @@
----
-placeholders: {
-    email: 'ivanivanov@yandex.ru',
-    login: 'ivanivanov',
-    firstName: 'Иван',
-    secondName: 'Иванов',
-    phone: '+79995555555',
-    password: '6-12 символов'
-}
----
-
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-        <link rel="stylesheet" href="../../../index.pcss">
-    </head>
-    <body>
-        <main>
-            <form class="sign-in">
-                <h1>Регистрация</h1>
-                <div class="sign-in__inputs">
-                    {{> input/input direction="vertical" name="email" label="Email" type="email" placeholder=placeholders.email }}
-                    {{> input/input direction="vertical" name="login" label="Логин" type="text" placeholder=placeholders.login }}
-                    {{> input/input direction="vertical" name="first_name" label="Имя" type="text" placeholder=placeholders.firstName }}
-                    {{> input/input direction="vertical" name="second_name" label="Фамилия" type="text" placeholder=placeholders.secondName }}
-                    {{> input/input direction="vertical" name="phone" label="Телефон" type="tel" placeholder=placeholders.phone }}
-                    {{> input/input direction="vertical" name="password" label="Пароль" type="password" placeholder=placeholders.password }}
-                    {{> input/input direction="vertical" name="password" label="Пароль (еще раз)" type="password" placeholder=placeholders.password }}
-                </div>
-                <div class="sign-in__buttons">
-                    <a href="../chats/chats.hbs">{{> button/button label="Зарегистрироваться" color="blue" type="button" }}</a>
-                    {{> buttonLink/buttonLink href="../signUp/signUp.hbs" label="Войти" color="blue" }}
-                </div>
-            </form>
-        </main>
-    </body>
-</html>
+<form class="sign-in">
+    <h1>Регистрация</h1>
+    <div class="sign-in__inputs">
+        {{{emailInput}}}
+        {{{loginInput}}}
+        {{{firstNameInput}}}
+        {{{secondNameInput}}}
+        {{{phoneInput}}}
+        {{{newPasswordInput}}}
+        {{{repeatPasswordInput}}}
+    </div>
+    <div class="sign-in__buttons">
+        {{{registerButton}}}
+        {{{enterButton}}}
+    </div>
+</form>

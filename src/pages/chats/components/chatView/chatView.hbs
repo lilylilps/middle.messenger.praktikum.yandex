@@ -1,0 +1,44 @@
+<div class="chat">
+    {{#if isSelected}}
+        <div class="chat__header">
+            <div class="chat__header_info">
+                {{{chatImage}}}
+                <span class="chat__name">{{name}}</span>
+            </div>
+            <button class="chat__header_menu" id="headerDropdownMenu">
+                <img class="chat__header_menu-icon" src="{{menuIcon}}" alt="action menu" />
+                {{{headerDropdownMenu}}}
+            </button>
+        </div>
+        <div class="chat__window">
+            {{#each messages}}
+                {{{this}}}
+            {{else}}
+                <div class="chat__empty">
+                    <p>Напишите первое сообщение в этом чате</p>
+                </div>
+            {{/each}}
+        </div>
+        <div class="chat__footer-content">
+           <div class="chat__footer">
+                <button class="chat__footer_menu" id="footerDropdownMenu">
+                    <img class="chat__footer_menu-icon" src="{{uploadIcon}}" alt="upload" />
+                    {{{footerDropdownMenu}}}
+                </button>
+                <input class="chat__footer_input" name="message" placeholder="Сообщение" />
+                {{{sendMessageButton}}}
+           </div>
+
+            {{{imagesPreview}}}
+            {{{filesPreview}}}
+        </div>
+    {{else}}
+        <div class="chat__empty">
+            <p>Выберите чат, чтобы отправить сообщение</p>
+        </div>
+    {{/if}}
+
+    {{{addUserModal}}}
+    {{{deleteUserModal}}}
+    {{{deleteChatModal}}}
+</div>

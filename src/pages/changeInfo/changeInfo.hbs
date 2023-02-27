@@ -1,47 +1,17 @@
----
-placeholders: {
-    email: 'ivanivanov@yandex.ru',
-    login: 'ivanivanov',
-    firstName: 'Иван',
-    secondName: 'Иванов',
-    displayName: 'Иван',
-    phone: '+79995555555',
-}
----
-
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-        <link rel="stylesheet" href="../../../index.pcss">
-    </head>
-    <body>
-        <main>
-            <div class="changeInfo">
-                <div class="changeInfo__sidebar">
-                    <a href="../chats/chats.hbs">
-                        <button class="changeInfo__sidebar_back-button">
-                            <img class="changeInfo__sidebar_back-icon" src="../../../static/icons/send-arrow.svg" alt="back to chats" />
-                        </button>
-                    </a>
-                </div>
-                <div class="changeInfo__info">
-                    <div class="changeInfo__image-wrap">
-                        <img class="changeInfo__image" id="avatar" src="../../../static/icons/samoyed.png" alt="profile photo" />
-                        <p class="changeInfo__image-text">Загрузить фото</p>
-                    </div>
-                    <form class="changeInfo__form">
-                        <div class="changeInfo__inputs">
-                            {{> input/input direction="horizontal" name="email" label="Email" type="email" placeholder=placeholders.email }}
-                            {{> input/input direction="horizontal" name="login" label="Логин" type="text" placeholder=placeholders.login }}
-                            {{> input/input direction="horizontal" name="first_name" label="Имя" type="text" placeholder=placeholders.firstName }}
-                            {{> input/input direction="horizontal" name="second_name" label="Фамилия" type="text" placeholder=placeholders.secondName }}
-                            {{> input/input direction="horizontal" name="display_name" label="Имя в чате" type="text" placeholder=placeholders.displayName }}
-                            {{> input/input direction="horizontal" name="email" label="Телефон" type="tel" placeholder=placeholders.phone }}
-                        </div>
-                        <a href="../profile/profile.hbs">{{> button/button label="Сохранить" color="blue" type="button" }}</a>
-                    </form>
-                </div>
+<div class="changeInfo">
+    {{{asideNavigation}}}
+    <div class="changeInfo__info">
+        {{{avatar}}}
+        <form class="changeInfo__form">
+            <div class="changeInfo__inputs">
+                {{{emailInput}}}
+                {{{loginInput}}}
+                {{{firstNameInput}}}
+                {{{secondNameInput}}}
+                {{{displayNameInput}}}
+                {{{phoneInput}}}
             </div>
-        </main>
-    </body>
-</html>
+            {{{saveButton}}}
+        </form>
+    </div>
+</div>

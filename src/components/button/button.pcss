@@ -1,31 +1,49 @@
 @import "../../styles/variables.pcss";
+@import "../../styles/mixins.pcss";
 
 .button {
-	width: 280px;
-	border-radius: 8px;
-	border: none;
-	padding: 12px 70px;
-	cursor: pointer;
+    width: 280px;
+    border-radius: 8px;
+    border: none;
+    padding: 12px 70px;
+    cursor: pointer;
 
-	&:disabled {
-		opacity: 50%;
-	}
+    &:disabled {
+        opacity: 50%;
+    }
 
-	&-blue {
-		background: $blue;
-		color: white;
+    &-blue {
+        background: $blue;
+        color: white;
 
-		&:hover {
-			background: $blueHover;
-		}
-	}
+        &:hover {
+            background: $blueHover;
+        }
+    }
 
-	&-red {
-		background: $red;
-		color: white;
+    &-red {
+        background: $red;
+        color: white;
 
-		&:hover {
-			background: $redHover;
-		}
-	}
+        &:hover {
+            background: $redHover;
+        }
+    }
+
+    &-transparent {
+        &-blue {
+            @mixin buttonLink;
+            color: $blue;
+        }
+
+        &-red {
+            @mixin buttonLink;
+            color: $red;
+        }
+
+        &-grey {
+            @mixin buttonLink;
+            color: $grey;
+        }
+    }
 }
