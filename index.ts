@@ -14,5 +14,5 @@ Handlebars.registerHelper('case', function(value: any, options: any) {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-    renderDOM('signUp');
+    renderDOM('chats');
 });

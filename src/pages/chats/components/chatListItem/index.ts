@@ -11,12 +11,18 @@ interface ChatListItemProps {
     text: string;
     time: string;
     count: number;
-    onChatSelect: (id: number) => void
+    events: {
+        onChatSelect: (id: number) => void;
+    }
 }
 
 export class ChatListItem extends Block {
     constructor(props: ChatListItemProps) {
-        super(props);
+        const expandedProps = {...props, events: {
+            ...props.events,
+            click: () => this.props.events.onChatSelect(this.props.id)
+        }};
+        super(expandedProps);
     }
 
     init() {
@@ -40,9 +46,5 @@ export class ChatListItem extends Block {
 
     unselect(): void {
         this.element?.classList.remove('chat-item-selected');
-    }
-
-    componentDidMount() {
-        this.element?.addEventListener('click', () => this.props.onChatSelect(this.props.id));
     }
 }

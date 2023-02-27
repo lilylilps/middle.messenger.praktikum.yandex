@@ -2,18 +2,20 @@ import template from './addUserModal.hbs';
 
 import {Button} from '../../../../../../components/button';
 import {Input} from '../../../../../../components/input';
+import {ButtonWithIcon} from '../../../../../../components/buttonWithIcon';
 
 import Block from '../../../../../../utils/Block';
 import closeIcon from '../../../../../../../static/icons/close.svg';
 
 interface AddUserModalProps {
-    onUserAdd: (userName: string) => void;
+    events: {
+        onUserAdd: (userName: string) => void;
+    }
 }
 
 export class AddUserModal extends Block {
     constructor(props: AddUserModalProps) {
         super(props);
-        this.props.closeIcon = closeIcon;
     }
 
     init() {
@@ -37,20 +39,26 @@ export class AddUserModal extends Block {
                     if (!userName) {
                         input.setError('Укажите имя пользователя');
                     } else {
-                        this.props.onUserAdd(userName);
+                        this.props.events.onUserAdd(userName);
                         this.hide();
                     }
                 }
+            }
+        });
+
+        this.children.closeButton = new ButtonWithIcon({
+            color: 'transparent-grey',
+            type: 'button',
+            icon: closeIcon,
+            size: 'small',
+            alt: 'Close',
+            events: {
+                click: () => this.hide()
             }
         });
     }
 
     render() {
         return this.compile(template, this.props);
-    }
-
-    componentDidMount() {
-        const closeButton = this.element?.querySelector('#close');
-        closeButton?.addEventListener('click', () => this.hide());
     }
 }

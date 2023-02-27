@@ -26,7 +26,9 @@ export class ChangeInfoPage extends Block {
             image: avatar,
             size: 'large',
             canUpdate: true,
-            onChangeAvatar: (file: File) => console.log(file)
+            events: {
+                onChangeAvatar: (file: File) => console.log(file)
+            }
         });
 
         this.children.saveButton = new Button({
