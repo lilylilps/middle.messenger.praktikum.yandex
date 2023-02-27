@@ -44,7 +44,7 @@ export class ChatView extends Block {
     init() {
         this.children.sendMessageButton = new ButtonWithIcon({
             color: 'blue',
-            type: 'button',
+            type: 'submit',
             icon: sendIcon,
             size: 'small',
             alt: 'Send message',
@@ -94,9 +94,11 @@ export class ChatView extends Block {
                     alt: 'photo/video',
                     label: 'Фото или видео',
                     fileType: 'image',
-                    onFileUpload: (files: File[]) => {
-                        (this.children.imagesPreview as ImagePreview)
-                            .setProps({images: files.map(file => URL.createObjectURL(file))});
+                    events: {
+                        onFileUpload: (files: File[]) => {
+                            (this.children.imagesPreview as ImagePreview)
+                                .setProps({images: files.map(file => URL.createObjectURL(file))});
+                        }
                     }
                 }),
                 new DropdownMenuInput({
@@ -104,15 +106,17 @@ export class ChatView extends Block {
                     alt: 'file',
                     label: 'Файл',
                     fileType: 'file',
-                    onFileUpload: (files: File[]) => {
-                        (this.children.filesPreview as FilePreview)
-                            .setProps({files: files.map(file => {
-                                return {
-                                    name: file.name,
-                                    icon: fileIcon
-                                };
-                            })
-                        });
+                    events: {
+                        onFileUpload: (files: File[]) => {
+                            (this.children.filesPreview as FilePreview)
+                                .setProps({files: files.map(file => {
+                                    return {
+                                        name: file.name,
+                                        icon: fileIcon
+                                    };
+                                })
+                            });
+                        }
                     }
                 })
             ],
@@ -120,35 +124,22 @@ export class ChatView extends Block {
         });
 
         this.children.addUserModal = new AddUserModal({
-            onUserAdd: (userName: string) => console.log(userName)
+            events: {
+                onUserAdd: (userName: string) => console.log(userName)
+            }
         });
 
         this.children.deleteUserModal = new DeleteUserModal({
-            onUserDelete: (userName: string) => console.log(userName)
+            events: {
+                onUserDelete: (userName: string) => console.log(userName)
+            }
         });
 
         this.children.deleteChatModal = new DeleteChatModal({
-            onChatDelete: () => console.log('Chat was deleted')
-        });
-    }
-
-    componentDidMount() {
-        document.addEventListener('click',
-            (event: Event) => {
-                const target = event.target as HTMLElement;
-
-                if (target.closest('#headerDropdownMenu')) {
-                    (this.children.headerDropdownMenu as DropdownMenu).toggle();
-                    (this.children.footerDropdownMenu as DropdownMenu).hideMenu();
-                } else if (target.closest('#footerDropdownMenu')) {
-                    (this.children.footerDropdownMenu as DropdownMenu).toggle();
-                    (this.children.headerDropdownMenu as DropdownMenu).hideMenu();
-                } else {
-                    (this.children.headerDropdownMenu as DropdownMenu).hideMenu();
-                    (this.children.footerDropdownMenu as DropdownMenu).hideMenu();
-                }
+            events: {
+                onChatDelete: () => console.log('Chat was deleted')
             }
-        );
+        });
     }
 
     render() {
@@ -162,13 +153,30 @@ export class ChatView extends Block {
             image: props.image ?? avatar,
             size: 'small',
             canUpdate: true,
-            onChangeAvatar: (file: File) => console.log(file)
+            events: {
+                onChangeAvatar: (file: File) => console.log(file)
+            }
         });
 
         (this.children.chatImage as Block).dispatchComponentDidMount();
         (this.children.messages as Block[])
             .forEach(message => (message as Block).dispatchComponentDidMount());
-        
-        this.setProps(props);
+
+        this.setProps({...props, events: {
+            click: (event: Event) => {
+                const target = event.target as HTMLElement;
+
+                if (target.closest('#headerDropdownMenu')) {
+                    (this.children.headerDropdownMenu as DropdownMenu).toggle();
+                    (this.children.footerDropdownMenu as DropdownMenu).hideMenu();
+                } else if (target.closest('#footerDropdownMenu')) {
+                    (this.children.footerDropdownMenu as DropdownMenu).toggle();
+                    (this.children.headerDropdownMenu as DropdownMenu).hideMenu();
+                } else {
+                    (this.children.headerDropdownMenu as DropdownMenu).hideMenu();
+                    (this.children.footerDropdownMenu as DropdownMenu).hideMenu();
+                }
+            }
+        }});
     }
 }

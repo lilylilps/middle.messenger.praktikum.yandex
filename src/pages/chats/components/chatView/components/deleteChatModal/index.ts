@@ -1,39 +1,48 @@
 import template from './deleteChatModal.hbs';
 
 import {Button} from '../../../../../../components/button';
+import {ButtonWithIcon} from '../../../../../../components/buttonWithIcon';
+
 import Block from '../../../../../../utils/Block';
 import closeIcon from '../../../../../../../static/icons/close.svg';
 
 interface DeleteChatModalProps {
-    onChatDelete: () => void;
+    events: {
+        onChatDelete: () => void
+    }
 }
 
 export class DeleteChatModal extends Block {
     constructor(props: DeleteChatModalProps) {
         super(props);
-        this.props.closeIcon = closeIcon;
     }
 
     init() {
         this.children.confirmButton = new Button({
             label: 'Удалить',
             color: 'red',
-            type: 'button',
+            type: 'submit',
             events: {
                 click: () => {
-                    this.props.onChatDelete();
+                    this.props.events.onChatDelete();
                     this.hide();
                 }
+            }
+        });
+
+        this.children.closeButton = new ButtonWithIcon({
+            color: 'transparent-grey',
+            type: 'button',
+            icon: closeIcon,
+            size: 'small',
+            alt: 'Close',
+            events: {
+                click: () => this.hide()
             }
         });
     }
 
     render() {
         return this.compile(template, this.props);
-    }
-
-    componentDidMount() {
-        const closeButton = this.element?.querySelector('#close');
-        closeButton?.addEventListener('click', () => this.hide());
     }
 }

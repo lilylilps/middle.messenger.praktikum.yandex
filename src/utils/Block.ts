@@ -1,6 +1,8 @@
 import { EventBus } from "./EventBus";
 import { nanoid } from 'nanoid';
 
+type Props = Record<string, any>;
+
 class Block {
   static EVENTS = {
     INIT: "init",
@@ -10,7 +12,7 @@ class Block {
   };
 
   public id = nanoid(6);
-  protected props: any;
+  protected props: Props;
   public children: Record<string, Block | Block[]>;
   private eventBus: () => EventBus;
   private _element: HTMLElement | null = null;
@@ -20,7 +22,7 @@ class Block {
    *
    * @returns {void}
    */
-  constructor(propsWithChildren: any = {}) {
+  constructor(propsWithChildren: Props = {}) {
     const eventBus = new EventBus();
 
     const { props, children } = this._getChildrenAndProps(propsWithChildren);
@@ -35,8 +37,8 @@ class Block {
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  _getChildrenAndProps(childrenAndProps: any) {
-    const props: Record<string, any> = {};
+  _getChildrenAndProps(childrenAndProps: Props) {
+    const props: Props = {};
     const children: Record<string, Block | Block[]> = {};
 
     Object.entries(childrenAndProps).forEach(([key, value]) => {
@@ -67,6 +69,14 @@ class Block {
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
+  _removeEvents(): void {
+    const {events = {}} = this.props;
+
+    Object.keys(events).forEach((eventName: string) => {
+      this._element!.removeEventListener(eventName, events[eventName]);
+    });
+  }
+
   private _init() {
     this.init();
 
@@ -91,18 +101,18 @@ class Block {
     });
   }
 
-  private _componentDidUpdate(oldProps: any, newProps: any) {
+  private _componentDidUpdate(oldProps: Props, newProps: Props) {
     if (this.componentDidUpdate(oldProps, newProps)) {
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected componentDidUpdate(_oldProps: any, _newProps: any) {
+  protected componentDidUpdate(_oldProps: Props, _newProps: Props) {
     return true;
   }
 
-  setProps = (nextProps: any) => {
+  setProps = (nextProps: Props) => {
     if (!nextProps) {
       return;
     }
@@ -120,6 +130,7 @@ class Block {
     const newElement = fragment.firstElementChild as HTMLElement;
 
     if (this._element) {
+      this._removeEvents();
       this._element.replaceWith(newElement!);
     }
 
@@ -178,15 +189,15 @@ class Block {
     return this.element;
   }
 
-  _makePropsProxy(props: any) {
+  _makePropsProxy(props: Props) {
     const self = this;
 
     return new Proxy(props, {
-      get(target, prop) {
+      get(target: Props, prop: string) {
         const value = target[prop];
         return typeof value === "function" ? value.bind(target) : value;
       },
-      set(target, prop, value) {
+      set(target: Props, prop: string, value) {
         const oldTarget = { ...target };
 
         target[prop] = value;

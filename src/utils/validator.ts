@@ -8,7 +8,7 @@ const validatePassword = (value: string | undefined) => {
     if (!value) {
         return 'Обязательное поле';
     } else if (value.length < 6) {
-        return 'Неверный формат';
+        return 'Слишком короткий пароль';
     } else return null;
 }
 
