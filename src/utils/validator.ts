@@ -1,6 +1,6 @@
 const EMAIL_REGEXP = new RegExp(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/);
 const PHONE_REGEXP = new RegExp(/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/);
-const LOGIN_REGEXP = new RegExp(/^[a-zA-Z0-9]{6}$/);
+const LOGIN_REGEXP = new RegExp(/^[a-zA-Z0-9]{6,}$/);
 const NAME_REGEXP = new RegExp(/^[a-zA-Zа-яА-Я]+$/);
 
 const validateLogin = (value: string | undefined) =>{
