@@ -5,6 +5,7 @@ import {ChatView} from './components/chatView';
 import {Button} from '../../components/button';
 import {ChatMessage, MessagePosition, MessageTypes} from './components/chatMessage';
 import {ButtonWithIcon} from '../../components/buttonWithIcon';
+import {CreateChatModal} from './components/createChatModal';
 
 import Block from '../../utils/Block';
 import {renderDOM} from '../../utils/router';
@@ -12,7 +13,6 @@ import {CHATS_BAR, CHAT_MESSAGES} from '../../constants/constants';
 
 import avatar from '../../../static/icons/samoyed.png';
 import pencilIcon from '../../../static/icons/pencil.svg';
-import { CreateChatModal } from './components/createChatModal';
 
 export class ChatsPage extends Block {
     init() {
@@ -26,7 +26,9 @@ export class ChatsPage extends Block {
         });
 
         this.children.createChatModal = new CreateChatModal({
-            onChatCreated: (chatName: string) => console.log(chatName)
+            events: {
+                onChatCreated: (chatName: string) => console.log(chatName)
+            }
         });
 
         this.children.buttonWithIcon = new ButtonWithIcon({
@@ -51,7 +53,9 @@ export class ChatsPage extends Block {
             text: chat.text,
             time: chat.lastMessageTime,
             count: chat.newMessagesCount,
-            onChatSelect: (id: number) => this.onChatItemClick(id)
+            events: {
+                onChatSelect: (id: number) => this.onChatItemClick(id)
+            }
         }));
     }
 
@@ -67,8 +71,8 @@ export class ChatsPage extends Block {
             messages: this.mapChatMessages()
         });
 
-        (this.children.chatList as Block[]).forEach(x => {
-            const chatListItem = x as ChatListItem;
+        (this.children.chatList as Block[]).forEach(block => {
+            const chatListItem = block as ChatListItem;
 
             if (chatListItem.getId() === chatId) {
                 chatListItem.select();

@@ -8,33 +8,39 @@ interface AvatarProps {
     image: string;
     size: AvatarSize;
     canUpdate?: boolean;
-    onChangeAvatar?: (file: File) => void;
+    events?: {
+        onChangeAvatar: (file: File) => void;
+    }
 }
 
 export class Avatar extends Block {
     constructor(props: AvatarProps) {
-        super(props);
+        const expandedProps = {...props, events: {
+            ...props.events,
+            click: () => this.createInput()
+        }};
+        super(expandedProps);
     }
 
     render() {
         return this.compile(template, this.props);
     }
 
-    componentDidMount() {
-        if (this.props.canUpdate) {
-            this.element?.addEventListener('click', () => {
-                const input = document.createElement('input') as HTMLInputElement;
-                input.type = 'file';
-                input.accept = 'image/jpeg, image/png, image/jpg';
+    private createInput(): void {
+        const input = document.createElement('input') as HTMLInputElement;
+        input.type = 'file';
+        input.multiple = true;
 
-                input.onchange = () => {
-                    if (input.files) {
-                        this.props.onChangeAvatar(input.files[0]);
-                    }
-                };
+        if (this.props.fileType === 'image') {
+            input.accept = 'image/jpeg, image/png, image/jpg';
+        } 
 
-                input.click();
-            });
-        }
+        input.onchange = () => {
+            if (input.files) {
+                this.props.events.onFileUpload(Array.from(input.files));
+            }
+        };
+
+        input.click();
     }
 }

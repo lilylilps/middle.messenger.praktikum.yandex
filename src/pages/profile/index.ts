@@ -37,7 +37,9 @@ export class ProfilePage extends Block {
             image: avatar,
             size: 'large',
             canUpdate: true,
-            onChangeAvatar: (file: File) => console.log(file)
+            events: {
+                onChangeAvatar: (file: File) => console.log(file)
+            }
         });
 
         this.children.changeInfoButton = new Button({
