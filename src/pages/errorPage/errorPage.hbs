@@ -1,22 +1,5 @@
----
-error: {
-    code: '500',
-    message: 'Мы уже фиксим'
-}
----
-
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-        <link rel="stylesheet" href="../../../index.pcss">
-    </head>
-    <body>
-        <main>
-            <div class="error">
-                <span class="error__code">{{ error.code }}</span>
-                <h1 class="error__message">{{ error.message }}</h1>
-                {{> buttonLink/buttonLink href="../chats/chats.hbs" label="Назад к чатам" color="blue" }}
-            </div>
-        </main>
-    </body>
-</html>
+<div class="error">
+    <span class="error__code">{{code}}</span>
+    <h1 class="error__message">{{message}}</h1>
+    {{{button}}}
+</div>

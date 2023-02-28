@@ -1,8 +1,11 @@
-<div class="input-{{direction}}">
-    <label class="input-{{direction}}__label" for="{{ label }}">{{ label }}</label>
-    {{#if disabled}}
-    <input class="input-{{direction}}__field" name="{{ name }}" type="{{ type }}" id="{{ label }}" placeholder="{{ placeholder }}" value="{{ value }}" disabled />
-    {{else}}
-    <input class="input-{{direction}}__field" name="{{ name }}" type="{{ type }}" id="{{ label }}" placeholder="{{ placeholder }}" value="{{ value }}" />
-    {{/if}}
+<div>
+    <div class="input-{{direction}}">
+        <label class="input-{{direction}}__label" for="{{ label }}">{{ label }}</label>
+        {{#if disabled}}
+            <input class="input-{{direction}}__field" name="{{ name }}" type="{{ type }}" id="{{ label }}" placeholder="{{ placeholder }}" value="{{ value }}" disabled />
+        {{else}}
+            <input class="input-{{direction}}__field" name="{{ name }}" type="{{ type }}" id="{{ label }}" placeholder="{{ placeholder }}" value="{{ value }}" />
+        {{/if}}
+    </div>
+    <p class="input__error input-{{direction}}__error">{{error}}</p>
 </div>

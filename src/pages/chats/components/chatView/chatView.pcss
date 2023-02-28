@@ -1,0 +1,103 @@
+@import url("../../../../styles/variables.pcss");
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 0;
+
+    &__name {
+        font-weight: bold;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px 10px;
+        height: 45px;
+        border-bottom: 1px solid $borderGrey;
+
+        &_info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        &_menu {
+            border: none;
+            background: transparent;
+            padding: 0;
+
+            &-icon {
+                width: 28px;
+                height: 28px;
+                cursor: pointer;
+                border-radius: 50%;
+
+                &:hover {
+                    background: $backgroundGreyDark;
+                }
+            }
+        }
+    }
+
+    &__window {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-between;
+        padding: 48px 20px 30px;
+        overflow-y: auto;
+    }
+
+    &__footer-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        gap: 10px;
+        padding: 10px 20px 0;
+        height: 45px;
+        border-top: 1px solid $borderGrey;
+
+        &_menu {
+            border: none;
+            background: transparent;
+            padding: 0;
+
+            &-icon {
+                width: 28px;
+                height: 28px;
+                cursor: pointer;
+                border-radius: 50%;
+
+                &:hover {
+                    background: $backgroundGreyDark;
+                }
+            }
+        }
+
+        &_input {
+            width: 100%;
+            padding: 10px;
+            background: $backgroundGreyDark;
+            border-radius: 30px;
+            outline: none;
+            border: none;
+        }
+    }
+
+    &__empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: $grey;
+    }
+}
