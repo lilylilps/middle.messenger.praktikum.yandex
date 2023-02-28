@@ -2,8 +2,14 @@ import template from './dropdownMenuButton.hbs';
 
 import {DropdownMenuItem, DropdownMenuItemProps} from '..';
 
+interface DropdownMenuButtonProps extends DropdownMenuItemProps {
+    events: {
+        click: () => void;
+    }
+}
+
 export class DropdownMenuButton extends DropdownMenuItem {
-    constructor(props: DropdownMenuItemProps) {
+    constructor(props: DropdownMenuButtonProps) {
         super(props);
     }
 

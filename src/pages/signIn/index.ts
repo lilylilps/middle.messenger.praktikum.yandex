@@ -6,7 +6,7 @@ import {Input, InputType} from '../../components/input';
 import Block from '../../utils/Block';
 import {renderDOM} from '../../utils/router';
 import {submitHandler} from '../../utils/submitHandler';
-import {validate} from '../../utils/validator';
+import {validateInput} from '../../utils/validator';
 
 import {INPUTS} from '../../constants/constants';
 
@@ -40,7 +40,7 @@ export class SignInPage extends Block {
             events: {
                 focusin: () => (this.children.emailInput as Input).setError(null),
                 focusout: () => (this.children.emailInput as Input)
-                    .setError(validate((this.children.emailInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.emailInput as Input).getName(),
                         (this.children.emailInput as Input).getValue()
                     )),
             },
@@ -56,7 +56,7 @@ export class SignInPage extends Block {
             events: {
                 focusin: () => (this.children.loginInput as Input).setError(null),
                 focusout: () => (this.children.loginInput as Input)
-                    .setError(validate((this.children.loginInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.loginInput as Input).getName(),
                         (this.children.loginInput as Input).getValue()
                     )),
             },
@@ -68,6 +68,14 @@ export class SignInPage extends Block {
             label: INPUTS['firstName'].label,
             type: INPUTS['firstName'].type as InputType,
             placeholder: INPUTS['firstName'].placeholder,
+            required: true,
+            events: {
+                focusin: () => (this.children.firstNameInput as Input).setError(null),
+                focusout: () => (this.children.firstNameInput as Input)
+                    .setError(validateInput((this.children.firstNameInput as Input).getName(),
+                        (this.children.firstNameInput as Input).getValue()
+                    )),
+            },
         });
 
         this.children.secondNameInput = new Input({
@@ -76,6 +84,14 @@ export class SignInPage extends Block {
             label: INPUTS['secondName'].label,
             type: INPUTS['secondName'].type as InputType,
             placeholder: INPUTS['secondName'].placeholder,
+            required: true,
+            events: {
+                focusin: () => (this.children.secondNameInput as Input).setError(null),
+                focusout: () => (this.children.secondNameInput as Input)
+                    .setError(validateInput((this.children.secondNameInput as Input).getName(),
+                        (this.children.secondNameInput as Input).getValue()
+                    )),
+            },
         });
 
         this.children.phoneInput = new Input({
@@ -88,7 +104,7 @@ export class SignInPage extends Block {
             events: {
                 focusin: () => (this.children.phoneInput as Input).setError(null),
                 focusout: () => (this.children.phoneInput as Input)
-                    .setError(validate((this.children.phoneInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.phoneInput as Input).getName(),
                         (this.children.phoneInput as Input).getValue()
                     )),
             },
@@ -96,7 +112,7 @@ export class SignInPage extends Block {
 
         this.children.newPasswordInput = new Input({
             direction: 'vertical',
-            name: 'newPassword',
+            name: 'new_password',
             label: INPUTS['password'].label,
             type: INPUTS['password'].type as InputType,
             placeholder: INPUTS['password'].placeholder,
@@ -104,7 +120,7 @@ export class SignInPage extends Block {
             events: {
                 focusin: () => (this.children.newPasswordInput as Input).setError(null),
                 focusout: () => (this.children.newPasswordInput as Input)
-                    .setError(validate((this.children.newPasswordInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.newPasswordInput as Input).getName(),
                         (this.children.newPasswordInput as Input).getValue()
                     )),
             },
@@ -112,7 +128,7 @@ export class SignInPage extends Block {
 
         this.children.repeatPasswordInput = new Input({
             direction: 'vertical',
-            name: 'repeatPassword',
+            name: 'repeat_password',
             label: 'Пароль (еще раз)',
             type: INPUTS['password'].type as InputType,
             placeholder: INPUTS['password'].placeholder,
@@ -120,8 +136,8 @@ export class SignInPage extends Block {
             events: {
                 focusin: () => (this.children.repeatPasswordInput as Input).setError(null),
                 focusout: () => (this.children.repeatPasswordInput as Input)
-                    .setError(validate(
-                        (this.children.repeatPasswordInput as Input).getProps('type'),
+                    .setError(validateInput(
+                        (this.children.repeatPasswordInput as Input).getName(),
                         (this.children.repeatPasswordInput as Input).getValue()
                     )),
             },

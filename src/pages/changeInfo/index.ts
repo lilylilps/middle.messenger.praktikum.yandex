@@ -8,7 +8,7 @@ import {AsideNavigation} from '../../components/asideNavigation';
 import Block from '../../utils/Block';
 import {renderDOM} from '../../utils/router';
 import {submitHandler} from '../../utils/submitHandler';
-import {validate} from '../../utils/validator';
+import {validateInput} from '../../utils/validator';
 
 import {INPUTS} from '../../constants/constants';
 
@@ -26,13 +26,15 @@ export class ChangeInfoPage extends Block {
             image: avatar,
             size: 'large',
             canUpdate: true,
-            onChangeAvatar: (file: File) => console.log(file)
+            events: {
+                onChangeAvatar: (file: File) => console.log(file)
+            }
         });
 
         this.children.saveButton = new Button({
             label: 'Сохранить',
             color: 'blue',
-            type: 'button',
+            type: 'submit',
             events: {
                 click: (event: Event) => submitHandler(event, this.children, 'profile'),
             },
@@ -48,7 +50,7 @@ export class ChangeInfoPage extends Block {
             events: {
                 focusin: () => (this.children.emailInput as Input).setError(null),
                 focusout: () => (this.children.emailInput as Input)
-                    .setError(validate((this.children.emailInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.emailInput as Input).getName(),
                         (this.children.emailInput as Input).getValue()
                     )),
             },
@@ -64,7 +66,7 @@ export class ChangeInfoPage extends Block {
             events: {
                 focusin: () => (this.children.loginInput as Input).setError(null),
                 focusout: () => (this.children.loginInput as Input)
-                    .setError(validate((this.children.loginInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.loginInput as Input).getName(),
                         (this.children.loginInput as Input).getValue()
                     )),
             },
@@ -76,6 +78,14 @@ export class ChangeInfoPage extends Block {
             label: INPUTS['firstName'].label,
             type: INPUTS['firstName'].type as InputType,
             placeholder: INPUTS['firstName'].placeholder,
+            required: true,
+            events: {
+                focusin: () => (this.children.firstNameInput as Input).setError(null),
+                focusout: () => (this.children.firstNameInput as Input)
+                    .setError(validateInput((this.children.firstNameInput as Input).getName(),
+                        (this.children.firstNameInput as Input).getValue()
+                    )),
+            },
         });
 
         this.children.secondNameInput = new Input({
@@ -84,6 +94,14 @@ export class ChangeInfoPage extends Block {
             label: INPUTS['secondName'].label,
             type: INPUTS['secondName'].type as InputType,
             placeholder: INPUTS['secondName'].placeholder,
+            required: true,
+            events: {
+                focusin: () => (this.children.secondNameInput as Input).setError(null),
+                focusout: () => (this.children.secondNameInput as Input)
+                    .setError(validateInput((this.children.secondNameInput as Input).getName(),
+                        (this.children.secondNameInput as Input).getValue()
+                    )),
+            },
         });
 
         this.children.phoneInput = new Input({
@@ -96,7 +114,7 @@ export class ChangeInfoPage extends Block {
             events: {
                 focusin: () => (this.children.phoneInput as Input).setError(null),
                 focusout: () => (this.children.phoneInput as Input)
-                    .setError(validate((this.children.phoneInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.phoneInput as Input).getName(),
                         (this.children.phoneInput as Input).getValue()
                     )),
             },
@@ -108,6 +126,14 @@ export class ChangeInfoPage extends Block {
             label: INPUTS['displayName'].label,
             type: INPUTS['displayName'].type as InputType,
             placeholder: INPUTS['displayName'].placeholder,
+            required: true,
+            events: {
+                focusin: () => (this.children.displayNameInput as Input).setError(null),
+                focusout: () => (this.children.displayNameInput as Input)
+                    .setError(validateInput((this.children.displayNameInput as Input).getName(),
+                        (this.children.displayNameInput as Input).getValue()
+                    )),
+            },
         });
     }
 
