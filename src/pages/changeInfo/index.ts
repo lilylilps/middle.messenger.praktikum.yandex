@@ -8,7 +8,7 @@ import {AsideNavigation} from '../../components/asideNavigation';
 import Block from '../../utils/Block';
 import {renderDOM} from '../../utils/router';
 import {submitHandler} from '../../utils/submitHandler';
-import {validate} from '../../utils/validator';
+import {validateInput} from '../../utils/validator';
 
 import {INPUTS} from '../../constants/constants';
 
@@ -48,7 +48,7 @@ export class ChangeInfoPage extends Block {
             events: {
                 focusin: () => (this.children.emailInput as Input).setError(null),
                 focusout: () => (this.children.emailInput as Input)
-                    .setError(validate((this.children.emailInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.emailInput as Input).getName(),
                         (this.children.emailInput as Input).getValue()
                     )),
             },
@@ -64,7 +64,7 @@ export class ChangeInfoPage extends Block {
             events: {
                 focusin: () => (this.children.loginInput as Input).setError(null),
                 focusout: () => (this.children.loginInput as Input)
-                    .setError(validate((this.children.loginInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.loginInput as Input).getName(),
                         (this.children.loginInput as Input).getValue()
                     )),
             },
@@ -80,7 +80,7 @@ export class ChangeInfoPage extends Block {
             events: {
                 focusin: () => (this.children.firstNameInput as Input).setError(null),
                 focusout: () => (this.children.firstNameInput as Input)
-                    .setError(validate((this.children.firstNameInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.firstNameInput as Input).getName(),
                         (this.children.firstNameInput as Input).getValue()
                     )),
             },
@@ -96,7 +96,7 @@ export class ChangeInfoPage extends Block {
             events: {
                 focusin: () => (this.children.secondNameInput as Input).setError(null),
                 focusout: () => (this.children.secondNameInput as Input)
-                    .setError(validate((this.children.secondNameInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.secondNameInput as Input).getName(),
                         (this.children.secondNameInput as Input).getValue()
                     )),
             },
@@ -112,7 +112,7 @@ export class ChangeInfoPage extends Block {
             events: {
                 focusin: () => (this.children.phoneInput as Input).setError(null),
                 focusout: () => (this.children.phoneInput as Input)
-                    .setError(validate((this.children.phoneInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.phoneInput as Input).getName(),
                         (this.children.phoneInput as Input).getValue()
                     )),
             },
@@ -128,7 +128,7 @@ export class ChangeInfoPage extends Block {
             events: {
                 focusin: () => (this.children.displayNameInput as Input).setError(null),
                 focusout: () => (this.children.displayNameInput as Input)
-                    .setError(validate((this.children.displayNameInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.displayNameInput as Input).getName(),
                         (this.children.displayNameInput as Input).getValue()
                     )),
             },

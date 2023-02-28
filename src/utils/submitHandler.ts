@@ -1,7 +1,7 @@
 import {Input} from '../components/input';
 import Block from './Block';
 import {logFormData} from './formDataLogger';
-import {validate} from './validator';
+import {validateInput} from './validator';
 import {renderDOM, ROUTES} from './router';
 
 export const submitHandler = 
@@ -18,8 +18,8 @@ export const submitHandler =
         inputs
             .filter(input => (input as Input).getProps('required'))
             .forEach(input => {
-                const validationError = validate(
-                    (input as Input).getProps('type'), (input as Input).getValue()
+                const validationError = validateInput(
+                    (input as Input).getName(), (input as Input).getValue()
                 );
                 
                 (input as Input).setError(validationError);

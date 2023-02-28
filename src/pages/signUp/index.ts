@@ -6,7 +6,7 @@ import {Input, InputType} from '../../components/input';
 import Block from '../../utils/Block';
 import {renderDOM} from '../../utils/router';
 import {submitHandler} from '../../utils/submitHandler';
-import {validate} from '../../utils/validator';
+import {validateInput} from '../../utils/validator';
 import {INPUTS} from '../../constants/constants';
 
 export class SignUpPage extends Block {
@@ -39,7 +39,7 @@ export class SignUpPage extends Block {
             events: {
                 focusin: () => (this.children.loginInput as Input).setError(null),
                 focusout: () => (this.children.loginInput as Input)
-                    .setError(validate((this.children.loginInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.loginInput as Input).getName(),
                         (this.children.loginInput as Input).getValue()
                     )),
             },
@@ -55,7 +55,7 @@ export class SignUpPage extends Block {
             events: {
                 focusin: () => (this.children.passwordInput as Input).setError(null),
                 focusout: () => (this.children.passwordInput as Input)
-                    .setError(validate((this.children.passwordInput as Input).getProps('type'),
+                    .setError(validateInput((this.children.passwordInput as Input).getName(),
                         (this.children.passwordInput as Input).getValue()
                     )),
             },
