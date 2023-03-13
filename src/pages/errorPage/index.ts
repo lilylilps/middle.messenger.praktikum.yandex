@@ -3,15 +3,15 @@ import template from './errorPage.hbs';
 import {Button} from '../../components/button';
 
 import Block from '../../utils/Block';
-import {renderDOM} from '../../utils/router';
+import Router from '../../utils/Router';
 
 interface ErrorPageProps {
-    code: string;
-    message: string;
+    code?: string;
+    message?: string;
 }
 
 export class ErrorPage extends Block {
-    constructor(props: ErrorPageProps) {
+    constructor(props?: ErrorPageProps) {
         super(props);
     }
 
@@ -21,7 +21,7 @@ export class ErrorPage extends Block {
             color: 'transparent-blue',
             type: 'button',
             events: {
-                click: () => renderDOM('signUp'),
+                click: () => Router.go('/'),
             },
         });
     }

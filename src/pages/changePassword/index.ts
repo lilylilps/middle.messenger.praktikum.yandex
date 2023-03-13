@@ -4,21 +4,24 @@ import {Button} from '../../components/button';
 import {Input, InputType} from '../../components/input';
 import {Avatar} from '../../components/avatar';
 import {AsideNavigation} from '../../components/asideNavigation';
+import {ChangePasswordData} from '../../api/UserAPI';
 
 import Block from '../../utils/Block';
-import {renderDOM} from '../../utils/router';
 import {submitHandler} from '../../utils/submitHandler';
 import {validateInput} from '../../utils/validator';
+import {logFormData} from '../../utils/formDataLogger';
 
 import {INPUTS} from '../../constants/constants';
 
 import avatar from '../../../static/icons/samoyed.png';
+import Router from '../../utils/Router';
+import UserController from '../../controllers/UserController';
 
 export class ChangePasswordPage extends Block {
     init() {
         this.children.asideNavigation = new AsideNavigation({
             events: {
-                click: () => renderDOM('profile'),
+                click: () => Router.go('/profile'),
             }
         });
 
@@ -32,13 +35,13 @@ export class ChangePasswordPage extends Block {
             color: 'blue',
             type: 'submit',
             events: {
-                click: (event: Event) => submitHandler(event, this.children, 'profile'),
+                click: (event: Event) => this.onSubmit(event, this.children),
             },
         });
 
         this.children.oldPasswordInput = new Input({
             direction: 'horizontal',
-            name: 'old_password',
+            name: 'oldPassword',
             label: 'Старый пароль',
             type: INPUTS['password'].type as InputType,
             placeholder: INPUTS['password'].placeholder,
@@ -54,7 +57,7 @@ export class ChangePasswordPage extends Block {
 
         this.children.newPasswordInput = new Input({
             direction: 'horizontal',
-            name: 'new_password',
+            name: 'newPassword',
             label: 'Новый пароль',
             type: INPUTS['password'].type as InputType,
             placeholder: INPUTS['password'].placeholder,
@@ -84,6 +87,14 @@ export class ChangePasswordPage extends Block {
                     )),
             },
         });
+    }
+
+    onSubmit(event: Event, data: Block['children']) {
+        const isValidForm = submitHandler(event, data);
+
+        if (isValidForm) {
+            UserController.updatePassword(logFormData(data) as ChangePasswordData);
+        }
     }
 
     render() {

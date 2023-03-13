@@ -1,17 +1,16 @@
-import {Input} from '../components/input';
 import Block from './Block';
-import {logFormData} from './formDataLogger';
 import {validateInput} from './validator';
-import {renderDOM, ROUTES} from './router';
+// import Router from './Router';
+import {Input} from '../components/input';
+
+// import {Routes} from '../..';
 
 export const submitHandler = 
-    (event: Event, data: Block['children'], redirectPage: keyof typeof ROUTES): void => {
+    (event: Event, data: Block['children']): boolean => {
         event.preventDefault();
         const inputs = Object
             .values(data)
             .filter(item => item instanceof Input);
-
-        logFormData(inputs);
 
         let isInvalidInput = false;
 
@@ -30,6 +29,6 @@ export const submitHandler =
             });
 
         if (!isInvalidInput) {
-            renderDOM(redirectPage);
-        }
+            return true;
+        } else return false;
 };

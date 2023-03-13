@@ -22,8 +22,7 @@ interface ChatMessageProps {
 
 export class ChatMessage extends Block {
     constructor(props: ChatMessageProps) {
-        super(props);
-        this.props.fileIcon = fileIcon;
+        super({...props, fileIcon: fileIcon});
     }
 
     render() {

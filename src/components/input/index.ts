@@ -11,7 +11,7 @@ interface InputProps {
     name: string;
     type: InputType;
     placeholder?: string;
-    value?: string;
+    value?: string | number;
     disabled?: boolean;
     required?: boolean;
     error?: string | null;

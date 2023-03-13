@@ -29,15 +29,14 @@ export class Avatar extends Block {
     private createInput(): void {
         const input = document.createElement('input') as HTMLInputElement;
         input.type = 'file';
-        input.multiple = true;
 
         if (this.props.fileType === 'image') {
             input.accept = 'image/jpeg, image/png, image/jpg';
         } 
 
         input.onchange = () => {
-            if (input.files) {
-                this.props.events.onFileUpload(Array.from(input.files));
+            if (input.files?.length) {
+                this.props.events.onChangeAvatar(input.files[0]);
             }
         };
 

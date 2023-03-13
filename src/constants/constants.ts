@@ -220,19 +220,19 @@ export const INPUTS = {
         type: 'email',
         placeholder: 'ivanivanov@yandex.ru',
     },
-    firstName: {
+    first_name: {
         name: 'first_name',
         label: 'Имя',
         type: 'text',
         placeholder: 'Иван',
     },
-    secondName: {
+    second_name: {
         name: 'second_name',
         label: 'Фамилия',
         type: 'text',
         placeholder: 'Иванов',
     },
-    displayName: {
+    display_name: {
         name: 'display_name',
         label: 'Имя в чате',
         type: 'text',

@@ -25,6 +25,8 @@ import attachImageIcon from '../../../../../static/icons/img-attach.svg';
 import attachFileIcon from '../../../../../static/icons/file-attach.svg';
 import avatar from '../../../../../static/icons/samoyed.png';
 
+import MessageController from '../../../../controllers/MessagesController';
+
 
 interface ChatViewProps {
     isSelected: boolean;
@@ -35,10 +37,7 @@ interface ChatViewProps {
 
 export class ChatView extends Block {
     constructor(props: ChatViewProps) {
-        super(props);
-
-        this.props.menuIcon = menuIcon;
-        this.props.uploadIcon = uploadIcon;
+        super({...props, menuIcon: menuIcon, uploadIcon: uploadIcon});
     }
 
     init() {
@@ -50,7 +49,7 @@ export class ChatView extends Block {
             alt: 'Send message',
             direction: 'right',
             events: {
-                click: () => console.log('Message was sent')
+                click: () => MessageController.sendMessage(7427, 'test')
             }
         });
 

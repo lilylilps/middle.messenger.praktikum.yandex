@@ -9,7 +9,7 @@ const validateLogin = (value: string | undefined) =>{
     } else if (!LOGIN_REGEXP.test(value)) {
         return 'Не менее 6 символов, только латинские буквы и цифры';
     } else return null;
-}
+};
 
 const validatePassword = (value: string | undefined) => {
     if (!value) {
@@ -17,7 +17,7 @@ const validatePassword = (value: string | undefined) => {
     } else if (value.length < 6) {
         return 'Слишком короткий пароль';
     } else return null;
-}
+};
 
 const validateEmail = (value: string | undefined) => {
     if (!value) {
@@ -25,7 +25,7 @@ const validateEmail = (value: string | undefined) => {
     } else if (!EMAIL_REGEXP.test(value)) {
         return 'Некорректный e-mail';
     } else return null;
-}
+};
 
 const validatePhone = (value: string | undefined) => {
     if (!value) {
@@ -33,7 +33,7 @@ const validatePhone = (value: string | undefined) => {
     } else if (!PHONE_REGEXP.test(value)) {
         return 'Некорректный номер телефона';
     } else return null;
-}
+};
 
 const validateName = (value: string | undefined) =>{
     if (!value) {
@@ -41,7 +41,7 @@ const validateName = (value: string | undefined) =>{
     } else if (!NAME_REGEXP.test(value)) {
         return 'Допускаются только буквы';
     } else return null;
-}
+};
 
 export const validateInput = (name: string, value: string): string | null => {
     switch(name) {
@@ -62,4 +62,4 @@ export const validateInput = (name: string, value: string): string | null => {
             return validatePassword(value);
         default: return null;
     }
-} 
+};

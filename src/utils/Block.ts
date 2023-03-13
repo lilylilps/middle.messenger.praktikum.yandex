@@ -1,13 +1,6 @@
 import { EventBus } from "./EventBus";
 import { nanoid } from 'nanoid';
 
-type BlockEvents<P = any> = {
-  init: [];
-  'flow:component-did-mount': [];
-  'flow:component-did-update': [P, P];
-  'flow:render': [];
-}
-
 type Props<P extends Record<string, any> = any> = { events?: Record<string, () => void> } & P;
 
 class Block<P extends Record<string, any> = any> {
@@ -21,7 +14,7 @@ class Block<P extends Record<string, any> = any> {
   public id = nanoid(6);
   protected props: Props<P>;
   public children: Record<string, Block | Block[]>;
-  private eventBus: () => EventBus<BlockEvents<Props<P>>>;
+  private eventBus: () => EventBus;
   private _element: HTMLElement | null = null;
 
   /** JSDoc
@@ -69,7 +62,7 @@ class Block<P extends Record<string, any> = any> {
     });
   }
 
-  _registerEvents(eventBus: EventBus<BlockEvents>) {
+  _registerEvents(eventBus: EventBus) {
     eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
@@ -114,6 +107,7 @@ class Block<P extends Record<string, any> = any> {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected componentDidUpdate(_oldProps: Props<P>, _newProps: Props<P>) {
     return true;
   }
@@ -175,6 +169,7 @@ class Block<P extends Record<string, any> = any> {
       stub.replaceWith(component.getContent()!);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Object.entries(this.children).forEach(([_, component]) => {
       if (Array.isArray(component)) {
         component.forEach(replaceStub);
@@ -196,11 +191,11 @@ class Block<P extends Record<string, any> = any> {
 
   _makePropsProxy(props: Props<P>) {
     return new Proxy(props, {
-      get(target: Props<P>, prop: string) {
+      get: (target: Props<P>, prop: string) => {
         const value = target[prop];
         return typeof value === "function" ? value.bind(target) : value;
       },
-      set(target: Props<P>, prop: string, value) {
+      set: (target: Props<P>, prop: string, value) => {
         const oldTarget = { ...target };
 
         target[prop as keyof Props<P>] = value;
@@ -208,7 +203,7 @@ class Block<P extends Record<string, any> = any> {
         this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
         return true;
       },
-      deleteProperty() {
+      deleteProperty: () => {
         throw new Error("Нет доступа");
       }
     });

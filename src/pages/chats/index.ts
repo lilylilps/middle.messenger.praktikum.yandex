@@ -8,26 +8,33 @@ import {ButtonWithIcon} from '../../components/buttonWithIcon';
 import {CreateChatModal} from './components/createChatModal';
 
 import Block from '../../utils/Block';
-import {renderDOM} from '../../utils/router';
 import {CHATS_BAR, CHAT_MESSAGES} from '../../constants/constants';
 
 import avatar from '../../../static/icons/samoyed.png';
 import pencilIcon from '../../../static/icons/pencil.svg';
+import Router from '../../utils/Router';
+import ChatsController from '../../controllers/ChatsController';
+import { withStore } from '../../utils/Store';
+import { ChatInfo } from '../../api/ChatsAPI';
 
-export class ChatsPage extends Block {
+interface ChatsPageProps {
+    chats: ChatInfo[];
+}
+
+class ChatsPageBase extends Block<ChatsPageProps> {
     init() {
         this.children.profileLink = new Button({
             label: 'Профиль >',
             color: 'transparent-grey',
             type: 'button',
             events: {
-                click: () => renderDOM('profile'),
+                click: () => Router.go('/profile'),
             }
         });
 
         this.children.createChatModal = new CreateChatModal({
             events: {
-                onChatCreated: (chatName: string) => console.log(chatName)
+                onChatCreated: (chatName: string) => ChatsController.create(chatName)
             }
         });
 
@@ -45,22 +52,31 @@ export class ChatsPage extends Block {
         this.children.chatView = new ChatView({
             isSelected: false
         });
-        
-        this.children.chatList = CHATS_BAR.map(chat => new ChatListItem({
-            id: chat.id,
-            image: avatar,
-            name: chat.name,
-            text: chat.text,
-            time: chat.lastMessageTime,
-            count: chat.newMessagesCount,
-            events: {
-                onChatSelect: (id: number) => this.onChatItemClick(id)
-            }
-        }));
+
+
+
+        ChatsController.fetchChats();
+
     }
 
     render() {
         return this.compile(template, this.props);
+    }
+
+    protected componentDidUpdate(_oldProps: any, _newProps: any): boolean {
+        this.children.chatList = this.props.chats.map(chat => new ChatListItem({
+            id: chat.id,
+            image: avatar,
+            name: chat.title,
+            text: chat.last_message?.content,
+            time: chat.last_message?.time,
+            count: chat.unread_count,
+            events: {
+                onChatSelect: (id: number) => this.onChatItemClick(id)
+            }
+        }));
+
+        return true;
     }
 
     private onChatItemClick(chatId: number): void {
@@ -126,3 +142,5 @@ export class ChatsPage extends Block {
         }) as ChatMessage[];
     }
 }
+
+export const ChatsPage = withStore((state) => ({chats: [...(state.chats || [])]}))(ChatsPageBase);
