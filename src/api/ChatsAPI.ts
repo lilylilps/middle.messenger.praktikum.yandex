@@ -13,6 +13,11 @@ export interface ChatInfo {
   }
 }
 
+export interface ChangeChatAvatarData {
+  id: number;
+  avatar: File;
+}
+
 export class ChatsAPI extends BaseAPI {
   constructor() {
     super('/chats');
@@ -26,7 +31,6 @@ export class ChatsAPI extends BaseAPI {
     return this.http.delete('/', { chatId: id });
   }
 
-
   read(): Promise<ChatInfo[]> {
     return this.http.get('/');
   }
@@ -37,6 +41,13 @@ export class ChatsAPI extends BaseAPI {
 
   addUsers(id: number, users: number[]): Promise<unknown> {
     return this.http.put('/users', { users, chatId: id });
+  }
+
+  updateAvatar(data: ChangeChatAvatarData): Promise<ChatInfo> {
+    const formData = new FormData();
+    formData.append('avatar', data.avatar);
+    formData.append('chatId', data.id.toString());
+    return this.http.put('/avatar', formData, 'multipart/form-data');
   }
 
   async getToken(id: number): Promise<string> {

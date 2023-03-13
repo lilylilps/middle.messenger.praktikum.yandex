@@ -1,22 +1,26 @@
-import API, { ChatsAPI } from '../api/ChatsAPI';
+import chatsApi, { ChangeChatAvatarData, ChatInfo, ChatsAPI } from '../api/ChatsAPI';
+import resourceApi, { ResourceAPI } from '../api/ResourceAPI';
 import store from '../utils/Store';
 import MessagesController from './MessagesController';
 
+//TODO: wrap on try/catch
 class ChatsController {
-  private readonly api: ChatsAPI;
+  private readonly chatsApi: ChatsAPI;
+  private readonly resourceApi: ResourceAPI;
 
   constructor() {
-    this.api = API;
+    this.chatsApi = chatsApi;
+    this.resourceApi = resourceApi;
   }
 
   async create(title: string) {
-    await this.api.create(title);
+    await this.chatsApi.create(title);
 
     this.fetchChats();
   }
 
   async fetchChats() {
-    const chats = await this.api.read();
+    const chats = await this.chatsApi.read();
 
     chats.map(async (chat) => {
       const token = await this.getToken(chat.id);
@@ -24,21 +28,48 @@ class ChatsController {
       await MessagesController.connect(chat.id, token);
     });
 
+	for (const chat of chats) {
+		if (chat.avatar) {
+			const chatImage = await this.resourceApi.read(chat.avatar);
+	
+			const imageObjectUrl = URL.createObjectURL(chatImage);
+			chat.avatar = imageObjectUrl;
+		}
+	}
+
     store.set('chats', chats);
   }
 
   addUserToChat(id: number, userId: number) {
-    this.api.addUsers(id, [userId]);
+    this.chatsApi.addUsers(id, [userId]);
   }
 
+  async updateAvatar(data: ChangeChatAvatarData) {
+	try {
+		const chat = await this.chatsApi.updateAvatar(data);
+		
+		const imageObjectUrl = URL.createObjectURL(data.avatar);
+		chat.avatar = imageObjectUrl;
+
+		const chats = store.getState().chats as ChatInfo[];
+
+		const chatIndex = chats.findIndex(ch => ch.id === data.id);
+		chats[chatIndex] = chat;
+
+		store.set('chats', {...chats});
+	} catch (e: any) {
+		console.error(e);
+	}
+}
+
   async delete(id: number) {
-    await this.api.delete(id);
+    await this.chatsApi.delete(id);
 
     this.fetchChats();
   }
 
   getToken(id: number) {
-    return this.api.getToken(id);
+    return this.chatsApi.getToken(id);
   }
 
   selectChat(id: number) {

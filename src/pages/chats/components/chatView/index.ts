@@ -25,22 +25,27 @@ import attachImageIcon from '../../../../../static/icons/img-attach.svg';
 import attachFileIcon from '../../../../../static/icons/file-attach.svg';
 import avatar from '../../../../../static/icons/samoyed.png';
 
-import MessageController from '../../../../controllers/MessagesController';
+import MessageController, { Message } from '../../../../controllers/MessagesController';
+import { withStore } from '../../../../utils/Store';
+import ChatsController from '../../../../controllers/ChatsController';
 
 
 interface ChatViewProps {
-    isSelected: boolean;
-    image?: HTMLImageElement;
+    image?: string;
     name?: string;
-    messages?: ChatMessage[];
+    selectedChat: number | undefined;
+    messages: Message[];
+    userId: number;
 }
 
-export class ChatView extends Block {
+class ChatViewBase extends Block {
     constructor(props: ChatViewProps) {
         super({...props, menuIcon: menuIcon, uploadIcon: uploadIcon});
     }
 
     init() {
+        this.children.messages = this.createMessages(this.props);
+
         this.children.sendMessageButton = new ButtonWithIcon({
             color: 'blue',
             type: 'submit',
@@ -49,7 +54,7 @@ export class ChatView extends Block {
             alt: 'Send message',
             direction: 'right',
             events: {
-                click: () => MessageController.sendMessage(7427, 'test')
+                click: () => MessageController.sendMessage(this.props.selectedChat, 'test')
             }
         });
 
@@ -139,29 +144,8 @@ export class ChatView extends Block {
                 onChatDelete: () => console.log('Chat was deleted')
             }
         });
-    }
-
-    render() {
-        return this.compile(template, this.props);
-    }
-
-    showSelectedChat(props: ChatViewProps): void {
-        this.children.messages = props.messages ?? [];
-
-        this.children.chatImage = new Avatar({
-            image: props.image ?? avatar,
-            size: 'small',
-            canUpdate: true,
-            events: {
-                onChangeAvatar: (file: File) => console.log(file)
-            }
-        });
-
-        (this.children.chatImage as Block).dispatchComponentDidMount();
-        (this.children.messages as Block[])
-            .forEach(message => (message as Block).dispatchComponentDidMount());
-
-        this.setProps({...props, events: {
+        
+        this.setProps({...this.props, events: {
             click: (event: Event) => {
                 const target = event.target as HTMLElement;
 
@@ -178,4 +162,54 @@ export class ChatView extends Block {
             }
         }});
     }
+
+    render() {
+        return this.compile(template, this.props);
+    }
+
+    protected componentDidUpdate(oldProps: ChatViewProps, newProps: ChatViewProps): boolean {
+        this.children.messages = this.createMessages(newProps);
+
+        this.children.chatImage = new Avatar({
+            image: newProps.image ?? avatar,
+            size: 'small',
+            canUpdate: true,
+            events: {
+                onChangeAvatar: (file: File) =>
+                    ChatsController.updateAvatar({id: this.props.selectedChat, avatar: file})
+            }
+        });
+
+        return true;
+    }
+    
+    private createMessages(props: ChatViewProps) {
+        return props.messages?.map(data => {
+            return new ChatMessage({type: 'text',
+            text: data.content,
+            time: data.time, position: props.userId === data.user_id ? 'right' : 'left' });
+        }) || [];
+    }
 }
+
+const withSelectedChatView = withStore(state => {
+    const selectedChatId = state.selectedChat;
+
+    if (!selectedChatId) {
+        return {
+            messages: [],
+            selectedChat: undefined,
+            userId: state.user.id
+        };
+    }
+  
+    return {
+        messages: (state.messages || {})[selectedChatId] || [],
+        selectedChat: state.selectedChat,
+        userId: state.user.id,
+        name: state.chats.find(chat => chat.id === selectedChatId)?.title,
+        image: state.chats.find(chat => chat.id === selectedChatId)?.avatar || avatar
+    };
+});
+  
+export const ChatView = withSelectedChatView(ChatViewBase);

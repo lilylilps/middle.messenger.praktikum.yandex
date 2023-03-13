@@ -2,14 +2,18 @@
     <div class="chats__sidebar">
         <div class="chats__sidebar_profile-link">{{{profileLink}}}</div>
         <input class="chats__sidebar_search-input" type="text" placeholder="Поиск" />
-        <div class="chats__sidebar_list">
-            {{#each chatList}}
-                {{{this}}}
-            {{/each}}
-        </div>
-        <div class="chats__sidebar_create-button">
-            {{{buttonWithIcon}}}
-        </div>
+        {{#if isLoaded }}
+            <div class="chats__sidebar_list">
+                {{#each chatList}}
+                    {{{this}}}
+                {{/each}}
+            </div>
+            <div class="chats__sidebar_create-button">
+                {{{buttonWithIcon}}}
+            </div>
+        {{else}}
+            Loading...
+        {{/if}}
     </div>
     {{{chatView}}}
     {{{createChatModal}}}
