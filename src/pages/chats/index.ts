@@ -15,6 +15,7 @@ import avatar from '../../../static/icons/samoyed.png';
 import pencilIcon from '../../../static/icons/pencil.svg';
 import Router from '../../utils/Router';
 import ChatsController from '../../controllers/ChatsController';
+import { ChatSearchInput } from './components/chatSearchInput';
 
 interface ChatsPageProps {
     chats: ChatInfo[];
@@ -30,6 +31,12 @@ class ChatsPageBase extends Block<ChatsPageProps> {
             type: 'button',
             events: {
                 click: () => Router.go('/profile'),
+            }
+        });
+
+        this.children.searchInput = new ChatSearchInput({
+            events: {
+                keyDown: () => {}
             }
         });
 

@@ -51,7 +51,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-      await AuthController.fetchUser();
+        await AuthController.fetchUser();
 
         Router.start();
 
@@ -59,8 +59,10 @@ window.addEventListener('DOMContentLoaded', async () => {
             Router.go(Routes.Chats);
         }
     } catch (e) {
+        if (window.location.pathname !== '/')
+            window.location.pathname = '/';
+    
         Router.start();
-
         if (isProtectedRoute) {
             Router.go(Routes.SignIn);
         }
