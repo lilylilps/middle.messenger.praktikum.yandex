@@ -28,14 +28,14 @@ class ChatsController {
       await MessagesController.connect(chat.id, token);
     });
 
-	for (const chat of chats) {
-		if (chat.avatar) {
-			const chatImage = await this.resourceApi.read(chat.avatar);
-	
-			const imageObjectUrl = URL.createObjectURL(chatImage);
-			chat.avatar = imageObjectUrl;
-		}
-	}
+    for (const chat of chats) {
+      if (chat.avatar) {
+        const chatImage = await this.resourceApi.read(chat.avatar);
+    
+        const imageObjectUrl = URL.createObjectURL(chatImage);
+        chat.avatar = imageObjectUrl;
+      }
+    }
 
     store.set('chats', chats);
   }
@@ -45,22 +45,33 @@ class ChatsController {
   }
 
   async updateAvatar(data: ChangeChatAvatarData) {
-	try {
-		const chat = await this.chatsApi.updateAvatar(data);
-		
-		const imageObjectUrl = URL.createObjectURL(data.avatar);
-		chat.avatar = imageObjectUrl;
+    try {
+      const chat = await this.chatsApi.updateAvatar(data);
+      
+      const imageObjectUrl = URL.createObjectURL(data.avatar);
+      chat.avatar = imageObjectUrl;
 
-		const chats = store.getState().chats as ChatInfo[];
+      const chats = store.getState().chats as ChatInfo[];
 
-		const chatIndex = chats.findIndex(ch => ch.id === data.id);
-		chats[chatIndex] = chat;
+      const chatIndex = chats.findIndex(ch => ch.id === data.id);
+      chats[chatIndex] = {...chats[chatIndex], avatar: chat.avatar};
 
-		store.set('chats', {...chats});
-	} catch (e: any) {
-		console.error(e);
-	}
-}
+      store.set('chats', {...chats});
+    } catch (e: any) {
+      console.error(e);
+    }
+  }
+
+  updateChatMessages(id: number, content: string, count: number) {
+    const chats = store.getState().chats as ChatInfo[];
+
+    const chatIndex = chats.findIndex(ch => ch.id === id);
+    // TODO: поправить логику со счетчиком
+    chats[chatIndex] = 
+      {...chats[chatIndex], last_message: {...chats[chatIndex].last_message, content}, unread_count: count};
+
+    store.set('chats', {...chats});
+  }
 
   async delete(id: number) {
     await this.chatsApi.delete(id);
@@ -74,6 +85,13 @@ class ChatsController {
 
   selectChat(id: number) {
     store.set('selectedChat', id);
+    const chats = store.getState().chats as ChatInfo[];
+
+    const chatIndex = chats.findIndex(ch => ch.id === id);
+    chats[chatIndex] = 
+      {...chats[chatIndex], unread_count: 0};
+
+    store.set('chats', {...chats});
   }
 }
 

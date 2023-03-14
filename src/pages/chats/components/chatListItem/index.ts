@@ -3,6 +3,7 @@ import template from './chatListItem.hbs';
 import {Avatar} from '../../../../components/avatar';
 
 import Block from '../../../../utils/Block';
+import { dateFormat } from '../../../../utils/dateFormat';
 
 interface ChatListItemProps {
     id: number;
@@ -12,11 +13,13 @@ interface ChatListItemProps {
     time: string;
     count: number;
     events: {
-        onChatSelect: (id: number) => void;
+        onChatSelect: (id?: number) => void;
     }
 }
 
-export class ChatListItem extends Block {
+export class ChatListItem extends Block<ChatListItemProps> {
+    time: string;
+
     constructor(props: ChatListItemProps) {
         const expandedProps = {...props, events: {
             ...props.events,
@@ -30,6 +33,8 @@ export class ChatListItem extends Block {
             image: this.props.image,
             size: 'medium',
         });
+
+        this.props.time = this.props.time ? dateFormat(this.props.time, true) : '';
     }
 
     render() {

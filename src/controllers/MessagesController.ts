@@ -1,5 +1,6 @@
 import WebSocketTransport, {WebSocketTransportEvents} from '../utils/WebSocketTransport';
 import store from '../utils/Store';
+import ChatsController from './ChatsController';
 
 export interface Message {
   chat_id: number;
@@ -75,8 +76,15 @@ class MessagesController {
     }
 
     const currentMessages = (store.getState().messages || {})[id] || [];
+    const lastMessage =  messagesToAdd[messagesToAdd.length - 1];
+
+    const currentUser = store.getState().user.id;
+    const messagesToAddCount = lastMessage?.user_id === currentUser ? 0 : messagesToAdd.length;
+
+    ChatsController.updateChatMessages(id, lastMessage?.content, messagesToAddCount);
 
     messagesToAdd = [...currentMessages, ...messagesToAdd];
+
 
     store.set(`messages.${id}`, messagesToAdd);
   }

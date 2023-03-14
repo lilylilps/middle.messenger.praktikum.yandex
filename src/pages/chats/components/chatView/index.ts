@@ -54,7 +54,15 @@ class ChatViewBase extends Block {
             alt: 'Send message',
             direction: 'right',
             events: {
-                click: () => MessageController.sendMessage(this.props.selectedChat, 'test')
+                click: () => {
+                    const input = document.querySelector("[name='message']") as HTMLInputElement;
+                    const message = input!.value || '';
+
+                    input!.value = '';
+
+                    if (message) 
+                        MessageController.sendMessage(this.props.selectedChat, message);
+                }
             }
         });
 
@@ -141,7 +149,10 @@ class ChatViewBase extends Block {
 
         this.children.deleteChatModal = new DeleteChatModal({
             events: {
-                onChatDelete: () => console.log('Chat was deleted')
+                onChatDelete: () => {
+                    ChatsController.delete(this.props.selectedChat);
+                    console.log('Chat was deleted');
+                }
             }
         });
         
@@ -167,7 +178,7 @@ class ChatViewBase extends Block {
         return this.compile(template, this.props);
     }
 
-    protected componentDidUpdate(oldProps: ChatViewProps, newProps: ChatViewProps): boolean {
+    protected componentDidUpdate(_oldProps: ChatViewProps, newProps: ChatViewProps): boolean {
         this.children.messages = this.createMessages(newProps);
 
         this.children.chatImage = new Avatar({
