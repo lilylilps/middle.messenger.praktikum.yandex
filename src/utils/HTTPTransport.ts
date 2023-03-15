@@ -21,8 +21,14 @@ class HTTPTransport {
         this.endpoint = `${HTTPTransport.API_URL}${endpoint}`;
     }
   
-    public get<Response>(path = '/', responseType?: XMLHttpRequestResponseType): Promise<Response> {
-        return this.request<Response>(this.endpoint + path, {
+    public get<Response>(path = '/', responseType?: XMLHttpRequestResponseType, data?: unknown): Promise<Response> {
+        let url = this.endpoint + path;
+
+        if (data && Object.keys(data).length) {
+            url += formatParams(data as Record<string, string | number | boolean>);
+        }
+
+        return this.request<Response>(url, {
             method: Method.Get,
             responseType: responseType
         });
@@ -82,7 +88,7 @@ class HTTPTransport {
     
             xhr.withCredentials = true;
             xhr.responseType = options.responseType ?? 'json';
-    
+
             if (method === Method.Get || !data) {
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.send();
@@ -95,5 +101,14 @@ class HTTPTransport {
         });
     }
 }
+
+function formatParams(params: Record<string, string | number | boolean>){
+    return "?" + Object
+        .keys(params)
+        .map(function(key){
+        return key + "=" + encodeURIComponent(params[key]);
+        })
+        .join("&");
+  }
 
 export default HTTPTransport;

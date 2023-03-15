@@ -3,13 +3,17 @@ import template from './chatSearchInput.hbs';
 
 interface ChatSearchInputProps {
     events: {
-        keyDown: () => void;
+        keyup: () => void;
     }
 }
 
 export class ChatSearchInput extends Block<ChatSearchInputProps> {
     constructor(props: ChatSearchInputProps) {
         super(props);
+    }
+
+    getValue(): string {
+        return (this.element as HTMLInputElement).value;
     }
 
     render() {

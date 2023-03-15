@@ -36,7 +36,9 @@ class ChatsPageBase extends Block<ChatsPageProps> {
 
         this.children.searchInput = new ChatSearchInput({
             events: {
-                keyDown: () => {}
+                keyup: this.debounce(() =>
+                    ChatsController.fetchChats({title: (this.children.searchInput as ChatSearchInput).getValue()}), 1000
+                )
             }
         });
 
@@ -104,6 +106,15 @@ class ChatsPageBase extends Block<ChatsPageProps> {
                 chatListItem.unselect();
             }
         });
+    }
+
+    debounce(callback: () => void, wait: number | undefined) {
+        let timer = 0;
+
+        return function(...args: any) {
+            clearTimeout(timer);
+            timer = setTimeout(callback.bind(this, ...args), wait || 0);
+        };
     }
 }
 

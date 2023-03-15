@@ -19,8 +19,8 @@ class ChatsController {
     this.fetchChats();
   }
 
-  async fetchChats() {
-    const chats = await this.chatsApi.read();
+  async fetchChats(data?: any) {
+    const chats = await this.chatsApi.read(data || {});
 
     chats.map(async (chat) => {
       const token = await this.getToken(chat.id);

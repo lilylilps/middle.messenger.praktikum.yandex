@@ -31,8 +31,8 @@ export class ChatsAPI extends BaseAPI {
     return this.http.delete('/', { chatId: id });
   }
 
-  read(): Promise<ChatInfo[]> {
-    return this.http.get('/');
+  read(data?: any): Promise<ChatInfo[]> {
+    return this.http.get('/', undefined, data);
   }
 
   getUsers(id: number): Promise<Array<User & { role: string }>> {
