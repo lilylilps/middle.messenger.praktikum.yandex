@@ -42,6 +42,15 @@ export class UserController {
             console.error(e);
         }
     }
+
+    async getUser(login: string) {
+        try {
+            const users = await this.userApi.getUser(login);
+            store.set('users', users);
+        } catch (e: any) {
+            console.error(e);
+        }
+    }
 }
 
 export default new UserController();

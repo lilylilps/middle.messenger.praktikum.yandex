@@ -16,8 +16,9 @@ interface InputProps {
     required?: boolean;
     error?: string | null;
     events?: {
-        focusin: () => void;
-        focusout: () => void;
+        focusin?: () => void;
+        focusout?: () => void;
+        keyup?: () => void;
     };
 }
 

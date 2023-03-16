@@ -38,6 +38,10 @@ export class UserAPI extends BaseAPI {
     return this.http.put('/password', data);
   }
 
+  getUser(login: string) {
+    return this.http.post('/search', { login });
+  }
+
   read = undefined;
   create = undefined;
   update = undefined;

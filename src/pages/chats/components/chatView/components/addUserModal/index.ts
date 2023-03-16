@@ -6,8 +6,12 @@ import {ButtonWithIcon} from '../../../../../../components/buttonWithIcon';
 
 import Block from '../../../../../../utils/Block';
 import closeIcon from '../../../../../../../static/icons/close.svg';
+import UserController from '../../../../../../controllers/UserController';
+import { User } from '../../../../../../api/AuthAPI';
+import { UserList } from '../userList';
 
 interface AddUserModalProps {
+    usersToAdd: User[];
     events: {
         onUserAdd: (userName: string) => void;
     }
@@ -24,8 +28,15 @@ export class AddUserModal extends Block {
             label: 'Имя',
             name: 'userName',
             type: 'text',
-            placeholder: 'Имя пользователя'
+            placeholder: 'Имя пользователя',
+            events: {
+                keyup: this.debounce(() =>
+                    UserController.getUser((this.children.userNameInput as Input).getValue()), 1000
+                )
+            }
         });
+
+        this.children.userList = new UserList({});
 
         this.children.addButton = new Button({
             label: 'Добавить',
@@ -60,5 +71,16 @@ export class AddUserModal extends Block {
 
     render() {
         return this.compile(template, this.props);
+    }
+
+
+    // вынести 
+    debounce(callback: () => void, wait: number | undefined) {
+        let timer = 0;
+
+        return function(...args: any) {
+            clearTimeout(timer);
+            timer = setTimeout(callback.bind(this, ...args), wait || 0);
+        };
     }
 }
