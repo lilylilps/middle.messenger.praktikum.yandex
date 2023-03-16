@@ -36,7 +36,11 @@ export class AddUserModal extends Block {
             }
         });
 
-        this.children.userList = new UserList({});
+        this.children.userList = new UserList({
+            events: {
+                onUserSelect: (user: User) => console.log(user)
+            }
+        });
 
         this.children.addButton = new Button({
             label: 'Добавить',

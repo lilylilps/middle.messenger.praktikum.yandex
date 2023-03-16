@@ -65,6 +65,8 @@ class ChatsController {
   updateChatMessages(id: number, content: string, count: number) {
     const chats = store.getState().chats as ChatInfo[];
 
+	if (!chats) return;
+
     const chatIndex = chats.findIndex(ch => ch.id === id);
     // TODO: поправить логику со счетчиком
     chats[chatIndex] = 
@@ -85,7 +87,7 @@ class ChatsController {
 
   selectChat(id: number) {
     store.set('selectedChat', id);
-    const chats = store.getState().chats as ChatInfo[];
+    const chats = store.getState().chats as ChatInfo[] || [];
 
     const chatIndex = chats.findIndex(ch => ch.id === id);
     chats[chatIndex] = 

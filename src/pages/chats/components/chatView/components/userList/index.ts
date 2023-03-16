@@ -8,23 +8,26 @@ import { Button } from '../../../../../../components/button';
 interface UserListProps {
     users?: User[];
     events: {
-        click: (userName: string) => void;
+        onUserSelect: (user: User) => void;
     }
 }
 
-export class UserListBase extends Block {
+class UserListBase extends Block {
     constructor(props: UserListProps) {
         super(props);
     }
 
     protected componentDidUpdate(_oldProps: any, _newProps: any): boolean {
-        console.log(this.props.users);
+        console.log(this.props);
         this.children.list = this.props.users.map((user: User) => new Button({
             label: user.login,
             color: 'transparent-blue',
             type: 'button',
             events: {
-                click: () => {}
+                click: () => {
+                    this.props.users = [];
+                    this.props.events.onUserSelect(user);
+                }
             }
         }));
 
