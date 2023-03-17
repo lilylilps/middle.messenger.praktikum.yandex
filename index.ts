@@ -3,7 +3,7 @@ import AuthController from './src/controllers/AuthController';
 import {ChangeInfoPage} from './src/pages/changeInfo';
 import {ChangePasswordPage} from './src/pages/changePassword';
 import {ChatsPage} from './src/pages/chats';
-import {ErrorPage} from './src/pages/errorPage';
+import {NotFoundPage} from './src/pages/notFoundPage';
 import {ProfilePage} from './src/pages/profile';
 import {SignInPage} from './src/pages/signIn';
 import {SignUpPage} from './src/pages/signUp';
@@ -28,7 +28,7 @@ export enum Routes {
     Chats = '/chats',
     ChangeInfo = '/changeInfo',
     ChangePassword = '/changePassword',
-    Error = '/error'
+    NotFoundPage = '/404'
 }
   
 window.addEventListener('DOMContentLoaded', async () => {
@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         .use(Routes.Chats, ChatsPage)
         .use(Routes.ChangeInfo, ChangeInfoPage)
         .use(Routes.ChangePassword, ChangePasswordPage)
-        .use(Routes.Error, ErrorPage);
+        .use(Routes.NotFoundPage, NotFoundPage);
 
     let isProtectedRoute = true;
 
@@ -50,21 +50,28 @@ window.addEventListener('DOMContentLoaded', async () => {
         break;
     }
 
-    try {
-        await AuthController.fetchUser();
+    console.log(window.location.pathname);
 
-        Router.start();
-
-        if (!isProtectedRoute) {
-            Router.go(Routes.Chats);
-        }
-    } catch (e) {
-        if (window.location.pathname !== '/')
-            window.location.pathname = '/';
+    if (Object.values(Routes).includes(window.location.pathname as Routes)) {
+        try {
+            await AuthController.fetchUser();
     
-        Router.start();
-        if (isProtectedRoute) {
-            Router.go(Routes.SignIn);
+            Router.start();
+    
+            if (!isProtectedRoute) {
+                Router.go(Routes.Chats);
+            }
+        } catch (e) {
+            if (window.location.pathname !== '/')
+                window.location.pathname = '/';
+        
+            Router.start();
+            if (isProtectedRoute) {
+                Router.go(Routes.SignIn);
+            }
         }
+    } else {
+        Router.start();
+        Router.go(Routes.NotFoundPage);
     }
 });

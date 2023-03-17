@@ -6,14 +6,18 @@ import {ButtonWithIcon} from '../../../../../../components/buttonWithIcon';
 
 import Block from '../../../../../../utils/Block';
 import closeIcon from '../../../../../../../static/icons/close.svg';
+import { ChatUserList } from './chatUserList';
+import { User } from '../../../../../../api/AuthAPI';
 
 interface DeleteUserModalProps {
     events: {
-        onUserDelete: (userName: string) => void
+        onUserDelete: (user: User) => void
     }
 }
 
 export class DeleteUserModal extends Block {
+    private userToDelete = {};
+
     constructor(props: DeleteUserModalProps) {
         super(props);
     }
@@ -25,6 +29,16 @@ export class DeleteUserModal extends Block {
             name: 'user_name',
             type: 'text',
             placeholder: 'Имя пользователя'
+        });
+
+        this.children.chatUserList = new ChatUserList({
+            events: {
+                onUserSelect: (user: User) => {
+                    (this.children.chatUserList as Block).hide();
+                    (this.children.userNameInput as Input).setProps({ value: user.login });
+                    this.userToDelete = {...user};
+                }
+            }
         });
 
         this.children.confirmButton = new Button({
@@ -39,7 +53,7 @@ export class DeleteUserModal extends Block {
                     if (!userName) {
                         input.setError('Укажите имя пользователя');
                     } else {
-                        this.props.events.onUserDelete(userName);
+                        this.props.events.onUserDelete(this.userToDelete);
                         this.hide();
                     }
                 }

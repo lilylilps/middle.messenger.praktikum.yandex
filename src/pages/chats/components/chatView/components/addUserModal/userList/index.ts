@@ -1,9 +1,9 @@
 import template from './userList.hbs';
 
-import Block from '../../../../../../utils/Block';
-import { withStore } from '../../../../../../utils/Store';
-import { User } from '../../../../../../api/AuthAPI';
-import { Button } from '../../../../../../components/button';
+import Block from '../../../../../../../utils/Block';
+import { withStore } from '../../../../../../../utils/Store';
+import { User } from '../../../../../../../api/AuthAPI';
+import { Button } from '../../../../../../../components/button';
 
 interface UserListProps {
     users?: User[];
@@ -18,7 +18,10 @@ class UserListBase extends Block {
     }
 
     protected componentDidUpdate(_oldProps: any, _newProps: any): boolean {
-        console.log(this.props);
+        if (this.props.users && this.props.users.length) {
+            this.show('flex');
+        }
+        
         this.children.list = this.props.users.map((user: User) => new Button({
             label: user.login,
             color: 'transparent-blue',

@@ -43,7 +43,7 @@ export class UserController {
         }
     }
 
-    async getUser(login: string) {
+    async getAllUsers(login: string) {
         try {
             const users = await this.userApi.getUser(login);
             store.set('users', users);

@@ -44,6 +44,16 @@ class ChatsController {
     this.chatsApi.addUsers(id, [userId]);
   }
 
+  deleteUserFromChat(id: number, userId: number) {
+    this.chatsApi.deleteUsers(id, [userId]);
+  }
+
+  async getChatUsers(id: number) {
+    const chatUsers = await this.chatsApi.getUsers(id);
+
+    store.set('chatUsers', chatUsers);
+  }
+
   async updateAvatar(data: ChangeChatAvatarData) {
     try {
       const chat = await this.chatsApi.updateAvatar(data);

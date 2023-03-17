@@ -8,16 +8,17 @@ import Block from '../../../../../../utils/Block';
 import closeIcon from '../../../../../../../static/icons/close.svg';
 import UserController from '../../../../../../controllers/UserController';
 import { User } from '../../../../../../api/AuthAPI';
-import { UserList } from '../userList';
+import { UserList } from './userList';
 
 interface AddUserModalProps {
-    usersToAdd: User[];
     events: {
-        onUserAdd: (userName: string) => void;
+        onUserAdd: (user: User) => void;
     }
 }
 
 export class AddUserModal extends Block {
+    private userToAdd = {};
+
     constructor(props: AddUserModalProps) {
         super(props);
     }
@@ -31,16 +32,22 @@ export class AddUserModal extends Block {
             placeholder: 'Имя пользователя',
             events: {
                 keyup: this.debounce(() =>
-                    UserController.getUser((this.children.userNameInput as Input).getValue()), 1000
+                    UserController.getAllUsers((this.children.userNameInput as Input).getValue()), 1000
                 )
             }
         });
 
         this.children.userList = new UserList({
             events: {
-                onUserSelect: (user: User) => console.log(user)
+                onUserSelect: (user: User) => {
+                    (this.children.userList as Block).hide();
+                    (this.children.userNameInput as Input).setProps({ value: user.login });
+                    this.userToAdd = {...user};
+                }
             }
         });
+
+        (this.children.userList as Block).hide();
 
         this.children.addButton = new Button({
             label: 'Добавить',
@@ -54,7 +61,7 @@ export class AddUserModal extends Block {
                     if (!userName) {
                         input.setError('Укажите имя пользователя');
                     } else {
-                        this.props.events.onUserAdd(userName);
+                        this.props.events.onUserAdd(this.userToAdd);
                         this.hide();
                     }
                 }
@@ -76,7 +83,6 @@ export class AddUserModal extends Block {
     render() {
         return this.compile(template, this.props);
     }
-
 
     // вынести 
     debounce(callback: () => void, wait: number | undefined) {

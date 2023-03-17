@@ -28,6 +28,7 @@ import avatar from '../../../../../static/icons/samoyed.png';
 import MessageController, { Message } from '../../../../controllers/MessagesController';
 import { withStore } from '../../../../utils/Store';
 import ChatsController from '../../../../controllers/ChatsController';
+import { User } from '../../../../api/AuthAPI';
 
 
 interface ChatViewProps {
@@ -137,13 +138,13 @@ class ChatViewBase extends Block {
 
         this.children.addUserModal = new AddUserModal({
             events: {
-                onUserAdd: (userName: string) => console.log(userName)
+                onUserAdd: (user: User) => ChatsController.addUserToChat(this.props.selectedChat, user.id)
             }
         });
 
         this.children.deleteUserModal = new DeleteUserModal({
             events: {
-                onUserDelete: (userName: string) => console.log(userName)
+                onUserDelete: (user: User) => ChatsController.deleteUserFromChat(this.props.selectedChat, user.id)
             }
         });
 
@@ -156,22 +157,24 @@ class ChatViewBase extends Block {
             }
         });
         
-        this.setProps({...this.props, events: {
-            click: (event: Event) => {
-                const target = event.target as HTMLElement;
+        this.setProps({
+            ...this.props, events: {
+                click: (event: Event) => {
+                    const target = event.target as HTMLElement;
 
-                if (target.closest('#headerDropdownMenu')) {
-                    (this.children.headerDropdownMenu as DropdownMenu).toggle();
-                    (this.children.footerDropdownMenu as DropdownMenu).hideMenu();
-                } else if (target.closest('#footerDropdownMenu')) {
-                    (this.children.footerDropdownMenu as DropdownMenu).toggle();
-                    (this.children.headerDropdownMenu as DropdownMenu).hideMenu();
-                } else {
-                    (this.children.headerDropdownMenu as DropdownMenu).hideMenu();
-                    (this.children.footerDropdownMenu as DropdownMenu).hideMenu();
+                    if (target.closest('#headerDropdownMenu')) {
+                        (this.children.headerDropdownMenu as DropdownMenu).toggle();
+                        (this.children.footerDropdownMenu as DropdownMenu).hideMenu();
+                    } else if (target.closest('#footerDropdownMenu')) {
+                        (this.children.footerDropdownMenu as DropdownMenu).toggle();
+                        (this.children.headerDropdownMenu as DropdownMenu).hideMenu();
+                    } else {
+                        (this.children.headerDropdownMenu as DropdownMenu).hideMenu();
+                        (this.children.footerDropdownMenu as DropdownMenu).hideMenu();
+                    }
                 }
             }
-        }});
+        });
     }
 
     render() {
@@ -179,6 +182,9 @@ class ChatViewBase extends Block {
     }
 
     protected componentDidUpdate(_oldProps: ChatViewProps, newProps: ChatViewProps): boolean {
+        if (this.props.selectedChat)
+            ChatsController.getChatUsers(this.props.selectedChat);
+
         this.children.messages = this.createMessages(newProps);
 
         this.children.chatImage = new Avatar({
@@ -210,7 +216,7 @@ const withSelectedChatView = withStore(state => {
         return {
             messages: [],
             selectedChat: undefined,
-            userId: state.user.id
+            userId: state.user?.id
         };
     }
   

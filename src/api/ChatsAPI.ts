@@ -43,6 +43,10 @@ export class ChatsAPI extends BaseAPI {
     return this.http.put('/users', { users, chatId: id });
   }
 
+  deleteUsers(id: number, users: number[]): Promise<unknown> {
+    return this.http.delete('/users', { users, chatId: id });
+  }
+
   updateAvatar(data: ChangeChatAvatarData): Promise<ChatInfo> {
     const formData = new FormData();
     formData.append('avatar', data.avatar);
