@@ -40,7 +40,9 @@ export class Input extends Block {
     }
 
     clear(): void {
-        (this.element?.children[0].children[1] as HTMLInputElement).value = '';
+        const input = this.element?.children[0]?.children[1] as HTMLInputElement;
+        if (input)
+            input.value = '';
     }
 
     getProps(prop: string): any {

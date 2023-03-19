@@ -274,7 +274,7 @@ class ChatViewBase extends Block<ChatViewProps> {
         const filesPreview = (this.children.filesPreview as FilesPreview);
         const files = [...imagesPreview.getFiles(), ...filesPreview.getFiles()];
 
-        if (files)
+        if (files.length)
             ChatsController.sendFiles(this.props.selectedChat!, files).finally(() => {
                 imagesPreview.clear();
                 filesPreview.clear();
