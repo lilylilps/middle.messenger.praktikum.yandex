@@ -13,7 +13,7 @@ import UserController from '../../controllers/UserController';
 
 import Block from '../../utils/Block';
 import {withStore} from '../../utils/Store';
-import Router from '../../utils/Router';
+import Router from '../../utils/router';
 
 import {INPUTS} from '../../constants/constants';
 

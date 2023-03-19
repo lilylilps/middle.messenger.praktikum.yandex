@@ -13,7 +13,7 @@ import {Toaster} from '../../components/toaster';
 
 import {withStore} from '../../utils/Store';
 import Block from '../../utils/Block';
-import Router from '../../utils/Router';
+import Router from '../../utils/router';
 import {debounce} from '../../utils/debounce';
 import isEqualObjects from '../../utils/isEqualObjects';
 

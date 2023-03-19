@@ -1,7 +1,7 @@
 import ToasterController from './ToasterController';
 
 import userApi, {UserAPI, ChangeProfileData, ChangePasswordData, ChangeAvatarData} from '../api/UserAPI';
-import router from '../utils/Router';
+import router from '../utils/router';
 import store from '../utils/Store';
 
 export class UserController {

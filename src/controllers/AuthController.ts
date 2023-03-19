@@ -3,7 +3,7 @@ import ToasterController from './ToasterController';
 
 import authApi, {AuthAPI, SigninData, SignupData} from '../api/AuthAPI';
 import store from '../utils/Store';
-import router from '../utils/Router';
+import router from '../utils/router';
 
 export class AuthController {
 	private readonly authApi: AuthAPI;

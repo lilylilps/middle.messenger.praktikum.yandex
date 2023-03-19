@@ -12,7 +12,7 @@ import {Toaster} from '../../components/toaster';
 import Block from '../../utils/Block';
 import {submitHandler} from '../../utils/submitHandler';
 import {validateInput} from '../../utils/validator';
-import Router from '../../utils/Router';
+import Router from '../../utils/router';
 import {withStore} from '../../utils/Store';
 import {logFormData} from '../../utils/formDataLogger';
 

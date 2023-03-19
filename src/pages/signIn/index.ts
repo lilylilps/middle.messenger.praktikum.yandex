@@ -11,7 +11,7 @@ import AuthController from '../../controllers/AuthController';
 import Block from '../../utils/Block';
 import {submitHandler} from '../../utils/submitHandler';
 import {validateInput} from '../../utils/validator';
-import Router from '../../utils/Router';
+import Router from '../../utils/router';
 import {logFormData} from '../../utils/formDataLogger';
 
 import {INPUTS} from '../../constants/constants';

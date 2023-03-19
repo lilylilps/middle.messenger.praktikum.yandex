@@ -9,7 +9,7 @@ import {NotFoundPage} from './src/pages/notFoundPage';
 import {ProfilePage} from './src/pages/profile';
 import {SignInPage} from './src/pages/signIn';
 import {SignUpPage} from './src/pages/signUp';
-import Router from './src/utils/Router';
+import Router from './src/utils/router';
 
 
 Handlebars.registerHelper('switch', function(value: any, options: any) {
