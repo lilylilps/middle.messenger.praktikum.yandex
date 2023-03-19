@@ -1,33 +1,56 @@
 import template from './chats.hbs';
 
+import {ChatInfo} from '../../api/ChatsAPI';
+import {RESOURCE_URL} from '../../api/ResourceAPI';
+
 import {ChatListItem} from './components/chatListItem';
 import {ChatView} from './components/chatView';
 import {Button} from '../../components/button';
-import {ChatMessage, MessagePosition, MessageTypes} from './components/chatMessage';
 import {ButtonWithIcon} from '../../components/buttonWithIcon';
 import {CreateChatModal} from './components/createChatModal';
+import {ChatSearchInput} from './components/chatSearchInput';
+import {Toaster} from '../../components/toaster';
 
+import {withStore} from '../../utils/Store';
 import Block from '../../utils/Block';
-import {renderDOM} from '../../utils/router';
-import {CHATS_BAR, CHAT_MESSAGES} from '../../constants/constants';
+import Router from '../../utils/Router';
+import {debounce} from '../../utils/debounce';
+import isEqualObjects from '../../utils/isEqualObjects';
+
+import ChatsController from '../../controllers/ChatsController';
 
 import avatar from '../../../static/icons/samoyed.png';
 import pencilIcon from '../../../static/icons/pencil.svg';
 
-export class ChatsPage extends Block {
+interface ChatsPageProps {
+    chats: ChatInfo[];
+    selectedChat: number | undefined;
+    isLoaded: boolean;
+    canLoadMoreChats: boolean;
+}
+
+class ChatsPageBase extends Block<ChatsPageProps> {
     init() {
         this.children.profileLink = new Button({
             label: 'Профиль >',
             color: 'transparent-grey',
             type: 'button',
             events: {
-                click: () => renderDOM('profile'),
+                click: () => Router.go('/profile'),
+            }
+        });
+
+        this.children.searchInput = new ChatSearchInput({
+            events: {
+                keyup: debounce(() =>
+                    ChatsController.fetchChats({title: (this.children.searchInput as ChatSearchInput).getValue()}), 1000
+                )
             }
         });
 
         this.children.createChatModal = new CreateChatModal({
             events: {
-                onChatCreated: (chatName: string) => console.log(chatName)
+                onChatCreated: (chatName: string) => ChatsController.create(chatName)
             }
         });
 
@@ -42,87 +65,67 @@ export class ChatsPage extends Block {
             }
         });
 
-        this.children.chatView = new ChatView({
-            isSelected: false
-        });
-        
-        this.children.chatList = CHATS_BAR.map(chat => new ChatListItem({
-            id: chat.id,
-            image: avatar,
-            name: chat.name,
-            text: chat.text,
-            time: chat.lastMessageTime,
-            count: chat.newMessagesCount,
+        this.children.chatView = new ChatView({});
+
+        this.children.loadMoreChats = new Button({
+            label: 'Загрузить еще',
+            color: 'transparent-blue',
+            type: 'button',
             events: {
-                onChatSelect: (id: number) => this.onChatItemClick(id)
+                click: () => ChatsController.loadMore().finally(() => {
+                    const length = (this.children.chatList as ChatListItem[]).length - 1;
+                    const lastChat = (this.children.chatList as ChatListItem[])[length];
+                    lastChat.element?.scrollIntoView(false);
+                    this.checkSelectedChat();
+                }),
             }
-        }));
+        });
+
+        ChatsController.fetchChats().finally(() => this.props.isLoaded = true);
+
+        this.children.errorToaster = new Toaster({});
+        (this.children.errorToaster as Block).hide();
     }
 
     render() {
         return this.compile(template, this.props);
     }
 
-    private onChatItemClick(chatId: number): void {
-        (this.children.chatView as ChatView).showSelectedChat({
-            isSelected: true,
-            image: avatar,
-            name: CHATS_BAR.find(chat => chat.id === chatId)?.name,
-            messages: this.mapChatMessages()
-        });
+    protected componentDidUpdate(oldProps: ChatsPageProps, newProps: ChatsPageProps): boolean {
+        if (isEqualObjects(oldProps, newProps)) return false;
 
+        this.children.chatList = this.props.chats?.map(chat => new ChatListItem({
+            id: chat.id,
+            image: chat.avatar && `${RESOURCE_URL}${chat.avatar}` || avatar,
+            name: chat.title,
+            text: chat.last_message?.content,
+            time: chat.last_message?.time,
+            count: chat.unread_count,
+            events: {
+                onChatSelect: (id: number) => ChatsController.selectChat(id).finally(() => this.checkSelectedChat())
+            }
+        })) || [];
+
+        this.checkSelectedChat();
+
+        return true;
+    }
+
+    private checkSelectedChat(): void {
         (this.children.chatList as Block[]).forEach(block => {
             const chatListItem = block as ChatListItem;
 
-            if (chatListItem.getId() === chatId) {
+            if (chatListItem.getId() === this.props.selectedChat) {
                 chatListItem.select();
             } else {
                 chatListItem.unselect();
             }
         });
     }
-
-    private mapChatMessages(): ChatMessage[] {
-        return CHAT_MESSAGES.map(message => {
-            const messageType = message.type as MessageTypes;
-
-            switch (messageType) {
-                case 'file':
-                    return new ChatMessage({
-                        type: messageType,
-                        time: message.time,
-                        position: message.position as MessagePosition,
-                        text: message.text
-                    });
-                case 'text':
-                    return new ChatMessage({
-                        type: messageType,
-                        time: message.time,
-                        position: message.position as MessagePosition,
-                        text: message.text
-                    });
-                case 'image':
-                    return new ChatMessage({
-                        type: messageType,
-                        time: message.time,
-                        position: message.position as MessagePosition,
-                        text: message.text,
-                        content: {
-                            src: message.content?.src
-                        }
-                    });
-                case 'video':
-                    return new ChatMessage({
-                        type: messageType,
-                        time: message.time,
-                        position: message.position as MessagePosition,
-                        text: message.text,
-                        content: {
-                            src: message.content?.src,
-                            poster: message.content?.poster
-                        }
-                    });
-            }
-        }) as ChatMessage[];
-    }
 }
+
+export const ChatsPage = withStore((state) => ({
+    chats: [...(state.chats || [])],
+    selectedChat: state.selectedChat,
+    canLoadMoreChats: state.canLoadMoreChats,
+}))(ChatsPageBase);

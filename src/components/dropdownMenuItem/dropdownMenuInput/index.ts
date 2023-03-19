@@ -35,7 +35,7 @@ export class DropdownMenuInput extends DropdownMenuItem {
 
         input.onchange = () => {
             if (input.files) {
-                this.props.events.onFileUpload(Array.from(input.files));
+                this.props.events?.onFileUpload(Array.from(input.files));
             }
         };
 

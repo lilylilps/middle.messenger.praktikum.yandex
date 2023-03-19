@@ -11,7 +11,7 @@ interface AsideNavigationProps {
     }
 }
 
-export class AsideNavigation extends Block {
+export class AsideNavigation extends Block<AsideNavigationProps> {
     constructor(props: AsideNavigationProps) {
         super(props);
     }
@@ -25,7 +25,7 @@ export class AsideNavigation extends Block {
             alt: 'Go back',
             direction: 'left',
             events: {
-                click: this.props.click
+                click: () => this.props.events.click()
             }
         });
     }

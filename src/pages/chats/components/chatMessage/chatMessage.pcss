@@ -3,12 +3,14 @@
 .chat-message {
     position: relative;
     max-width: 40%;
+    min-width: 80px;
     width: fit-content;
     border-radius: 12px;
     font-size: 12px;
     line-height: 15px;
     margin-bottom: 10px;
     padding: 11px;
+    overflow-wrap: anywhere;
 
     &-left {
         background: $backgroundGrey;
@@ -38,6 +40,11 @@
         &-info {
             max-width: 100px;
         }
+    }
+
+    &__author {
+        color: $grey;
+        margin-bottom: 4px;
     }
 
     &__time {

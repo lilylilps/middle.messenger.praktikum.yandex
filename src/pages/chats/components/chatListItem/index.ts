@@ -1,6 +1,7 @@
 import template from './chatListItem.hbs';
 
 import {Avatar} from '../../../../components/avatar';
+import {dateFormat} from '../../../../utils/dateFormat';
 
 import Block from '../../../../utils/Block';
 
@@ -12,11 +13,13 @@ interface ChatListItemProps {
     time: string;
     count: number;
     events: {
-        onChatSelect: (id: number) => void;
+        onChatSelect: (id?: number) => void;
     }
 }
 
-export class ChatListItem extends Block {
+export class ChatListItem extends Block<ChatListItemProps> {
+    time: string;
+
     constructor(props: ChatListItemProps) {
         const expandedProps = {...props, events: {
             ...props.events,
@@ -29,7 +32,13 @@ export class ChatListItem extends Block {
         this.children.avatar = new Avatar({
             image: this.props.image,
             size: 'medium',
+            canUpdate: false,
+            events: {
+                onChangeAvatar: () => {}
+            }
         });
+
+        this.props.time = this.props.time ? dateFormat(this.props.time, true) : '';
     }
 
     render() {
@@ -42,6 +51,7 @@ export class ChatListItem extends Block {
 
     select(): void {
         this.element?.classList.add('chat-item-selected');
+        this.element?.scrollIntoView(true);
     }
 
     unselect(): void {
