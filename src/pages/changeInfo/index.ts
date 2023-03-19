@@ -1,23 +1,27 @@
 import template from './changeInfo.hbs';
 
+import {ChangeProfileData} from '../../api/UserAPI';
+import {RESOURCE_URL} from '../../api/ResourceAPI';
+
 import {Button} from '../../components/button';
 import {Input, InputType} from '../../components/input';
 import {Avatar} from '../../components/avatar';
 import {AsideNavigation} from '../../components/asideNavigation';
+import {Toaster} from '../../components/toaster';
 
 import Block from '../../utils/Block';
 import {submitHandler} from '../../utils/submitHandler';
 import {validateInput} from '../../utils/validator';
+import Router from '../../utils/Router';
+import {withStore} from '../../utils/Store';
+import {logFormData} from '../../utils/formDataLogger';
+
+import UserController from '../../controllers/UserController';
 
 import {INPUTS} from '../../constants/constants';
+import {User} from '../../models/user';
 
 import avatar from '../../../static/icons/samoyed.png';
-import Router from '../../utils/Router';
-import { User } from '../../api/AuthAPI';
-import { withStore } from '../../utils/Store';
-import UserController from '../../controllers/UserController';
-import { logFormData } from '../../utils/formDataLogger';
-import { ChangeProfileData } from '../../api/UserAPI';
 
 interface ChangeInfoPageProps extends User {}
 
@@ -30,9 +34,12 @@ export class ChangeInfoPageBase extends Block<ChangeInfoPageProps> {
         });
 
         this.children.avatar = new Avatar({
-            image: this.props['avatar'] ?? avatar,
+            image: this.props.avatar && `${RESOURCE_URL}${this.props.avatar}` || avatar,
             size: 'large',
             canUpdate: false,
+            events: {
+                onChangeAvatar: () => {}
+            }
         });
 
         this.children.saveButton = new Button({
@@ -139,9 +146,12 @@ export class ChangeInfoPageBase extends Block<ChangeInfoPageProps> {
                     )),
             },
         });
+
+        this.children.errorToaster = new Toaster({});
+        (this.children.errorToaster as Block).hide();
     }
 
-    onSubmit(event: Event, data: Block['children']) {
+    onSubmit(event: Event, data: Block['children']): void {
         const isValidForm = submitHandler(event, data);
 
         if (isValidForm) {

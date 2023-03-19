@@ -1,14 +1,19 @@
 import template from './addUserModal.hbs';
 
+import {UserList} from './userList';
+
 import {Button} from '../../../../../../components/button';
 import {Input} from '../../../../../../components/input';
 import {ButtonWithIcon} from '../../../../../../components/buttonWithIcon';
 
 import Block from '../../../../../../utils/Block';
-import closeIcon from '../../../../../../../static/icons/close.svg';
+import {debounce} from '../../../../../../utils/debounce';
+
+import {User} from '../../../../../../models/user';
+
 import UserController from '../../../../../../controllers/UserController';
-import { User } from '../../../../../../api/AuthAPI';
-import { UserList } from './userList';
+
+import closeIcon from '../../../../../../../static/icons/close.svg';
 
 interface AddUserModalProps {
     events: {
@@ -16,23 +21,23 @@ interface AddUserModalProps {
     }
 }
 
-export class AddUserModal extends Block {
-    private userToAdd = {};
+export class AddUserModal extends Block<AddUserModalProps> {
+    private userToAdd: User | undefined = undefined;
 
     constructor(props: AddUserModalProps) {
         super(props);
     }
 
     init() {
-        this.children.userNameInput = new Input({
+        this.children.userLoginInput = new Input({
             direction: 'vertical',
-            label: 'Имя',
-            name: 'userName',
+            label: 'Логин',
+            name: 'userLogin',
             type: 'text',
-            placeholder: 'Имя пользователя',
+            placeholder: 'Логин пользователя',
             events: {
-                keyup: this.debounce(() =>
-                    UserController.getAllUsers((this.children.userNameInput as Input).getValue()), 1000
+                keyup: debounce(() =>
+                    UserController.getAllUsers((this.children.userLoginInput as Input).getValue()), 1000
                 )
             }
         });
@@ -41,7 +46,7 @@ export class AddUserModal extends Block {
             events: {
                 onUserSelect: (user: User) => {
                     (this.children.userList as Block).hide();
-                    (this.children.userNameInput as Input).setProps({ value: user.login });
+                    (this.children.userLoginInput as Input).setProps({ value: user.login });
                     this.userToAdd = {...user};
                 }
             }
@@ -55,13 +60,14 @@ export class AddUserModal extends Block {
             type: 'submit',
             events: {
                 click: () => {
-                    const input = (this.children.userNameInput as Input);
+                    const input = (this.children.userLoginInput as Input);
                     const userName = input.getValue();
 
                     if (!userName) {
                         input.setError('Укажите имя пользователя');
                     } else {
-                        this.props.events.onUserAdd(this.userToAdd);
+                        this.props.events.onUserAdd(this.userToAdd!);
+                        input.clear();
                         this.hide();
                     }
                 }
@@ -75,22 +81,16 @@ export class AddUserModal extends Block {
             size: 'small',
             alt: 'Close',
             events: {
-                click: () => this.hide()
+                click: () => {
+                    const input = (this.children.userLoginInput as Input);
+                    input.clear();
+                    this.hide();
+                }
             }
         });
     }
 
     render() {
         return this.compile(template, this.props);
-    }
-
-    // вынести 
-    debounce(callback: () => void, wait: number | undefined) {
-        let timer = 0;
-
-        return function(...args: any) {
-            clearTimeout(timer);
-            timer = setTimeout(callback.bind(this, ...args), wait || 0);
-        };
     }
 }

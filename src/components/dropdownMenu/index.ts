@@ -11,7 +11,7 @@ interface DropdownMenuProps {
     position: DropdownMenuPosition;
 }
 
-export class DropdownMenu extends Block {
+export class DropdownMenu extends Block<DropdownMenuProps> {
     private isOpen: boolean = false;
 
     constructor(props: DropdownMenuProps) {

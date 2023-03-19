@@ -1,23 +1,32 @@
 import template from './changePassword.hbs';
 
+import {ChangePasswordData} from '../../api/UserAPI';
+import {RESOURCE_URL} from '../../api/ResourceAPI';
+
 import {Button} from '../../components/button';
 import {Input, InputType} from '../../components/input';
 import {Avatar} from '../../components/avatar';
 import {AsideNavigation} from '../../components/asideNavigation';
-import {ChangePasswordData} from '../../api/UserAPI';
+import {Toaster} from '../../components/toaster';
 
 import Block from '../../utils/Block';
 import {submitHandler} from '../../utils/submitHandler';
 import {validateInput} from '../../utils/validator';
 import {logFormData} from '../../utils/formDataLogger';
+import Router from '../../utils/Router';
+import {withStore} from '../../utils/Store';
+
+import UserController from '../../controllers/UserController';
 
 import {INPUTS} from '../../constants/constants';
 
-import avatar from '../../../static/icons/samoyed.png';
-import Router from '../../utils/Router';
-import UserController from '../../controllers/UserController';
+import {User} from '../../models/user';
 
-export class ChangePasswordPage extends Block {
+import avatar from '../../../static/icons/samoyed.png';
+
+interface ChangeParrwordPageProps extends User {}
+
+class ChangePasswordPageBase extends Block<ChangeParrwordPageProps> {
     init() {
         this.children.asideNavigation = new AsideNavigation({
             events: {
@@ -26,8 +35,12 @@ export class ChangePasswordPage extends Block {
         });
 
         this.children.avatar = new Avatar({
-            image: avatar,
+            image: this.props.avatar && `${RESOURCE_URL}${this.props.avatar}` || avatar,
             size: 'large',
+            canUpdate: false,
+            events: {
+                onChangeAvatar: () => {}
+            }
         });
 
         this.children.saveButton = new Button({
@@ -87,12 +100,34 @@ export class ChangePasswordPage extends Block {
                     )),
             },
         });
+
+        this.children.errorToaster = new Toaster({});
+        (this.children.errorToaster as Block).hide();
     }
 
-    onSubmit(event: Event, data: Block['children']) {
+    onSubmit(event: Event, data: Block['children']): void {
         const isValidForm = submitHandler(event, data);
 
-        if (isValidForm) {
+        const isEqualPasswords = this.checkPassword(
+            (this.children.oldPasswordInput as Input).getValue(),
+            (this.children.newPasswordInput as Input).getValue()
+        );
+
+        if (isEqualPasswords) {
+            (this.children.oldPasswordInput as Input).setError('Старый и новый пароли совпадают');
+        }
+
+        const isEqualNewPasswords = this.checkPassword(
+            (this.children.newPasswordInput as Input).getValue(),
+            (this.children.repeatPasswordInput as Input).getValue()
+        );
+
+        if (!isEqualNewPasswords) {
+            (this.children.newPasswordInput as Input).setError('Пароли не совпадают');
+            (this.children.repeatPasswordInput as Input).setError('Пароли не совпадают');
+        }
+
+        if (isValidForm && isEqualNewPasswords && !isEqualPasswords) {
             UserController.updatePassword(logFormData(data) as ChangePasswordData);
         }
     }
@@ -100,4 +135,12 @@ export class ChangePasswordPage extends Block {
     render() {
         return this.compile(template, this.props);
     }
+
+    private checkPassword(lhs: string, rhs: string): boolean {
+        return lhs === rhs;
+    }
 }
+
+export const ChangePasswordPage = withStore((state) => {
+    return state.user || {};
+})(ChangePasswordPageBase);

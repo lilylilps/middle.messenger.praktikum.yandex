@@ -1,20 +1,25 @@
 import template from './profile.hbs';
 
+import {RESOURCE_URL} from '../../api/ResourceAPI';
+
 import {Button} from '../../components/button';
 import {Input, InputType} from '../../components/input';
 import {Avatar} from '../../components/avatar';
 import {AsideNavigation} from '../../components/asideNavigation';
+import {Toaster} from '../../components/toaster';
 
-import Block from '../../utils/Block';
-
-import {INPUTS} from '../../constants/constants';
-import {withStore} from '../../utils/Store';
-import {User} from '../../api/AuthAPI';
-
-import avatar from '../../../static/icons/samoyed.png';
-import Router from '../../utils/Router';
 import AuthController from '../../controllers/AuthController';
 import UserController from '../../controllers/UserController';
+
+import Block from '../../utils/Block';
+import {withStore} from '../../utils/Store';
+import Router from '../../utils/Router';
+
+import {INPUTS} from '../../constants/constants';
+
+import {User} from '../../models/user';
+
+import avatar from '../../../static/icons/samoyed.png';
 
 interface ProfilePageProps extends User {}
 
@@ -36,7 +41,7 @@ class ProfilePageBase extends Block<ProfilePageProps> {
         });
 
         this.children.avatar = new Avatar({
-            image: this.props['avatar'] ?? avatar,
+            image: this.props.avatar && `${RESOURCE_URL}${this.props.avatar}` || avatar,
             size: 'large',
             canUpdate: true,
             events: {
@@ -79,11 +84,16 @@ class ProfilePageBase extends Block<ProfilePageProps> {
             value: this.props[input],
             disabled: true
         }));
+
+        this.children.errorToaster = new Toaster({});
+        (this.children.errorToaster as Block).hide();
     }
 
-    protected componentDidUpdate(_oldProps: ProfilePageProps, newProps: ProfilePageProps): boolean {
-        (this.children.avatar as Avatar).setProps({ image: newProps['avatar'] ?? avatar });
-        return false;
+    protected componentDidUpdate(): boolean {
+        (this.children.avatar as Avatar).setProps({
+            image: this.props.avatar && `${RESOURCE_URL}${this.props.avatar}` || avatar
+        });
+        return true;
     }
 
     render() {

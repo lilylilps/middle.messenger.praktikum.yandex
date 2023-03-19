@@ -1,5 +1,7 @@
 import Handlebars from 'handlebars/dist/handlebars.runtime';
+
 import AuthController from './src/controllers/AuthController';
+
 import {ChangeInfoPage} from './src/pages/changeInfo';
 import {ChangePasswordPage} from './src/pages/changePassword';
 import {ChatsPage} from './src/pages/chats';
@@ -49,8 +51,6 @@ window.addEventListener('DOMContentLoaded', async () => {
             isProtectedRoute = false;
         break;
     }
-
-    console.log(window.location.pathname);
 
     if (Object.values(Routes).includes(window.location.pathname as Routes)) {
         try {

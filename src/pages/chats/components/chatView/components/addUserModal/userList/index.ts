@@ -1,23 +1,25 @@
 import template from './userList.hbs';
 
+import {Button} from '../../../../../../../components/button';
+
 import Block from '../../../../../../../utils/Block';
-import { withStore } from '../../../../../../../utils/Store';
-import { User } from '../../../../../../../api/AuthAPI';
-import { Button } from '../../../../../../../components/button';
+import {withStore} from '../../../../../../../utils/Store';
+
+import {User} from '../../../../../../../models/user';
 
 interface UserListProps {
-    users?: User[];
+    users: User[];
     events: {
         onUserSelect: (user: User) => void;
     }
 }
 
-class UserListBase extends Block {
+class UserListBase extends Block<UserListProps> {
     constructor(props: UserListProps) {
         super(props);
     }
 
-    protected componentDidUpdate(_oldProps: any, _newProps: any): boolean {
+    protected componentDidUpdate(): boolean {
         if (this.props.users && this.props.users.length) {
             this.show('flex');
         }

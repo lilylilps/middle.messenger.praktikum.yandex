@@ -1,5 +1,6 @@
-import Block from '../../../../utils/Block';
 import template from './chatSearchInput.hbs';
+
+import Block from '../../../../utils/Block';
 
 interface ChatSearchInputProps {
     events: {

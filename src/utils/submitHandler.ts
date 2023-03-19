@@ -1,9 +1,6 @@
 import Block from './Block';
 import {validateInput} from './validator';
-// import Router from './Router';
 import {Input} from '../components/input';
-
-// import {Routes} from '../..';
 
 export const submitHandler = 
     (event: Event, data: Block['children']): boolean => {

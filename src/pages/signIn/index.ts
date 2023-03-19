@@ -1,16 +1,20 @@
 import template from './signIn.hbs';
 
+import {SigninData} from '../../api/AuthAPI';
+
 import {Button} from '../../components/button';
 import {Input, InputType} from '../../components/input';
+import {Toaster} from '../../components/toaster';
+
+import AuthController from '../../controllers/AuthController';
 
 import Block from '../../utils/Block';
 import {submitHandler} from '../../utils/submitHandler';
 import {validateInput} from '../../utils/validator';
-import {INPUTS} from '../../constants/constants';
 import Router from '../../utils/Router';
 import {logFormData} from '../../utils/formDataLogger';
-import {SigninData} from '../../api/AuthAPI';
-import AuthController from '../../controllers/AuthController';
+
+import {INPUTS} from '../../constants/constants';
 
 export class SignInPage extends Block {
     init() {
@@ -63,9 +67,12 @@ export class SignInPage extends Block {
                     )),
             },
         });
+
+        this.children.errorToaster = new Toaster({});
+        (this.children.errorToaster as Block).hide();
     }
 
-    onSubmit(event: Event, data: Block['children']) {
+    onSubmit(event: Event, data: Block['children']): void {
         const isValidForm = submitHandler(event, data);
 
         if (isValidForm) {

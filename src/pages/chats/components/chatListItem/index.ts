@@ -1,9 +1,9 @@
 import template from './chatListItem.hbs';
 
 import {Avatar} from '../../../../components/avatar';
+import {dateFormat} from '../../../../utils/dateFormat';
 
 import Block from '../../../../utils/Block';
-import { dateFormat } from '../../../../utils/dateFormat';
 
 interface ChatListItemProps {
     id: number;
@@ -32,6 +32,10 @@ export class ChatListItem extends Block<ChatListItemProps> {
         this.children.avatar = new Avatar({
             image: this.props.image,
             size: 'medium',
+            canUpdate: false,
+            events: {
+                onChangeAvatar: () => {}
+            }
         });
 
         this.props.time = this.props.time ? dateFormat(this.props.time, true) : '';
@@ -47,6 +51,7 @@ export class ChatListItem extends Block<ChatListItemProps> {
 
     select(): void {
         this.element?.classList.add('chat-item-selected');
+        this.element?.scrollIntoView(true);
     }
 
     unselect(): void {

@@ -39,6 +39,10 @@ export class Input extends Block {
         this.element!.children[1].textContent = error;
     }
 
+    clear(): void {
+        (this.element?.children[0].children[1] as HTMLInputElement).value = '';
+    }
+
     getProps(prop: string): any {
         return this.props[prop];
     }

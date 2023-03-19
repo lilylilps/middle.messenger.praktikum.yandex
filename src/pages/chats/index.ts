@@ -1,26 +1,32 @@
 import template from './chats.hbs';
 
+import {ChatInfo} from '../../api/ChatsAPI';
+import {RESOURCE_URL} from '../../api/ResourceAPI';
+
 import {ChatListItem} from './components/chatListItem';
 import {ChatView} from './components/chatView';
 import {Button} from '../../components/button';
 import {ButtonWithIcon} from '../../components/buttonWithIcon';
 import {CreateChatModal} from './components/createChatModal';
-import {withStore} from '../../utils/Store';
-import {ChatInfo} from '../../api/ChatsAPI';
+import {ChatSearchInput} from './components/chatSearchInput';
+import {Toaster} from '../../components/toaster';
 
+import {withStore} from '../../utils/Store';
 import Block from '../../utils/Block';
-import {CHATS_BAR, CHAT_MESSAGES} from '../../constants/constants';
+import Router from '../../utils/Router';
+import {debounce} from '../../utils/debounce';
+import isEqualObjects from '../../utils/isEqualObjects';
+
+import ChatsController from '../../controllers/ChatsController';
 
 import avatar from '../../../static/icons/samoyed.png';
 import pencilIcon from '../../../static/icons/pencil.svg';
-import Router from '../../utils/Router';
-import ChatsController from '../../controllers/ChatsController';
-import { ChatSearchInput } from './components/chatSearchInput';
 
 interface ChatsPageProps {
     chats: ChatInfo[];
-    selectedChat?: number | undefined;
+    selectedChat: number | undefined;
     isLoaded: boolean;
+    canLoadMoreChats: boolean;
 }
 
 class ChatsPageBase extends Block<ChatsPageProps> {
@@ -36,7 +42,7 @@ class ChatsPageBase extends Block<ChatsPageProps> {
 
         this.children.searchInput = new ChatSearchInput({
             events: {
-                keyup: this.debounce(() =>
+                keyup: debounce(() =>
                     ChatsController.fetchChats({title: (this.children.searchInput as ChatSearchInput).getValue()}), 1000
                 )
             }
@@ -61,26 +67,51 @@ class ChatsPageBase extends Block<ChatsPageProps> {
 
         this.children.chatView = new ChatView({});
 
+        this.children.loadMoreChats = new Button({
+            label: 'Загрузить еще',
+            color: 'transparent-blue',
+            type: 'button',
+            events: {
+                click: () => ChatsController.loadMore().finally(() => {
+                    const length = (this.children.chatList as ChatListItem[]).length - 1;
+                    const lastChat = (this.children.chatList as ChatListItem[])[length];
+                    lastChat.element?.scrollIntoView(false);
+                    this.checkSelectedChat();
+                }),
+            }
+        });
+
         ChatsController.fetchChats().finally(() => this.props.isLoaded = true);
+
+        this.children.errorToaster = new Toaster({});
+        (this.children.errorToaster as Block).hide();
     }
 
     render() {
         return this.compile(template, this.props);
     }
 
-    protected componentDidUpdate(_oldProps: any, _newProps: any): boolean {
-        this.children.chatList = this.props.chats.map(chat => new ChatListItem({
+    protected componentDidUpdate(oldProps: ChatsPageProps, newProps: ChatsPageProps): boolean {
+        if (isEqualObjects(oldProps, newProps)) return false;
+
+        this.children.chatList = this.props.chats?.map(chat => new ChatListItem({
             id: chat.id,
-            image: chat.avatar || avatar,
+            image: chat.avatar && `${RESOURCE_URL}${chat.avatar}` || avatar,
             name: chat.title,
             text: chat.last_message?.content,
             time: chat.last_message?.time,
             count: chat.unread_count,
             events: {
-                onChatSelect: (id: number) => this.onChatItemClick(id)
+                onChatSelect: (id: number) => ChatsController.selectChat(id).finally(() => this.checkSelectedChat())
             }
-        }));
+        })) || [];
 
+        this.checkSelectedChat();
+
+        return true;
+    }
+
+    private checkSelectedChat(): void {
         (this.children.chatList as Block[]).forEach(block => {
             const chatListItem = block as ChatListItem;
 
@@ -90,35 +121,11 @@ class ChatsPageBase extends Block<ChatsPageProps> {
                 chatListItem.unselect();
             }
         });
-
-        return true;
-    }
-
-    private onChatItemClick(chatId: number): void {
-        ChatsController.selectChat(chatId);
-
-        (this.children.chatList as Block[]).forEach(block => {
-            const chatListItem = block as ChatListItem;
-
-            if (chatListItem.getId() === chatId) {
-                chatListItem.select();
-            } else {
-                chatListItem.unselect();
-            }
-        });
-    }
-
-    debounce(callback: () => void, wait: number | undefined) {
-        let timer = 0;
-
-        return function(...args: any) {
-            clearTimeout(timer);
-            timer = setTimeout(callback.bind(this, ...args), wait || 0);
-        };
     }
 }
 
 export const ChatsPage = withStore((state) => ({
     chats: [...(state.chats || [])],
-    selectedChat: state.selectedChat
+    selectedChat: state.selectedChat,
+    canLoadMoreChats: state.canLoadMoreChats,
 }))(ChatsPageBase);

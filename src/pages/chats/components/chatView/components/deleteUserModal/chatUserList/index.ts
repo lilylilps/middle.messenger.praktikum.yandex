@@ -1,34 +1,38 @@
 import template from './chatUserList.hbs';
 
+import {Button} from '../../../../../../../components/button';
+
 import Block from '../../../../../../../utils/Block';
-import { withStore } from '../../../../../../../utils/Store';
-import { User } from '../../../../../../../api/AuthAPI';
-import { Button } from '../../../../../../../components/button';
+import {withStore} from '../../../../../../../utils/Store';
+
+import {User} from '../../../../../../../models/user';
 
 interface ChatUserListProps {
-    users?: User[];
+    users: User[];
     events: {
         onUserSelect: (user: User) => void;
     }
 }
 
-class ChatUserListBase extends Block {
+class ChatUserListBase extends Block<ChatUserListProps> {
     constructor(props: ChatUserListProps) {
         super(props);
     }
 
-    protected componentDidUpdate(_oldProps: any, _newProps: any): boolean {        
-        this.children.list = this.props.users.map((user: User) => new Button({
-            label: user.login,
-            color: 'transparent-blue',
-            type: 'button',
-            events: {
-                click: () => {
-                    this.props.users = [];
-                    this.props.events.onUserSelect(user);
+    protected componentDidUpdate(): boolean {        
+        this.children.list = this.props.users
+            .filter((user: User) => user.role !== 'admin')
+            .map((user: User) => new Button({
+                label: user.login,
+                color: 'transparent-blue',
+                type: 'button',
+                events: {
+                    click: () => {
+                        this.props.users = [];
+                        this.props.events.onUserSelect(user);
+                    }
                 }
-            }
-        }));
+            }));
 
         return true;
     }

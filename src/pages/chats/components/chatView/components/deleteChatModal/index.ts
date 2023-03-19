@@ -4,6 +4,7 @@ import {Button} from '../../../../../../components/button';
 import {ButtonWithIcon} from '../../../../../../components/buttonWithIcon';
 
 import Block from '../../../../../../utils/Block';
+
 import closeIcon from '../../../../../../../static/icons/close.svg';
 
 interface DeleteChatModalProps {
@@ -12,7 +13,7 @@ interface DeleteChatModalProps {
     }
 }
 
-export class DeleteChatModal extends Block {
+export class DeleteChatModal extends Block<DeleteChatModalProps> {
     constructor(props: DeleteChatModalProps) {
         super(props);
     }

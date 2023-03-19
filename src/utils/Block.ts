@@ -1,7 +1,7 @@
 import { EventBus } from "./EventBus";
 import { nanoid } from 'nanoid';
 
-type Props<P extends Record<string, any> = any> = { events?: Record<string, () => void> } & P;
+type Props<P extends Record<string, any> = any> = { events?: Record<string, (args: any) => void> } & P;
 
 class Block<P extends Record<string, any> = any> {
   static EVENTS = {
@@ -55,7 +55,7 @@ class Block<P extends Record<string, any> = any> {
   }
 
   _addEvents() {
-    const {events = {}} = this.props as { events: Record<string, () =>void> };
+    const {events = {}} = this.props as { events: Record<string, (args: any) =>void> };
 
     Object.keys(events).forEach(eventName => {
       this._element?.addEventListener(eventName, events[eventName]);

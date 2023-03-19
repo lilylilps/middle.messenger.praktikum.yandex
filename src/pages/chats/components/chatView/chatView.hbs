@@ -18,6 +18,11 @@
                     <p>Напишите первое сообщение в этом чате</p>
                 </div>
             {{/each}}
+            {{#if canLoadMoreMessages}}
+                <div class="chat__load-more-button">
+                    {{{loadMoreButton}}}
+                </div>
+            {{/if}}
         </div>
         <div class="chat__footer-content">
            <div class="chat__footer">
@@ -25,7 +30,7 @@
                     <img class="chat__footer_menu-icon" src="{{uploadIcon}}" alt="upload" />
                     {{{footerDropdownMenu}}}
                 </button>
-                <input class="chat__footer_input" name="message" placeholder="Сообщение" />
+                {{{chatInput}}}
                 {{{sendMessageButton}}}
            </div>
 

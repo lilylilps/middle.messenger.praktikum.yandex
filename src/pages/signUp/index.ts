@@ -1,17 +1,20 @@
 import template from './signUp.hbs';
 
+import {SignupData} from '../../api/AuthAPI';
+
 import {Button} from '../../components/button';
 import {Input, InputType} from '../../components/input';
+import {Toaster} from '../../components/toaster';
+
+import AuthController from '../../controllers/AuthController';
 
 import Block from '../../utils/Block';
 import {submitHandler} from '../../utils/submitHandler';
 import {validateInput} from '../../utils/validator';
+import Router from '../../utils/Router';
+import {logFormData} from '../../utils/formDataLogger';
 
 import {INPUTS} from '../../constants/constants';
-import Router from '../../utils/Router';
-import AuthController from '../../controllers/AuthController';
-import {logFormData} from '../../utils/formDataLogger';
-import {SignupData} from '../../api/AuthAPI';
 
 export class SignUpPage extends Block {
     init() {
@@ -145,18 +148,34 @@ export class SignUpPage extends Block {
                     )),
             },
         });
-    }
 
+        this.children.errorToaster = new Toaster({});
+        (this.children.errorToaster as Block).hide();
+    }
     
     onSubmit(event: Event, data: Block['children']) {
         const isValidForm = submitHandler(event, data);
 
-        if (isValidForm) {
+        const isEqualPasswords = this.checkPassword(
+            (this.children.newPasswordInput as Input).getValue(),
+            (this.children.repeatPasswordInput as Input).getValue()
+        );
+
+        if (!isEqualPasswords) {
+            (this.children.newPasswordInput as Input).setError('Пароли не совпадают');
+            (this.children.repeatPasswordInput as Input).setError('Пароли не совпадают');
+        }
+
+        if (isValidForm && isEqualPasswords) {
             AuthController.signup(logFormData(data) as SignupData);
         }
     }
 
     render() {
         return this.compile(template, this.props);
+    }
+
+    private checkPassword(lhs: string, rhs: string): boolean {
+        return lhs === rhs;
     }
 }

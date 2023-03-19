@@ -1,110 +1,190 @@
-import chatsApi, { ChangeChatAvatarData, ChatInfo, ChatsAPI } from '../api/ChatsAPI';
-import resourceApi, { ResourceAPI } from '../api/ResourceAPI';
-import store from '../utils/Store';
 import MessagesController from './MessagesController';
+import ToasterController from './ToasterController';
 
-//TODO: wrap on try/catch
+import chatsApi, {ChangeChatAvatarData, ChatInfo, ChatsAPI} from '../api/ChatsAPI';
+import resourceApi, {Resource, ResourceAPI} from '../api/ResourceAPI';
+import store from '../utils/Store';
+
 class ChatsController {
-  private readonly chatsApi: ChatsAPI;
-  private readonly resourceApi: ResourceAPI;
+	private readonly chatsApi: ChatsAPI;
+	private readonly resourceApi: ResourceAPI;
 
-  constructor() {
-    this.chatsApi = chatsApi;
-    this.resourceApi = resourceApi;
-  }
+	private offset: number = 0;
 
-  async create(title: string) {
-    await this.chatsApi.create(title);
+	constructor() {
+		this.chatsApi = chatsApi;
+		this.resourceApi = resourceApi;
+	}
 
-    this.fetchChats();
-  }
+	async create(title: string): Promise<void> {
+		try {
+			await this.chatsApi.create(title);
+			await this.fetchChats();
+		} catch (e: any) {
+			ToasterController.setFailure(e?.reason);
+			console.error(e);
+		}
 
-  async fetchChats(data?: any) {
-    const chats = await this.chatsApi.read(data || {});
+	}
 
-    chats.map(async (chat) => {
-      const token = await this.getToken(chat.id);
+	async fetchChats(data?: any): Promise<void> {
+		try {
+			const chats = await this.fetch(data || {});
+			this.updateLoadMore(chats);
+			store.set('chats', [...chats]);
+		} catch (e: any) {
+			ToasterController.setFailure(e?.reason);
+			console.error(e);
+		}
+	}
 
-      await MessagesController.connect(chat.id, token);
-    });
+	async loadMore() {
+		try {
+			this.offset += 10;
+			
+			const chats = await this.fetch({offset: this.offset});
+			const currentChats = store.getState().chats as ChatInfo[];
 
-    for (const chat of chats) {
-      if (chat.avatar) {
-        const chatImage = await this.resourceApi.read(chat.avatar);
-    
-        const imageObjectUrl = URL.createObjectURL(chatImage);
-        chat.avatar = imageObjectUrl;
-      }
-    }
+			this.updateLoadMore(chats);
 
-    store.set('chats', chats);
-  }
+			store.set('chats', [...currentChats, ...chats]);
+		} catch (e: any) {
+			this.offset -= 10;
+			ToasterController.setFailure(e?.reason);
+			console.error(e);
+		}
+	}
 
-  addUserToChat(id: number, userId: number) {
-    this.chatsApi.addUsers(id, [userId]);
-  }
+	async addUserToChat(id: number, userId: number): Promise<void> {
+		try {
+			await this.chatsApi.addUsers(id, [userId]);
+			ToasterController.setSuccess('Пользователь добавлен');
 
-  deleteUserFromChat(id: number, userId: number) {
-    this.chatsApi.deleteUsers(id, [userId]);
-  }
+			const chatUsers = await this.chatsApi.getUsers(id);
+			store.set('chatUsers', chatUsers);
+		} catch (e: any) {
+			ToasterController.setFailure(e?.reason);
+			console.error(e);
+		}
+	}
 
-  async getChatUsers(id: number) {
-    const chatUsers = await this.chatsApi.getUsers(id);
+	async deleteUserFromChat(id: number, userId: number): Promise<void> {
+		try {
+			await this.chatsApi.deleteUsers(id, [userId]);
+			ToasterController.setSuccess('Пользователь удален');
 
-    store.set('chatUsers', chatUsers);
-  }
+			const chatUsers = await this.chatsApi.getUsers(id);
+			store.set('chatUsers', chatUsers);
+		} catch (e: any) {
+			ToasterController.setFailure(e?.reason);
+			console.error(e);
+		}
+	}
 
-  async updateAvatar(data: ChangeChatAvatarData) {
-    try {
-      const chat = await this.chatsApi.updateAvatar(data);
-      
-      const imageObjectUrl = URL.createObjectURL(data.avatar);
-      chat.avatar = imageObjectUrl;
+	async updateAvatar(data: ChangeChatAvatarData): Promise<void> {
+		try {
+			const chat = await this.chatsApi.updateAvatar(data);
 
-      const chats = store.getState().chats as ChatInfo[];
+			const chats = store.getState().chats as ChatInfo[];
 
-      const chatIndex = chats.findIndex(ch => ch.id === data.id);
-      chats[chatIndex] = {...chats[chatIndex], avatar: chat.avatar};
+			const chatIndex = chats.findIndex(ch => ch.id === data.id);
+			chats[chatIndex] = {...chat};
 
-      store.set('chats', {...chats});
-    } catch (e: any) {
-      console.error(e);
-    }
-  }
+			store.set('chats', {...chats});
+		} catch (e: any) {
+			ToasterController.setFailure(e?.reason);
+			console.error(e);
+		}
+	}
 
-  updateChatMessages(id: number, content: string, count: number) {
-    const chats = store.getState().chats as ChatInfo[];
+	updateChatMessages(id: number, content: string, count: number): void {
+		const chats = store.getState().chats as ChatInfo[];
 
-	if (!chats) return;
+		if (!chats) return;
 
-    const chatIndex = chats.findIndex(ch => ch.id === id);
-    // TODO: поправить логику со счетчиком
-    chats[chatIndex] = 
-      {...chats[chatIndex], last_message: {...chats[chatIndex].last_message, content}, unread_count: count};
+		const chatIndex = chats.findIndex(ch => ch.id === id);
 
-    store.set('chats', {...chats});
-  }
+		if (chatIndex === -1) return;
 
-  async delete(id: number) {
-    await this.chatsApi.delete(id);
+		chats[chatIndex] = {
+			...chats[chatIndex],
+			last_message: {
+				...chats[chatIndex].last_message,
+				content
+			},
+			unread_count: count
+		};
 
-    this.fetchChats();
-  }
+		store.set('chats', {...chats});
+	}
 
-  getToken(id: number) {
-    return this.chatsApi.getToken(id);
-  }
+	async sendFiles(chatId: number, files: File[]): Promise<void> {
+		const resources = [] as Resource[];
+		for (const file of files) {
+			try {
+				const resource = await this.resourceApi.create(file);
+				resources.push(resource);
+			} catch (e: any) {
+				ToasterController.setFailure(e?.reason);
+		console.error(e);
+			}
+		}
 
-  selectChat(id: number) {
-    store.set('selectedChat', id);
-    const chats = store.getState().chats as ChatInfo[] || [];
+		resources.forEach(resource => MessagesController.sendFile(chatId, resource.id));
+	}
 
-    const chatIndex = chats.findIndex(ch => ch.id === id);
-    chats[chatIndex] = 
-      {...chats[chatIndex], unread_count: 0};
+	async delete(id: number): Promise<void> {
+		try {
+			await this.chatsApi.delete(id);
 
-    store.set('chats', {...chats});
-  }
+			store.set('selectedChat', undefined);
+			await this.fetchChats();
+		} catch (e: any) {
+			ToasterController.setFailure(e?.reason);
+			console.error(e);
+		}
+	}
+
+	async selectChat(id: number): Promise<void> {
+		const chats = store.getState().chats as ChatInfo[] || [];
+
+		const chatIndex = chats.findIndex(ch => ch.id === id);
+		chats[chatIndex] = {...chats[chatIndex], unread_count: 0};
+
+		store.set('chats', {...chats});
+		store.set('selectedChat', id);
+
+		try {
+			const chatUsers = await this.chatsApi.getUsers(id);
+			store.set('chatUsers', chatUsers);
+		} catch (e: any) {
+			ToasterController.setFailure(e?.reason);
+			console.error(e);
+		}
+	}
+
+	private async fetch(data?: any): Promise<ChatInfo[]> {
+		const chats = await this.chatsApi.read(data || {});
+
+		for (const chat of chats) {
+			const token = await this.getToken(chat.id);
+			await MessagesController.connect(chat.id, token);
+		}
+
+		return chats;
+	}
+
+	private async getToken(id: number): Promise<string> {
+		return this.chatsApi.getToken(id);
+	}
+
+	private updateLoadMore(chats: ChatInfo[]): void {
+		if (chats.length < 10) {
+			store.set('canLoadMoreChats', false);
+		} else {
+			store.set('canLoadMoreChats', true);
+		}  
+	}
 }
 
 export default new ChatsController();

@@ -34,10 +34,11 @@ class HTTPTransport {
         });
     }
   
-    public post<Response = void>(path: string, data?: unknown): Promise<Response> {
+    public post<Response = void>(path: string, data?: unknown, contentType?: string): Promise<Response> {
         return this.request<Response>(this.endpoint + path, {
             method: Method.Post,
             data,
+            contentType,
         });
     }
   
@@ -45,7 +46,7 @@ class HTTPTransport {
         return this.request<Response>(this.endpoint + path, {
             method: Method.Put,
             data,
-            contentType
+            contentType,
         });
     }
   

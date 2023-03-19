@@ -1,5 +1,7 @@
 import template from './chatView.hbs';
 
+import {RESOURCE_URL} from '../../../../api/ResourceAPI';
+
 import {ChatMessage} from '../chatMessage';
 import {Avatar} from '../../../../components/avatar';
 import {DropdownMenu} from '../../../../components/dropdownMenu';
@@ -7,12 +9,21 @@ import {ButtonWithIcon} from '../../../../components/buttonWithIcon';
 import {DropdownMenuButton} from '../../../../components/dropdownMenuItem/dropdownMenuButton';
 import {DropdownMenuInput} from '../../../../components/dropdownMenuItem/dropdownMenuInput';
 import {ImagePreview} from '../../../../components/imagePreview';
-import {FilePreview} from '../../../../components/filePreview';
+import {FilesPreview} from '../../../../components/filePreview';
 import {DeleteUserModal} from './components/deleteUserModal';
 import {DeleteChatModal} from './components/deleteChatModal';
 import {AddUserModal} from './components/addUserModal';
+import {withStore} from '../../../../utils/Store';
+import {ChatInput} from './components/chatInput';
+import {Button} from '../../../../components/button';
 
 import Block from '../../../../utils/Block';
+import isEqualArrays from '../../../../utils/isEqualArrays';
+
+import MessageController, {Message} from '../../../../controllers/MessagesController';
+import ChatsController from '../../../../controllers/ChatsController';
+
+import {User} from '../../../../models/user';
 
 import menuIcon from '../../../../../static/icons/menu.svg';
 import uploadIcon from '../../../../../static/icons/clip.svg';
@@ -25,21 +36,21 @@ import attachImageIcon from '../../../../../static/icons/img-attach.svg';
 import attachFileIcon from '../../../../../static/icons/file-attach.svg';
 import avatar from '../../../../../static/icons/samoyed.png';
 
-import MessageController, { Message } from '../../../../controllers/MessagesController';
-import { withStore } from '../../../../utils/Store';
-import ChatsController from '../../../../controllers/ChatsController';
-import { User } from '../../../../api/AuthAPI';
-
-
 interface ChatViewProps {
-    image?: string;
-    name?: string;
+    image: string;
+    name: string;
     selectedChat: number | undefined;
+    selectedChatUsers: User[];
     messages: Message[];
     userId: number;
+    canLoadMoreMessages: boolean;
+    menuIcon?: string;
+    uploadIcon?: string;
 }
 
-class ChatViewBase extends Block {
+class ChatViewBase extends Block<ChatViewProps> {
+    private offset: number = 0;
+
     constructor(props: ChatViewProps) {
         super({...props, menuIcon: menuIcon, uploadIcon: uploadIcon});
     }
@@ -55,14 +66,28 @@ class ChatViewBase extends Block {
             alt: 'Send message',
             direction: 'right',
             events: {
+                click: () => this.sendMessage()
+            }
+        });
+
+        this.children.chatInput = new ChatInput({
+            events: {
+                keyup: (event: KeyboardEvent) => {
+                    if (event.key === "Enter") {
+                        this.sendMessage();
+                    }
+                }
+            }
+        });
+
+        this.children.loadMoreButton = new Button({
+            label: 'Загрузить старые сообщения',
+            color: 'transparent-blue',
+            type: 'button',
+            events: {
                 click: () => {
-                    const input = document.querySelector("[name='message']") as HTMLInputElement;
-                    const message = input!.value || '';
-
-                    input!.value = '';
-
-                    if (message) 
-                        MessageController.sendMessage(this.props.selectedChat, message);
+                    this.offset += 20;
+                    MessageController.fetchMessages(this.props.selectedChat!, this.offset);
                 }
             }
         });
@@ -98,7 +123,7 @@ class ChatViewBase extends Block {
         });
 
         this.children.imagesPreview = new ImagePreview({});
-        this.children.filesPreview = new FilePreview({});
+        this.children.filesPreview = new FilesPreview({});
 
         this.children.footerDropdownMenu = new DropdownMenu({
             items: [
@@ -110,7 +135,10 @@ class ChatViewBase extends Block {
                     events: {
                         onFileUpload: (files: File[]) => {
                             (this.children.imagesPreview as ImagePreview)
-                                .setProps({images: files.map(file => URL.createObjectURL(file))});
+                                .setProps({
+                                    files: files,
+                                    imagesPreview: files.map(file => URL.createObjectURL(file))
+                                });
                         }
                     }
                 }),
@@ -121,11 +149,13 @@ class ChatViewBase extends Block {
                     fileType: 'file',
                     events: {
                         onFileUpload: (files: File[]) => {
-                            (this.children.filesPreview as FilePreview)
-                                .setProps({files: files.map(file => {
-                                    return {
-                                        name: file.name,
-                                        icon: fileIcon
+                            (this.children.filesPreview as FilesPreview)
+                                .setProps({
+                                    files: files,
+                                    filesPreview: files.map(file => {
+                                        return {
+                                            name: file.name,
+                                            icon: fileIcon
                                     };
                                 })
                             });
@@ -138,22 +168,19 @@ class ChatViewBase extends Block {
 
         this.children.addUserModal = new AddUserModal({
             events: {
-                onUserAdd: (user: User) => ChatsController.addUserToChat(this.props.selectedChat, user.id)
+                onUserAdd: (user: User) => ChatsController.addUserToChat(this.props.selectedChat!, user.id)
             }
         });
 
         this.children.deleteUserModal = new DeleteUserModal({
             events: {
-                onUserDelete: (user: User) => ChatsController.deleteUserFromChat(this.props.selectedChat, user.id)
+                onUserDelete: (user: User) => ChatsController.deleteUserFromChat(this.props.selectedChat!, user.id)
             }
         });
 
         this.children.deleteChatModal = new DeleteChatModal({
             events: {
-                onChatDelete: () => {
-                    ChatsController.delete(this.props.selectedChat);
-                    console.log('Chat was deleted');
-                }
+                onChatDelete: () => ChatsController.delete(this.props.selectedChat!)
             }
         });
         
@@ -181,19 +208,23 @@ class ChatViewBase extends Block {
         return this.compile(template, this.props);
     }
 
-    protected componentDidUpdate(_oldProps: ChatViewProps, newProps: ChatViewProps): boolean {
-        if (this.props.selectedChat)
-            ChatsController.getChatUsers(this.props.selectedChat);
+    protected componentDidUpdate(oldProps: ChatViewProps, newProps: ChatViewProps): boolean {
+        if (!isEqualArrays(oldProps.messages, newProps.messages))
+            this.children.messages = this.createMessages(newProps);
 
-        this.children.messages = this.createMessages(newProps);
+        if (this.props.selectedChat !== newProps.selectedChat) {
+            this.children.imagesPreview = new ImagePreview({});
+            this.children.filesPreview = new FilesPreview({});
+            (this.children.chatInput as ChatInput).clear();
+        }
 
         this.children.chatImage = new Avatar({
-            image: newProps.image ?? avatar,
+            image: this.props.image && `${RESOURCE_URL}${this.props.image}` || avatar,
             size: 'small',
             canUpdate: true,
             events: {
                 onChangeAvatar: (file: File) =>
-                    ChatsController.updateAvatar({id: this.props.selectedChat, avatar: file})
+                    ChatsController.updateAvatar({id: this.props.selectedChat!, avatar: file})
             }
         });
 
@@ -201,11 +232,55 @@ class ChatViewBase extends Block {
     }
     
     private createMessages(props: ChatViewProps) {
-        return props.messages?.map(data => {
-            return new ChatMessage({type: 'text',
-            text: data.content,
-            time: data.time, position: props.userId === data.user_id ? 'right' : 'left' });
+        return props.messages?.map((data: Message) => {
+            const messageAuthor = props.selectedChatUsers?.find(user => user.id === data.user_id);
+
+            if (data.file) {
+                return new ChatMessage({
+                    id: data.id,
+                    type: 'image',
+                    content: {
+                        src: `${RESOURCE_URL}${data.file.path}`
+                    },
+                    time: data.time,
+                    position: props.userId === data.user_id ? 'right' : 'left',
+                    author: props.userId !== data.user_id
+                        ? messageAuthor?.display_name || messageAuthor?.login
+                        : ''
+                });
+            }
+
+            return new ChatMessage({
+                id: data.id,
+                type: 'text',
+                text: data.content,
+                time: data.time,
+                position: props.userId === data.user_id ? 'right' : 'left',
+                author: props.userId !== data.user_id
+                        ? messageAuthor?.display_name || messageAuthor?.login
+                        : ''
+            });
         }) || [];
+    }
+
+    private sendMessage(): void {
+        const input = this.children.chatInput as ChatInput;
+        const message = input.getValue();
+
+        input.clear();
+
+        if (message) 
+            MessageController.sendMessage(this.props.selectedChat!, message);
+
+        const imagesPreview = (this.children.imagesPreview as ImagePreview);
+        const filesPreview = (this.children.filesPreview as FilesPreview);
+        const files = [...imagesPreview.getFiles(), ...filesPreview.getFiles()];
+
+        if (files)
+            ChatsController.sendFiles(this.props.selectedChat!, files).finally(() => {
+                imagesPreview.clear();
+                filesPreview.clear();
+            });
     }
 }
 
@@ -222,10 +297,12 @@ const withSelectedChatView = withStore(state => {
   
     return {
         messages: (state.messages || {})[selectedChatId] || [],
-        selectedChat: state.selectedChat,
+        selectedChat: state.selectedChat || undefined,
+        selectedChatUsers: state.chatUsers || [],
         userId: state.user.id,
         name: state.chats.find(chat => chat.id === selectedChatId)?.title,
-        image: state.chats.find(chat => chat.id === selectedChatId)?.avatar || avatar
+        image: state.chats.find(chat => chat.id === selectedChatId)?.avatar,
+        canLoadMoreMessages: (state.canLoadMoreMessages || {})[selectedChatId] || false,
     };
 });
   
