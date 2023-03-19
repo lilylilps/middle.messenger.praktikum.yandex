@@ -18,7 +18,6 @@ import {ChatInput} from './components/chatInput';
 import {Button} from '../../../../components/button';
 
 import Block from '../../../../utils/Block';
-import isEqualArrays from '../../../../utils/isEqualArrays';
 
 import MessageController, {Message} from '../../../../controllers/MessagesController';
 import ChatsController from '../../../../controllers/ChatsController';
@@ -208,9 +207,8 @@ class ChatViewBase extends Block<ChatViewProps> {
         return this.compile(template, this.props);
     }
 
-    protected componentDidUpdate(oldProps: ChatViewProps, newProps: ChatViewProps): boolean {
-        if (!isEqualArrays(oldProps.messages, newProps.messages))
-            this.children.messages = this.createMessages(newProps);
+    protected componentDidUpdate(_: ChatViewProps, newProps: ChatViewProps): boolean {
+        this.children.messages = this.createMessages(newProps);
 
         if (this.props.selectedChat !== newProps.selectedChat) {
             this.children.imagesPreview = new ImagePreview({});
