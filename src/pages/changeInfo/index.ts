@@ -1,33 +1,44 @@
 import template from './changeInfo.hbs';
 
+import {ChangeProfileData} from '../../api/UserAPI';
+import {RESOURCE_URL} from '../../api/ResourceAPI';
+
 import {Button} from '../../components/button';
 import {Input, InputType} from '../../components/input';
 import {Avatar} from '../../components/avatar';
 import {AsideNavigation} from '../../components/asideNavigation';
+import {Toaster} from '../../components/toaster';
 
 import Block from '../../utils/Block';
-import {renderDOM} from '../../utils/router';
 import {submitHandler} from '../../utils/submitHandler';
 import {validateInput} from '../../utils/validator';
+import Router from '../../utils/router';
+import {withStore} from '../../utils/Store';
+import {logFormData} from '../../utils/formDataLogger';
+
+import UserController from '../../controllers/UserController';
 
 import {INPUTS} from '../../constants/constants';
+import {User} from '../../models/user';
 
 import avatar from '../../../static/icons/samoyed.png';
 
-export class ChangeInfoPage extends Block {
+interface ChangeInfoPageProps extends User {}
+
+export class ChangeInfoPageBase extends Block<ChangeInfoPageProps> {
     init() {
         this.children.asideNavigation = new AsideNavigation({
             events: {
-                click: () => renderDOM('profile'),
+                click: () => Router.go('/profile'),
             }
         });
 
         this.children.avatar = new Avatar({
-            image: avatar,
+            image: this.props.avatar && `${RESOURCE_URL}${this.props.avatar}` || avatar,
             size: 'large',
-            canUpdate: true,
+            canUpdate: false,
             events: {
-                onChangeAvatar: (file: File) => console.log(file)
+                onChangeAvatar: () => {}
             }
         });
 
@@ -36,7 +47,7 @@ export class ChangeInfoPage extends Block {
             color: 'blue',
             type: 'submit',
             events: {
-                click: (event: Event) => submitHandler(event, this.children, 'profile'),
+                click: (event: Event) => this.onSubmit(event, this.children),
             },
         });
 
@@ -45,7 +56,7 @@ export class ChangeInfoPage extends Block {
             name: INPUTS['email'].name,
             label: INPUTS['email'].label,
             type: INPUTS['email'].type as InputType,
-            placeholder: INPUTS['email'].placeholder,
+            value: this.props['email'],
             required: true,
             events: {
                 focusin: () => (this.children.emailInput as Input).setError(null),
@@ -61,7 +72,7 @@ export class ChangeInfoPage extends Block {
             name: INPUTS['login'].name,
             label: INPUTS['login'].label,
             type: INPUTS['login'].type as InputType,
-            placeholder: INPUTS['login'].placeholder,
+            value: this.props['login'],
             required: true,
             events: {
                 focusin: () => (this.children.loginInput as Input).setError(null),
@@ -74,10 +85,10 @@ export class ChangeInfoPage extends Block {
 
         this.children.firstNameInput = new Input({
             direction: 'horizontal',
-            name: INPUTS['firstName'].name,
-            label: INPUTS['firstName'].label,
-            type: INPUTS['firstName'].type as InputType,
-            placeholder: INPUTS['firstName'].placeholder,
+            name: INPUTS['first_name'].name,
+            label: INPUTS['first_name'].label,
+            type: INPUTS['first_name'].type as InputType,
+            value: this.props['first_name'],
             required: true,
             events: {
                 focusin: () => (this.children.firstNameInput as Input).setError(null),
@@ -90,10 +101,10 @@ export class ChangeInfoPage extends Block {
 
         this.children.secondNameInput = new Input({
             direction: 'horizontal',
-            name: INPUTS['secondName'].name,
-            label: INPUTS['secondName'].label,
-            type: INPUTS['secondName'].type as InputType,
-            placeholder: INPUTS['secondName'].placeholder,
+            name: INPUTS['second_name'].name,
+            label: INPUTS['second_name'].label,
+            type: INPUTS['second_name'].type as InputType,
+            value: this.props['second_name'],
             required: true,
             events: {
                 focusin: () => (this.children.secondNameInput as Input).setError(null),
@@ -109,7 +120,7 @@ export class ChangeInfoPage extends Block {
             name: INPUTS['phone'].name,
             label: INPUTS['phone'].label,
             type: INPUTS['phone'].type as InputType,
-            placeholder: INPUTS['phone'].placeholder,
+            value: this.props['phone'],
             required: true,
             events: {
                 focusin: () => (this.children.phoneInput as Input).setError(null),
@@ -122,10 +133,10 @@ export class ChangeInfoPage extends Block {
 
         this.children.displayNameInput = new Input({
             direction: 'horizontal',
-            name: INPUTS['displayName'].name,
-            label: INPUTS['displayName'].label,
-            type: INPUTS['displayName'].type as InputType,
-            placeholder: INPUTS['displayName'].placeholder,
+            name: INPUTS['display_name'].name,
+            label: INPUTS['display_name'].label,
+            type: INPUTS['display_name'].type as InputType,
+            value: this.props['display_name'],
             required: true,
             events: {
                 focusin: () => (this.children.displayNameInput as Input).setError(null),
@@ -135,9 +146,24 @@ export class ChangeInfoPage extends Block {
                     )),
             },
         });
+
+        this.children.errorToaster = new Toaster({});
+        (this.children.errorToaster as Block).hide();
+    }
+
+    onSubmit(event: Event, data: Block['children']): void {
+        const isValidForm = submitHandler(event, data);
+
+        if (isValidForm) {
+            UserController.updateProfile(logFormData(data) as ChangeProfileData);
+        }
     }
 
     render() {
         return this.compile(template, this.props);
     }
 }
+
+export const ChangeInfoPage = withStore((state) => {
+    return state.user || {};
+})(ChangeInfoPageBase);

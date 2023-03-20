@@ -1,4 +1,9 @@
 <div class="chat-message chat-message-{{position}}">
+    {{#if author}}
+        <p class="chat-message__author">
+            {{author}}
+        </p>
+    {{/if}}
     {{#switch type}} 
         {{#case 'image'}}
             <img class="chat-message__media" src="{{content.src}}" alt="message photo" />

@@ -19,7 +19,7 @@ interface ButtonWitIconProps {
     };
 }
 
-export class ButtonWithIcon extends Block {
+export class ButtonWithIcon extends Block<ButtonWitIconProps> {
     constructor(props: ButtonWitIconProps) {
         super(props);
     }

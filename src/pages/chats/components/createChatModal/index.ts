@@ -13,7 +13,7 @@ interface CreateChatModalProps {
     }
 }
 
-export class CreateChatModal extends Block {
+export class CreateChatModal extends Block<CreateChatModalProps> {
     constructor(props: CreateChatModalProps) {
         super(props);
     }
@@ -40,6 +40,7 @@ export class CreateChatModal extends Block {
                         input.setError('Название чата не может быть пустым');
                     } else {
                         this.props.events.onChatCreated(chatName);
+                        input.clear();
                         this.hide();
                     }
                 }
@@ -53,7 +54,11 @@ export class CreateChatModal extends Block {
             size: 'small',
             alt: 'Close',
             events: {
-                click: () => this.hide()
+                click: () => {
+                    const input = (this.children.chatNameInput as Input);
+                    input.clear();
+                    this.hide();
+                }
             }
         });
     }

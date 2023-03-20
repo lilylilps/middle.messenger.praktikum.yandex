@@ -1,30 +1,47 @@
 import template from './deleteUserModal.hbs';
 
+import {ChatUserList} from './chatUserList';
+
 import {Button} from '../../../../../../components/button';
 import {Input} from '../../../../../../components/input';
 import {ButtonWithIcon} from '../../../../../../components/buttonWithIcon';
 
 import Block from '../../../../../../utils/Block';
+
+import {User} from '../../../../../../models/user';
+
 import closeIcon from '../../../../../../../static/icons/close.svg';
 
 interface DeleteUserModalProps {
     events: {
-        onUserDelete: (userName: string) => void
+        onUserDelete: (user: User) => void
     }
 }
 
-export class DeleteUserModal extends Block {
+export class DeleteUserModal extends Block<DeleteUserModalProps> {
+    private userToDelete: User | undefined = undefined;
+
     constructor(props: DeleteUserModalProps) {
         super(props);
     }
 
     init() {
-        this.children.userNameInput = new Input({
+        this.children.userLoginInput = new Input({
             direction: 'vertical',
-            label: 'Имя',
-            name: 'user_name',
+            label: '',
+            name: 'userLogin',
             type: 'text',
-            placeholder: 'Имя пользователя'
+            placeholder: 'Выберите пользователя'
+        });
+
+        this.children.chatUserList = new ChatUserList({
+            events: {
+                onUserSelect: (user: User) => {
+                    (this.children.chatUserList as Block).hide();
+                    (this.children.userLoginInput as Input).setProps({ value: user.login });
+                    this.userToDelete = {...user};
+                }
+            }
         });
 
         this.children.confirmButton = new Button({
@@ -33,13 +50,14 @@ export class DeleteUserModal extends Block {
             type: 'submit',
             events: {
                 click: () => {
-                    const input = (this.children.userNameInput as Input);
+                    const input = (this.children.userLoginInput as Input);
                     const userName = input.getValue();
 
                     if (!userName) {
                         input.setError('Укажите имя пользователя');
                     } else {
-                        this.props.events.onUserDelete(userName);
+                        this.props.events.onUserDelete(this.userToDelete!);
+                        input.clear();
                         this.hide();
                     }
                 }
@@ -53,7 +71,11 @@ export class DeleteUserModal extends Block {
             size: 'small',
             alt: 'Close',
             events: {
-                click: () => this.hide()
+                click: () => {
+                    const input = (this.children.userLoginInput as Input);
+                    input.clear();
+                    this.hide();
+                }
             }
         });
     }

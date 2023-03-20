@@ -1,18 +1,18 @@
 import { EventBus } from "./EventBus";
 import { nanoid } from 'nanoid';
 
-type Props = Record<string, any>;
+type Props<P extends Record<string, any> = any> = { events?: Record<string, (args: any) => void> } & P;
 
-class Block {
+class Block<P extends Record<string, any> = any> {
   static EVENTS = {
     INIT: "init",
     FLOW_CDM: "flow:component-did-mount",
     FLOW_CDU: "flow:component-did-update",
     FLOW_RENDER: "flow:render"
-  };
+  } as const;
 
   public id = nanoid(6);
-  protected props: Props;
+  protected props: Props<P>;
   public children: Record<string, Block | Block[]>;
   private eventBus: () => EventBus;
   private _element: HTMLElement | null = null;
@@ -22,7 +22,7 @@ class Block {
    *
    * @returns {void}
    */
-  constructor(propsWithChildren: Props = {}) {
+  constructor(propsWithChildren: Props<P> = {} as Props<P>) {
     const eventBus = new EventBus();
 
     const { props, children } = this._getChildrenAndProps(propsWithChildren);
@@ -37,8 +37,8 @@ class Block {
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  _getChildrenAndProps(childrenAndProps: Props) {
-    const props: Props = {};
+  _getChildrenAndProps(childrenAndProps: Props<P>): { props: Props<P>, children: Record<string, Block | Block[]> } {
+    const props = {} as Record<string, any>;
     const children: Record<string, Block | Block[]> = {};
 
     Object.entries(childrenAndProps).forEach(([key, value]) => {
@@ -51,11 +51,11 @@ class Block {
       }
     });
 
-    return { props, children };
+    return { props: props as Props<P>, children };
   }
 
   _addEvents() {
-    const {events = {}} = this.props as { events: Record<string, () =>void> };
+    const {events = {}} = this.props as { events: Record<string, (args: any) =>void> };
 
     Object.keys(events).forEach(eventName => {
       this._element?.addEventListener(eventName, events[eventName]);
@@ -101,18 +101,18 @@ class Block {
     });
   }
 
-  private _componentDidUpdate(oldProps: Props, newProps: Props) {
+  private _componentDidUpdate(oldProps: Props<P>, newProps: Props<P>) {
     if (this.componentDidUpdate(oldProps, newProps)) {
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected componentDidUpdate(_oldProps: Props, _newProps: Props) {
+  protected componentDidUpdate(_oldProps: Props<P>, _newProps: Props<P>) {
     return true;
   }
 
-  setProps = (nextProps: Props) => {
+  setProps = (nextProps: Partial<Props<P>>) => {
     if (!nextProps) {
       return;
     }
@@ -189,23 +189,21 @@ class Block {
     return this.element;
   }
 
-  _makePropsProxy(props: Props) {
-    const self = this;
-
+  _makePropsProxy(props: Props<P>) {
     return new Proxy(props, {
-      get(target: Props, prop: string) {
+      get: (target: Props<P>, prop: string) => {
         const value = target[prop];
         return typeof value === "function" ? value.bind(target) : value;
       },
-      set(target: Props, prop: string, value) {
+      set: (target: Props<P>, prop: string, value) => {
         const oldTarget = { ...target };
 
-        target[prop] = value;
+        target[prop as keyof Props<P>] = value;
 
-        self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+        this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
         return true;
       },
-      deleteProperty() {
+      deleteProperty: () => {
         throw new Error("Нет доступа");
       }
     });
