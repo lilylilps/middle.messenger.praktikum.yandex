@@ -9,11 +9,6 @@
     "lint": "eslint --ext .js,.ts .",
     "test": "mocha --require ts-node/register src/**/*.spec.ts"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm-run-all test lint"
-    }
-  },
   "author": "Lily",
   "license": "ISC",
   "devDependencies": {
