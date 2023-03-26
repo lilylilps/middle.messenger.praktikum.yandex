@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Messager project for Yandex Praktikum",
   "scripts": {
+    "prepare": "husky install",
     "dev": "webpack serve --mode development",
     "build": "webpack --mode production",
     "lint": "eslint --ext .js,.ts .",
@@ -10,7 +11,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo \"[Husky] pre-commit\""
+      "pre-commit": "npm-run-all test lint"
     }
   },
   "author": "Lily",
@@ -50,8 +51,6 @@
   },
   "dependencies": {
     "babel-loader": "9.1.2",
-    "express": "4.18.2",
-    "express-history-api-fallback": "2.2.1",
     "handlebars": "4.7.7"
   }
 }
