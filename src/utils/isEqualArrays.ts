@@ -8,7 +8,6 @@ function isEqualArrays(a: any[], b: any[]): boolean {
     }
 
     return true;
-    
 }
 
 export default isEqualArrays;
