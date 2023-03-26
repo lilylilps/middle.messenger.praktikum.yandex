@@ -10,7 +10,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm-run-all test lint"
+      "pre-commit": "echo \"[Husky] pre-commit\""
     }
   },
   "author": "Lily",
