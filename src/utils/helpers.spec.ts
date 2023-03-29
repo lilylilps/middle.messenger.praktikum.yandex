@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {set} from './helpers';
 
 describe('Set function', () => {
-    const key = 'eky';
+    const key = 'key';
     const value = 'test value';
         
     let obj: Record<string, unknown>;
