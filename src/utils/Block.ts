@@ -89,9 +89,9 @@ class Block<P extends Record<string, any> = any> {
     this.componentDidMount();
   }
 
-  componentDidMount() {}
+  protected componentDidMount() {}
 
-  public dispatchComponentDidMount() {
+  protected dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 
     Object.values(this.children).forEach(child => {

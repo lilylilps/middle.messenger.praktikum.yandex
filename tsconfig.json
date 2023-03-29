@@ -9,7 +9,10 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "sourceMap": true,
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "esModuleInterop": true
     },
-    "ts-node": { "files": true }
+    "ts-node": {
+        "files": true
+    }
 }

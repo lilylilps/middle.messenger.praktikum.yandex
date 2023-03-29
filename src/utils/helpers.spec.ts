@@ -26,7 +26,7 @@ describe('Set function', () => {
     });
 
     it('should throw an error if path is not string', () => {
-        const path = 10;
+        const path = 5;
 
         // @ts-ignore
         const f = () => set(obj, path, value);
