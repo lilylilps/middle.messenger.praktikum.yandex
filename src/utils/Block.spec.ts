@@ -26,7 +26,7 @@ describe('Block', () => {
         expect(eventBusMock.emit.calledWith('init')).to.eq(true);
     });
 
-    it.only('should change props on setProps', () => {
+    it('should change props on setProps', () => {
         class ComponentMock extends Block {
             props: {
                 title: ''
