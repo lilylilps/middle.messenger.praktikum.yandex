@@ -10,5 +10,6 @@
         "noUnusedParameters": true,
         "sourceMap": true,
         "strictNullChecks": true
-   }
+    },
+    "ts-node": { "files": true }
 }

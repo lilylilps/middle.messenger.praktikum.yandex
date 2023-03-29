@@ -2,7 +2,7 @@ import {assert} from "chai";
 import isEqualArrays from "./isEqualArrays";
  
 describe("Equal arrays", () => {
-    it("Equal arrays should return true", () => {
+    it("should return true if equal", () => {
         const a = [1, 2, 3];
         const b = [1, 2, 3];
 
@@ -10,7 +10,7 @@ describe("Equal arrays", () => {
         assert.isTrue(result);
     });
 
-    it("Not equal arrays should return false", () => {
+    it("should return false if not equal", () => {
         const a = [1, 2];
         const b = [1, 2, 3];
 
