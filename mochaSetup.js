@@ -19,3 +19,6 @@ require.extensions['.hbs'] = function (module, filename) {
 require.extensions['.pcss'] = function () {
   module.exports = () => ({});
 };
+
+require.extensions['.svg'] = () => 1;
+require.extensions['.png'] = () => 1;

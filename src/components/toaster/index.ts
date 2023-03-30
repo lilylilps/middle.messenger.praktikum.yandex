@@ -27,7 +27,7 @@ class ToasterBase extends Block<ToasterProps> {
             this.timer = setTimeout(() => {
                 this.hide();
                 ToasterController.clear();
-            }, 3000);
+            }, 3000) as unknown as number;
         }
 
         return true;

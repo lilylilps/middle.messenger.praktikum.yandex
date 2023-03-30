@@ -3,6 +3,7 @@ import sinon from 'sinon';
 
 import Router from './router';
 import Block from './Block';
+import {Routes} from '../..';
 
 describe('Router', () => {
     let originalBack = global.window.history.back;
@@ -39,7 +40,15 @@ describe('Router', () => {
         expect(result).to.eq(Router);
     });
 
-    it('should render a page on history back action', () => {
+    it("should render a page within start method", () => {
+        Router
+            .use('/', BlockMock)
+            .start();
+    
+        expect(getContentFake.callCount).to.eq(1);
+    });
+
+    it('should render a page on history back', () => {
         Router
             .use('/', BlockMock)
             .start();
@@ -49,7 +58,7 @@ describe('Router', () => {
         expect(getContentFake.callCount).to.eq(1);
     });
 
-    it('should render a page on history forward action', () => {
+    it('should render a page on history forward', () => {
         Router
             .use('/', BlockMock)
             .start();
@@ -58,4 +67,15 @@ describe('Router', () => {
 
         expect(getContentFake.callCount).to.eq(1);
     });
+
+    it("should go to a passed page", () => {
+        Router
+            .use('/', BlockMock)
+            .use(Routes.Profile, BlockMock)
+            .start();
+    
+        Router.go(Routes.Profile);
+    
+        expect(getContentFake.callCount).to.eq(2);
+      });
 });

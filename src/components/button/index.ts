@@ -5,7 +5,7 @@ import Block from '../../utils/Block';
 export type ButtonColors = 'blue' | 'red' | 'transparent-blue' | 'transparent-red' | 'transparent-grey';
 export type ButtonTypes = 'button' | 'submit';
 
-interface ButtonProps {
+export interface ButtonProps {
     label: string;
     color: ButtonColors;
     type: ButtonTypes;

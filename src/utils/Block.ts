@@ -121,7 +121,7 @@ class Block<P extends Record<string, any> = any> {
   };
 
   get element() {
-    return this._element;
+    return this._element as HTMLElement;
   }
 
   private _render() {

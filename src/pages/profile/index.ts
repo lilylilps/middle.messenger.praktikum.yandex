@@ -78,8 +78,11 @@ class ProfilePageBase extends Block<ProfilePageProps> {
 
         this.children.inputs = PROFILE_INPUTS.map(input => new Input({
             direction: 'horizontal',
+            // @ts-ignore
             name: INPUTS[input].name,
+            // @ts-ignore
             label: INPUTS[input].label,
+            // @ts-ignore
             type: INPUTS[input].type as InputType,
             value: this.props[input],
             disabled: true

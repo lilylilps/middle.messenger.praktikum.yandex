@@ -43,8 +43,8 @@ export default class WebSocketTransport extends EventBus {
 
     private setupPing() {
         this.pingInterval = setInterval(() => {
-        this.send({ type: 'ping' });
-        }, 5000);
+            this.send({ type: 'ping' });
+        }, 5000) as unknown as number;
 
         this.on(WebSocketTransportEvents.Close, () => {
             clearInterval(this.pingInterval);

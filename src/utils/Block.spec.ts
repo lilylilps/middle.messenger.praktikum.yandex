@@ -8,6 +8,8 @@ const eventBusMock = {
     emit: sinon.fake(),
 };
 
+const getContentFake = sinon.fake.returns(document.createElement('div'));
+
 const {default: Block} = proxyquire('./Block', {
     './EventBus': {
         EventBus: class {
@@ -31,18 +33,33 @@ describe('Block', () => {
             props: {
                 title: ''
             };
-            setProps: (nextProps: Partial<any>) => void;
         }
 
         const component = new ComponentMock();
-        component.setProps({title: 'test'});
+        component.setProps({ title: 'test' });
 
         expect(component.props.title).to.eq('test');
     });
 
-    it('should return html element on getContent', () => {});
+    it('should change display property on show', () => {
+        class ComponentMock extends Block {
+            getContent = getContentFake;
+        }
 
-    it('should change display property on show', () => {});
+        const component = new ComponentMock();
+        component.show('block');
 
-    it('should change display property on hide', () => {});
+        expect(component.getContent().style.display).to.equal("block");
+    });
+
+    it('should change display property on hide', () => {
+        class ComponentMock extends Block {
+            getContent = getContentFake;
+        }
+
+        const component = new ComponentMock();
+        component.hide();
+
+        expect(component.getContent().style.display).to.equal("none");
+    });
 });
