@@ -23,7 +23,7 @@ describe('Button', () => {
         const button = new ButtonMock(buttonMockProps);
         const element = button.element;
 
-        expect(element).to.be.instanceof(window.HTMLButtonElement)
+        expect(element).to.be.instanceof(window.HTMLButtonElement);
     });
 
     it('should call passed function on click', () => {
