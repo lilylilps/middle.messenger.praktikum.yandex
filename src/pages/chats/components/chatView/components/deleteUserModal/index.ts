@@ -21,7 +21,7 @@ interface DeleteUserModalProps {
 }
 
 class DeleteUserModalBase extends Block<DeleteUserModalProps> {
-    private userToDelete: User | undefined = undefined;
+    private userToDelete?: User;
 
     constructor(props: DeleteUserModalProps) {
         super(props);

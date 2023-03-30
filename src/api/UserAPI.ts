@@ -41,11 +41,6 @@ export class UserAPI extends BaseAPI {
 	getUser(login: string): Promise<void> {
 		return this.http.post('/search', { login });
 	}
-
-	read = undefined;
-	create = undefined;
-	update = undefined;
-	delete = undefined;
 }
 
 export default new UserAPI();
