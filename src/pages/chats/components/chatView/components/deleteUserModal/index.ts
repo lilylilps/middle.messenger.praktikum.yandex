@@ -33,7 +33,8 @@ class DeleteUserModalBase extends Block<DeleteUserModalProps> {
             label: '',
             name: 'userLogin',
             type: 'text',
-            placeholder: 'Выберите пользователя'
+            placeholder: 'Выберите пользователя',
+            disabled: true
         });
 
         this.children.chatUserList = new UserList({
@@ -57,7 +58,7 @@ class DeleteUserModalBase extends Block<DeleteUserModalProps> {
                     const userName = input.getValue();
 
                     if (!userName) {
-                        input.setError('Укажите имя пользователя');
+                        input.setError('Выберите пользователя');
                     } else {
                         this.props.events.onUserDelete(this.userToDelete!);
                         input.clear();

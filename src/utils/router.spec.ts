@@ -40,7 +40,7 @@ describe('Router', () => {
         expect(result).to.eq(Router);
     });
 
-    it("should render a page within start method", () => {
+    it('should render a page within start method', () => {
         Router
             .use('/', BlockMock)
             .start();
@@ -68,7 +68,7 @@ describe('Router', () => {
         expect(getContentFake.callCount).to.eq(1);
     });
 
-    it("should go to a passed page", () => {
+    it('should go to a passed page', () => {
         Router
             .use('/', BlockMock)
             .use(Routes.Profile, BlockMock)

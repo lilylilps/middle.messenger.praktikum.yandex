@@ -3,7 +3,7 @@ import store from "../utils/Store";
 
 export type ToasterStatus = 'success' | 'failure';
 
-class ToasterController {
+export class ToasterController {
     setFailure(text?: string): void {
         store.set('toaster', {
             text:  text || defaultErrorMessage,

@@ -68,6 +68,10 @@ class AddUserModalBase extends Block<AddUserModalProps> {
                     if (!userName) {
                         input.setError('Укажите имя пользователя');
                     } else {
+                        if (!this.userToAdd) {
+                            UserController.getAllUsers(userName);
+                            this.userToAdd = {...this.props.users[0]};
+                        }
                         this.props.events.onUserAdd(this.userToAdd!);
                         input.clear();
                         this.hide();
