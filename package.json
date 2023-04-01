@@ -6,6 +6,7 @@
     "prepare": "husky install",
     "dev": "webpack serve --mode development",
     "build": "webpack --mode production",
+    "start": "npm run build && node ./server.js",
     "lint": "eslint --ext .js,.ts .",
     "test": "mocha --require ts-node/register --require ./mochaSetup.js src/**/*.spec.ts src/**/**/*.spec.ts"
   },
