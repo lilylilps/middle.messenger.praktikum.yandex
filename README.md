@@ -28,3 +28,5 @@ Pull request Sprint 1: https://github.com/lilylilps/middle.messenger.praktikum.y
 Pull request Sprint 2: https://github.com/lilylilps/middle.messenger.praktikum.yandex/pull/3
 
 Pull request Sprint 3: https://github.com/lilylilps/middle.messenger.praktikum.yandex/pull/4
+
+Pull request Sprint 4: https://github.com/lilylilps/middle.messenger.praktikum.yandex/pull/5
