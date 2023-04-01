@@ -6,7 +6,7 @@ module.exports = {
 	devtool: 'inline-source-map',
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: 'messager.bundle.js'
+		filename: 'messenger.bundle.js'
 	},
 	resolve: {
 		extensions: ['.ts', '.js', '.json']

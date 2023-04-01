@@ -1,7 +1,7 @@
 {
-  "name": "messager",
+  "name": "messenger",
   "version": "1.0.0",
-  "description": "Messager project for Yandex Praktikum",
+  "description": "Messenger project for Yandex Praktikum",
   "scripts": {
     "prepare": "husky install",
     "dev": "webpack serve --mode development",
