@@ -1,6 +1,6 @@
-FROM node:18-alpine AS build
+FROM node:16-alpine
 
-WORKDIR /app
+WORKDIR /var/www/app
 
 COPY package.json package-lock.json ./
 
@@ -12,6 +12,4 @@ RUN npm run test
 RUN npm run lint
 RUN npm run build
 
-FROM nginx
-COPY --from=build /app/dist /opt/site
-COPY nginx.conf /etc/nginx/nginx.conf
+CMD ["node", "./server.js"]
