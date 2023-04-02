@@ -1,25 +1,27 @@
 import template from './deleteUserModal.hbs';
 
-import {ChatUserList} from './chatUserList';
-
 import {Button} from '../../../../../../components/button';
 import {Input} from '../../../../../../components/input';
 import {ButtonWithIcon} from '../../../../../../components/buttonWithIcon';
+import {UserList} from '../../../../../../components/userList';
 
 import Block from '../../../../../../utils/Block';
+import {withStore} from '../../../../../../utils/Store';
 
 import {User} from '../../../../../../models/user';
 
 import closeIcon from '../../../../../../../static/icons/close.svg';
 
 interface DeleteUserModalProps {
+    users: User[],
+    currentUser: User,
     events: {
         onUserDelete: (user: User) => void
     }
 }
 
-export class DeleteUserModal extends Block<DeleteUserModalProps> {
-    private userToDelete: User | undefined = undefined;
+class DeleteUserModalBase extends Block<DeleteUserModalProps> {
+    private userToDelete?: User;
 
     constructor(props: DeleteUserModalProps) {
         super(props);
@@ -31,10 +33,12 @@ export class DeleteUserModal extends Block<DeleteUserModalProps> {
             label: '',
             name: 'userLogin',
             type: 'text',
-            placeholder: 'Выберите пользователя'
+            placeholder: 'Выберите пользователя',
+            disabled: true
         });
 
-        this.children.chatUserList = new ChatUserList({
+        this.children.chatUserList = new UserList({
+            users: this.props.users,
             events: {
                 onUserSelect: (user: User) => {
                     (this.children.chatUserList as Block).hide();
@@ -54,7 +58,7 @@ export class DeleteUserModal extends Block<DeleteUserModalProps> {
                     const userName = input.getValue();
 
                     if (!userName) {
-                        input.setError('Укажите имя пользователя');
+                        input.setError('Выберите пользователя');
                     } else {
                         this.props.events.onUserDelete(this.userToDelete!);
                         input.clear();
@@ -83,4 +87,15 @@ export class DeleteUserModal extends Block<DeleteUserModalProps> {
     render() {
         return this.compile(template, this.props);
     }
+
+    protected componentDidUpdate() {
+        (this.children.chatUserList as UserList)
+            .updateUsers(this.props.users?.filter(user => user.id !== this.props.currentUser.id));
+        return false;
+    }
 }
+
+export const DeleteUserModal = withStore((state) => ({
+    users: [...(state.chatUsers || [])],
+    currentUser: state.user,
+}))(DeleteUserModalBase);

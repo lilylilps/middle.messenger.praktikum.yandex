@@ -28,11 +28,11 @@ export class Input extends Block {
     }
 
     getName(): string {
-        return (this.element?.children[0].children[1] as HTMLInputElement).name;
+        return (this.element?.children[0]?.children[1] as HTMLInputElement).name;
     }
 
     getValue(): string {
-        return (this.element?.children[0].children[1] as HTMLInputElement).value;
+        return (this.element?.children[0]?.children[1] as HTMLInputElement).value;
     }
 
     setError(error: string | null): void {

@@ -1,4 +1,4 @@
-import Handlebars from 'handlebars/dist/handlebars.runtime';
+import './index.pcss';
 
 import AuthController from './src/controllers/AuthController';
 
@@ -10,18 +10,6 @@ import {ProfilePage} from './src/pages/profile';
 import {SignInPage} from './src/pages/signIn';
 import {SignUpPage} from './src/pages/signUp';
 import Router from './src/utils/router';
-
-
-Handlebars.registerHelper('switch', function(value: any, options: any) {
-    this.switch_value = value;
-    return options.fn(this);
-});
-
-Handlebars.registerHelper('case', function(value: any, options: any) {
-    if (value == this.switch_value) {
-        return options.fn(this);
-    }
-});
 
 export enum Routes {
     SignIn = '/',

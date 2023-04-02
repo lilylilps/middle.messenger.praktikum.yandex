@@ -3,6 +3,6 @@ export function debounce(callback: () => void, wait: number | undefined) {
 
     return function(...args: any) {
         clearTimeout(timer);
-        timer = setTimeout(callback.bind(this, ...args), wait || 0);
+        timer = setTimeout(callback.bind(this, ...args), wait || 0) as unknown as number;
     };
 }

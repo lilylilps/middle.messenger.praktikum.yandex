@@ -27,9 +27,6 @@ export class ResourceAPI extends BaseAPI {
 
 		return this.http.post('/', formData, 'multipart/form-data');
 	}
-
-	update = undefined;
-	delete = undefined;
 }
 
 export default new ResourceAPI();
