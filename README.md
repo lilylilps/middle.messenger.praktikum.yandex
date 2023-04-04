@@ -6,7 +6,7 @@
 
 Предоставленное API: https://ya-praktikum.tech/api/v2/swagger/#/
 
-Проект развернут в Яндекс.Облаке: https://bba31tms74jutrkbmhng.containers.yandexcloud.net/
+Проект развернут в Яндекс.Облаке: https://bbao75b8udhgnoe0blej.containers.yandexcloud.net/
 
 Для работы с проектом локально нужно установить необходимые пакеты командой ```npm install```, а также можно настроить ```precommit``` командой ```npm run prepare```.
 
